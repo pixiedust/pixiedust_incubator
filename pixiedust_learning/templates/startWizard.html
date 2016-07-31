@@ -1,0 +1,142 @@
+{%extends "basedialog.html"%}
+{%import "commonExecuteCallback.js" as commons%}
+{%block title %}Welcome to pixiedust learning{%endblock%}
+
+{%block body%}
+<div class="container" id="myWizard">
+   <div class="progress">
+     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5" style="width: 20%;">
+       Step 1 of {{steps|count}}
+     </div>
+   </div>
+  
+   <div class="navbar" style="display:none">
+      <div class="navbar-inner">
+            <ul class="nav nav-pills">
+              {%for step in steps%}
+                <li {%if loop.index == 1%}class="active"{%endif%}>
+                  <a href="#step{{loop.index}}" data-toggle="tab" data-step="{{loop.index}}">{{step["title"]}}</a>
+                </li>
+              {%endfor%}
+            </ul>
+      </div>
+   </div>
+   <div class="tab-content">
+       {% set stepContext = "html"%}
+       {%for step in steps%}
+       {% set stepId = "step" ~ loop.index%}
+        <div class="tab-pane fade in {%if loop.index == 1%}active{%endif%}" id="step{{loop.index}}"> 
+            <div class="page-header text-center">
+                <h1>{{step["title"]}}</h1>
+            </div>
+            {%include module + ":" + step["template"]%}
+            {%if loop.index > 1%}
+            <a class="btn btn-default btn-lg prev" prev="step{{loop.index-1}}" href="#">Prev</a>
+            {%endif%}
+            {%if loop.index < loop.length%}
+            <a class="btn btn-default btn-lg next" next="step{{loop.index+1}}" href="#">Next</a>
+            {%endif%}
+        </div> 
+       {%endfor%}
+   </div>  
+</div>
+{%endblock%}
+
+{%block onOK%}
+{% call(results) commons.ipython_execute(this._genDisplayScript(),prefix,extraCommandOptions="{'topic':global.topic}") %}
+    $('#results{{prefix}}').html("");
+    $('#loading{{prefix}}').css('display','block');
+
+    var cells = JSON.parse({{results["error"] or results}}).cells;
+    function insertCell(index, notebookCellIndex){
+      if (index >= cells.length){
+        $('#results{{prefix}}').html("<h2 class='text-center'>Congratulation! Course successfully created</h2>");
+        $('#loading{{prefix}}').css('display','none');
+        return;
+      }
+      var cell = cells[index];
+      var jcell = IPython.notebook.insert_cell_below(cell.cell_type, notebookCellIndex);
+      jcell.set_text(cell.source.join("\n"));
+      if ( cell.cell_type=="markdown"){
+        jcell.execute();
+      }
+      notebookCellIndex = IPython.notebook.find_cell_index(jcell);
+      setTimeout(function(){
+        insertCell(index+1,notebookCellIndex);
+      },100);
+    }
+
+    setTimeout(function(){
+      insertCell(0,null);
+    },1000);
+{% endcall %}
+{%endblock%}
+
+{%block onDialogShown%}
+$(this).find('.modal-dialog').css({
+    width:'90%',
+});
+
+var wizardOptions = {}
+
+$('.next').click(function(){
+  var nextId = $(this).attr("next");
+  $('[href=#'+nextId+']').tab('show');
+  return false;
+  
+})
+
+$('.prev').click(function(){
+  var nextId = $(this).attr("prev");
+  $('[href=#'+nextId+']').tab('show');
+  return false;
+  
+})
+
+var showTabCallbacks = {};
+function registerShowTabCallback(step, callback){
+  if (!showTabCallbacks.hasOwnProperty(step) ){
+    showTabCallbacks[step]=[];
+  }
+  showTabCallbacks[step].push(callback);
+}
+
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {  
+  //update progress
+  var step = $(e.target).data('step');
+  var percent = (parseInt(step) / {{steps|count}}) * 100;
+  
+  $('.progress-bar').css({width: percent + '%'});
+  $('.progress-bar').text("Step " + step + " of {{steps|count}}");
+  
+  //e.relatedTarget // previous tab
+
+  var stepId = "step"+step;
+  if (showTabCallbacks.hasOwnProperty(stepId)){
+    for (var i=0; i < showTabCallbacks[stepId].length; i++ ){
+      showTabCallbacks[stepId][i]();
+    }
+  }
+  
+})
+
+$('.first').click(function(){
+  $('#myWizard a:first').tab('show')
+})
+
+{% set stepContext = "js"%}
+  {%for step in steps%}
+    {% set stepId = "step" ~ loop.index%}
+    {%include module + ":" + step["template"]%}
+  {%endfor%}
+{%endblock%}
+
+{%block cellOuputHTML%}
+<div id="loading{{prefix}}" style="display:none">
+    <div style="width:100px;height:60px;left:47%;position:relative">
+        <i class="fa fa-circle-o-notch fa-spin" style="font-size:48px"></i>
+    </div>
+    <div style="text-align:center">Generating the notebook cells for your course. Please wait...</div>
+</div>
+<div id="results{{prefix}}"></div>
+{%endblock%}

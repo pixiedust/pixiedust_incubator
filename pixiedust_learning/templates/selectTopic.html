@@ -1,0 +1,21 @@
+{%if stepContext=="html"%}
+<div class="well">
+    <div class="row">
+        {%for course in courses %}
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail" style="margin-left:5px;margin-right:5px" id="topic{{course['id']}}">
+                <img src="{{course['icon']|base64dataUri}}">
+                <div class="caption text-center"> {{course['title']}} </div>
+            </a>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+{%else%}
+{%for course in courses %}
+$("#topic{{course['id']}}").click(function(){
+    global.topic="{{course['title']}}";
+    global.subtopics={{course['subtopics']}};
+})
+{%endfor%}
+{%endif%}

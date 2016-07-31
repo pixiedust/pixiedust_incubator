@@ -1,0 +1,15 @@
+{%if stepContext=="html"%}
+<div class="jumbotron lead">
+  <h3>Your selections:</h3>
+  <div id="courseSelection" style="min-height:200px;margin-left:20px"/>
+  <div class="lead text-center" style="color:#31708f">Click OK to start the course</div>
+</div>
+{%else%}
+    registerShowTabCallback("{{stepId}}", function(){
+        $("#courseSelection").html("");
+        var subTopic = global.subtopic;
+        $("#courseSelection")
+            .append($("<div/>").text("Topic: " + global.topic))
+            .append($("<div/>").text("Category: " + global.subtopic.title));
+    });
+{%endif%}
