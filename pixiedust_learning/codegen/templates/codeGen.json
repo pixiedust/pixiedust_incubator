@@ -1,0 +1,36 @@
+[
+{"id":"spark.object.storage","icon":"spark_tile.png", "title":"Spark with Object Storage",
+    "subtopics":[
+        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Load a text file from Object Storage"},
+        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Load a parquet file from Object Storage"}
+    ]
+},
+{"id":"spark.cloudant","icon":"cloudant_tile.png", "title":"Spark Cloudant connector",
+    "subtopics":[
+        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Load a dataframe from Cloudant"},
+        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Save a dataframe to Cloudant"}
+    ]
+},
+{"id":"spark.streaming","icon":"graph_tile.png", "title":"Spark Streaming",
+    "subtopics":[
+        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Stream from Twitter"},
+        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Stream from MessageHub"}
+    ]
+},
+{"id":"spark.graphx","icon":"compose_tile.png", "title":"Spark GraphX",
+    "subtopics":[
+        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Create a GraphFrame"},
+        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Page Rank"},
+        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Motif Finding"}
+    ]
+},
+{"id":"spark.machine.learning","icon":"blockChain_tile.png", "title":"Spark Machine Learning",
+    "subtopics":[
+        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Load a LabeledRDD"},
+        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Histogram"},
+        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Train Naive Bayes model"},
+        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Train Decision Tree"},
+        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Accuracy Table"}
+    ]
+}
+]

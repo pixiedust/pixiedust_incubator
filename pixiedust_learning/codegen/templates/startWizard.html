@@ -1,6 +1,6 @@
 {%extends "basedialog.html"%}
 {%import "commonExecuteCallback.js" as commons%}
-{%block title %}Welcome to pixiedust learning{%endblock%}
+{%block title %}Welcome to pixiedust snippet{%endblock%}
 
 {%block body%}
 <div class="container" id="myWizard">
@@ -50,18 +50,7 @@
     var cells = JSON.parse({{results["error"] or results}}).cells;
     function insertCell(index, notebookCellIndex){
       if (index >= cells.length){
-        $('#results{{prefix}}').html("<h2 class='text-center'>Congratulation! Tutorial successfully created</h2>"+
-          "<h2 class='text-center'>We recommend you watch the video below before starting the tutorial</h2>"+
-          '<div class="video" style="margin-top:20px;text-align:center"'+
-            '<span class="embed-youtube">'+
-              '<div class="pn-fluid-embed-wrap">'+
-                '<iframe class="youtube-player pn-fluid-embed" style="width:700px;height:400px" type="text/html" '+
-                  'src="https://www.youtube.com/embed/dZbP3b20P00?version=3&amp;rel=0&amp;fs=1&amp;autohide=2&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;wmode=transparent" allowfullscreen="true" title="Content from www.youtube.com">'+
-                '</iframe>'+
-              '</div>'+
-            '</span>'+
-          '</div>'
-          );
+        $('#results{{prefix}}').html("<h2 class='text-center'>Congratulation! Snippet successfully created below</h2>");
         $('#loading{{prefix}}').css('display','none');
         return;
       }
@@ -147,7 +136,7 @@ $('.first').click(function(){
     <div style="width:100px;height:60px;left:47%;position:relative">
         <i class="fa fa-circle-o-notch fa-spin" style="font-size:48px"></i>
     </div>
-    <div style="text-align:center">Generating the notebook cells for your course. Please wait...</div>
+    <div style="text-align:center">Generating the notebook cells. Please wait...</div>
 </div>
 <div id="results{{prefix}}"></div>
 {%endblock%}

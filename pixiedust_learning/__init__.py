@@ -17,24 +17,38 @@
 from pixiedust.display.display import *
 from pixiedust.display import *
 from .learningDisplay import PixieDustLearningDisplay
-        
+from codegen.codeGenerator import PixieDustCodeGenDisplay
+
 class PixieDustLearningPluginMeta(DisplayHandlerMeta):
     @addId
     def getMenuInfo(self,entity):
-        if entity==PixieDustLearningPluginMeta:
+        if entity==self.__class__:
             return [
-                {"categoryId": "Learning", "title": "Course", "icon": "fa-table", "id": "davidTest"}
+                {"id": "learning"}
             ]
         else:
             return []
     def newDisplayHandler(self,options,entity):
         return PixieDustLearningDisplay(options,entity)
-    
+
 registerDisplayHandler(PixieDustLearningPluginMeta())
 
+class PixieDustCodeGenPluginMeta(DisplayHandlerMeta):
+    @addId
+    def getMenuInfo(self,entity):
+        if entity==self.__class__:
+            return [
+                {"id": "codeGen"}
+            ]
+        else:
+            return []
+    def newDisplayHandler(self,options,entity):
+        return PixieDustCodeGenDisplay(options,entity)
+
+registerDisplayHandler(PixieDustCodeGenPluginMeta())
 
 def startCourse():
     display(PixieDustLearningPluginMeta)
 
-def getCourseCells(topic):
-    print("hello wolrd")
+def codeGenerator():
+    display(PixieDustCodeGenPluginMeta)
