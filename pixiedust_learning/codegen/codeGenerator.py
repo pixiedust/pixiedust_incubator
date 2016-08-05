@@ -19,6 +19,7 @@ import yaml
 class PixieDustCodeGenDisplay(Display):
     def doRender(self, handlerId):
 
+        self.addProfilingTime = False
         #hard code course for now, should come from cloudant later on
         courses=yaml.safe_load(self.renderTemplate("codeGen.json"))
 

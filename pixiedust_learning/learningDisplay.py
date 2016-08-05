@@ -19,6 +19,8 @@ import yaml
 class PixieDustLearningDisplay(Display):
     def doRender(self, handlerId):
 
+        self.addProfilingTime = False
+
         if self.options.get("topic"):
             self._addHTMLTemplate("DashDB Twitter Car 2015 Python Notebook.ipynb")
         else:
