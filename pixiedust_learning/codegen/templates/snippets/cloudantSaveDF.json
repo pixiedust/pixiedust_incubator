@@ -1,0 +1,25 @@
+{
+  "metadata": {
+    "pixiedust": {
+      "codegen_variables": [
+        { "id":"host", "label":"Cloudant Host", "type":"text" },
+        { "id":"username", "label":"Username", "type":"text" },
+        { "id":"password", "label":"Password", "type":"text" },
+        { "id":"dbname", "label":"Database Name", "type":"text" },
+        { "id":"dframe", "label":"DataFrame Variable", "type":"text" }
+      ]
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "code",
+      "source": [
+        "{dframe}.write.format(\"com.cloudant.spark\")\\\n",
+        ".option(\"cloudant.host\", \"{host}\")\\\n",
+        ".option(\"cloudant.username\", \"{username}\")\\\n",
+        ".option(\"cloudant.password\", \"{password}\")\\\n",
+        ".save(\"{dbname}\")\n"
+      ]
+    }
+  ]
+}

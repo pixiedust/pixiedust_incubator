@@ -1,36 +1,36 @@
 [
-{"id":"spark.object.storage","icon":"spark_tile.png", "title":"Spark with Object Storage",
+  { "id":"spark.object.storage","icon":"spark_tile.png", "title":"Spark with Object Storage",
     "subtopics":[
-        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Load a text file from Object Storage"},
-        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Load a parquet file from Object Storage"}
+      {"id":"object.storage.text", "iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Load a text file from Object Storage", "src":"snippets/loadDFJDBC.json"},
+      {"id":"object.storage.parquet", "iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Load a parquet file from Object Storage", "src":"snippets/loadDFJDBC.json"}
     ]
-},
-{"id":"spark.cloudant","icon":"cloudant_tile.png", "title":"Spark Cloudant connector",
+  },
+  { "id":"spark.cloudant","icon":"cloudant_tile.png", "title":"Spark Cloudant connector",
     "subtopics":[
-        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Load a dataframe from Cloudant"},
-        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Save a dataframe to Cloudant"}
+      {"id":"cloudant.load", "iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Load a dataframe from Cloudant", "src":"https://gist.githubusercontent.com/vabarbosa/8b2e26ef6f2ec8a8a3b1cb4c30517f00/raw/2f4bc8756bd13179c0fb2036e64afd05694492a5/pixiedust-load-df-cloudant"},
+      {"id":"cloudant.save", "iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Save a dataframe to Cloudant", "src":"snippets/cloudantSaveDF.json"}
     ]
-},
-{"id":"spark.streaming","icon":"graph_tile.png", "title":"Spark Streaming",
+  },
+  { "id":"spark.streaming","icon":"graph_tile.png", "title":"Spark Streaming",
     "subtopics":[
-        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Stream from Twitter"},
-        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Stream from MessageHub"}
+      {"id":"streaming.twitter", "iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Stream from Twitter"},
+      {"id":"streaming.messagehub", "iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Stream from MessageHub"}
     ]
-},
-{"id":"spark.graphx","icon":"compose_tile.png", "title":"Spark GraphX",
+  },
+  { "id":"spark.graphx","icon":"compose_tile.png", "title":"Spark GraphX",
     "subtopics":[
-        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Create a GraphFrame"},
-        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Page Rank"},
-        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Motif Finding"}
+      {"id":"graphx.create", "iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Create a GraphFrame"},
+      {"id":"graphx.pagerank", "iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Page Rank"},
+      {"id":"graphx.motif", "iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Motif Finding"}
     ]
-},
-{"id":"spark.machine.learning","icon":"blockChain_tile.png", "title":"Spark Machine Learning",
+  },
+  { "id":"spark.machine.learning","icon":"blockChain_tile.png", "title":"Spark Machine Learning",
     "subtopics":[
-        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Load a LabeledRDD"},
-        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Histogram"},
-        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Train Naive Bayes model"},
-        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Train Decision Tree"},
-        {"iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Accuracy Table"}
+      {"id":"ml.load", "iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Load a LabeledRDD"},
+      {"id":"ml.histogram", "iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Histogram"},
+      {"id":"ml.bayes", "iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Train Naive Bayes model"},
+      {"id":"ml.decision", "iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Train Decision Tree"},
+      {"id":"ml.accuracy", "iconDataUri":"{{'spark_tile.png'|base64dataUri}}", "title":"Accuracy Table"}
     ]
-}
+  }
 ]

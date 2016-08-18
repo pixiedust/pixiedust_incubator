@@ -3,7 +3,7 @@
     <div class="row">
         {%for course in courses %}
         <div class="col-xs-6 col-md-3">
-            <a href="#" class="thumbnail" style="margin-left:5px;margin-right:5px" id="topic{{course['id']}}">
+            <a href="#" class="thumbnail pixiedust-codegen-topic" style="margin-left:5px;margin-right:5px" id="topic{{course['id']}}">
                 <img src="{{course['icon']|base64dataUri}}">
                 <div class="caption text-center"> {{course['title']}} </div>
             </a>
@@ -16,6 +16,7 @@
 $("#topic{{course['id']|replace(".", "\\\\.")}}").click(function(){
     global.topic="{{course['title']}}";
     global.subtopics={{course['subtopics']}};
+    gotoCodeGenTab('next');
 })
 {%endfor%}
 {%endif%}

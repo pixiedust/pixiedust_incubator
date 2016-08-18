@@ -30,33 +30,47 @@
                 <h1>{{step["title"]}}</h1>
             </div>
             {%include module + ":" + step["template"]%}
-            {%if loop.index > 1%}
-            <a class="btn btn-default btn-lg prev" prev="step{{loop.index-1}}" href="#">Prev</a>
-            {%endif%}
-            {%if loop.index < loop.length%}
-            <a class="btn btn-default btn-lg next" next="step{{loop.index+1}}" href="#">Next</a>
-            {%endif%}
         </div> 
        {%endfor%}
-   </div>  
+   </div>
+   <button class="btn btn-default btn-sm btn-prev"
+           style="display:none;background:none;border:none;font-size:1.2em;font-weight:bold;">
+     <i class="fa fa-chevron-left" aria-hidden="true"></i> Back
+  </button>
 </div>
 {%endblock%}
 
 {%block onOK%}
-{% call(results) commons.ipython_execute(this._genDisplayScript(),prefix,extraCommandOptions="{'topic':global.topic}") %}
+var variables = $('.set-variable');
+var extraCommandOptions={};
+extraCommandOptions.topic = global.topic;
+if (global.codesource) extraCommandOptions.codesource = global.codesource;
+{% call(results) commons.ipython_execute(this._genDisplayScript(),prefix,extraCommandOptions="extraCommandOptions") %}
     $('#results{{prefix}}').html("");
     $('#loading{{prefix}}').css('display','block');
-
     var cells = JSON.parse({{results["error"] or results}}).cells;
+    function formatSource(src, k, v) {
+      var reg = new RegExp("\\{" + k + "\\}", "gm");
+      return src.replace(reg, v);
+    }
     function insertCell(index, notebookCellIndex){
-      if (index >= cells.length){
+      if (typeof cells === 'string') {
+        $('#results{{prefix}}').html("<h2 class='text-center'>" + cells + "</h2>");
+        $('#loading{{prefix}}').css('display','none');
+        return;
+      }
+      else if (index >= cells.length){
         $('#results{{prefix}}').html("<h2 class='text-center'>Congratulation! Snippet successfully created below</h2>");
         $('#loading{{prefix}}').css('display','none');
         return;
       }
       var cell = cells[index];
       var jcell = IPython.notebook.insert_cell_below(cell.cell_type, notebookCellIndex);
-      jcell.set_text(cell.source.join(""));
+      var cellsource = cell.source.join("");
+      variables.each(function(i) {
+        cellsource = formatSource(cellsource, $(this).attr('id'), $(this).val());
+      });
+      jcell.set_text(cellsource);
       if ( cell.cell_type=="markdown"){
         jcell.execute();
       }
@@ -73,25 +87,58 @@
 {%endblock%}
 
 {%block onDialogShown%}
-$(this).find('.modal-dialog').css({
-    width:'90%',
+var mdialog = $(this).find('.modal-dialog').css('width', '90%')
+var mfooter = mdialog.find('.modal-footer');
+mfooter.find('.btn-ok').prop('disabled', true);
+
+var prevBtn = mdialog.find('.btn-prev');
+prevBtn.hover(
+  function(){ prevBtn.css('color', '#337ab7'); },
+  function(){ prevBtn.css('color', ''); }
+);
+
+var gotoCodeGenTab = function(tab) {
+  var index = $('.tab-pane.active', mdialog).prevAll().length + 1;
+  var total = $('.tab-pane', mdialog).length;
+
+  if (tab === 'prev') {
+    if (index > 1) {
+      $('[href=#step'+(index-1)+']').tab('show');
+      index--;
+    }
+  }
+  else if (tab === 'next') {
+    if (index < total) {
+      $('[href=#step'+(index+1)+']').tab('show');
+      index++;
+    }
+  }
+  else if (typeof tab === 'string') {
+    $('[href=#'+tab+']').tab('show');
+    index = $('[href=#'+tab+']', mdialog).prevAll().length + 1;
+  }
+
+  if (index > 1) {
+    prevBtn.css('display', '');
+  }
+  else {
+    prevBtn.css('display', 'none');
+  }
+
+  if (index < total) {
+    $('.btn-ok', mfooter).prop('disabled', true);
+  }
+  else {
+    $('.btn-ok', mfooter).prop('disabled', false);
+  }
+};
+
+prevBtn.click(function() {
+  gotoCodeGenTab('prev');
+  return false;
 });
 
-var wizardOptions = {}
-
-$('.next').click(function(){
-  var nextId = $(this).attr("next");
-  $('[href=#'+nextId+']').tab('show');
-  return false;
-  
-})
-
-$('.prev').click(function(){
-  var nextId = $(this).attr("prev");
-  $('[href=#'+nextId+']').tab('show');
-  return false;
-  
-})
+var wizardOptions = {};
 
 var showTabCallbacks = {};
 function registerShowTabCallback(step, callback){
@@ -117,7 +164,6 @@ $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
       showTabCallbacks[stepId][i]();
     }
   }
-  
 })
 
 $('.first').click(function(){

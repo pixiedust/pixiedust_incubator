@@ -15,6 +15,7 @@
 # -------------------------------------------------------------------------------
 from pixiedust.display.display import *
 import yaml
+import requests
 
 class PixieDustCodeGenDisplay(Display):
     def doRender(self, handlerId):
@@ -22,12 +23,23 @@ class PixieDustCodeGenDisplay(Display):
         self.addProfilingTime = False
         #hard code course for now, should come from cloudant later on
         courses=yaml.safe_load(self.renderTemplate("codeGen.json"))
+        topic = self.options.get("topic")
+        codesource = self.options.get("codesource")
 
-        if self.options.get("topic"):
-            self._addHTMLTemplate("loadDFJDBC.json")
-        else:
+        if topic is None:
             steps=[
                 {"title": "Select the topic", "template": "selectTopic.html"},
-                {"title": "Select the Code Snippet to generate", "template": "selectSnippet.html"}
+                {"title": "Select the Code Snippet to generate", "template": "selectSnippet.html"},
+                {"title": "Set Code Snippet variables", "template": "setVariables.html"}
             ]
-            self._addHTMLTemplate("startWizard.html", courses=courses, steps=steps);
+            self._addHTMLTemplate("startWizard.html", courses=courses, steps=steps)
+        elif codesource is None or codesource == "undefined":
+            self._addHTMLTemplate("snippets/notAvailable.json")
+        elif codesource.startswith("http"):
+            r = requests.get(codesource)
+            if r.status_code == requests.codes.ok:
+                self._addHTML(r.text)
+            else:
+                self._addHTMLTemplate("snippets/notAvailable.json")
+        else:
+            self._addHTMLTemplate(codesource)

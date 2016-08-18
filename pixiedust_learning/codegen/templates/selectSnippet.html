@@ -6,14 +6,18 @@
 {%else%}
     registerShowTabCallback("{{stepId}}", function(){
         $("#selectCategory").html("");
-        for (var i = 0; i < global.subtopics.length;i++){
+        for (var i = 0; i < global.subtopics.length; i++) {
             var subTopic = global.subtopics[i];
             var div = $("<div/>").addClass("col-xs-6").addClass("col-md-3");
             var thumbnail = $("<a/>").addClass("thumbnail").attr("href","#")
-                .css("margin-left","5px").css("margin-right","5px")
-                .attr("id", "subtopic" + subTopic.id)
+                .css("margin-left","5px")
+                .css("margin-right","5px")
+                .addClass("pixiedust-codegen-subtopic")
+                .attr("id", "subtopic" + (subTopic.id || i))
+                .attr("data-subtopic-index", i)
                 .click(function(){
-                    global.subtopic=subTopic;
+                    global.subtopic = global.subtopics[$(this).data('subtopic-index')];
+                    gotoCodeGenTab('next');
                 })
                 .appendTo(div);
             var icon = $("<img/>").attr("src", subTopic.iconDataUri).appendTo(thumbnail);

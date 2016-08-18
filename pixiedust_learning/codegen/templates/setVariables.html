@@ -1,0 +1,52 @@
+{%if stepContext=="html"%}
+<div id="setVariables" style="max-height: 50vh; overflow: auto; padding: 0 25%;">
+</div>
+{%else%}
+{%import "commonExecuteCallback.js" as commons%}
+  registerShowTabCallback("{{stepId}}", function() {
+    $('#setVariables').html('<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>');
+    var subtopic = global.subtopic;
+    if (subtopic.src) {
+      global.codesource = '\'' + subtopic.src + '\'';
+      var extraCommandOptions={};
+      extraCommandOptions.topic = global.topic;
+      extraCommandOptions.codesource = global.codesource;
+{% call(results) commons.ipython_execute(this._genDisplayScript(),prefix,extraCommandOptions="extraCommandOptions") %}
+        var jsonResults = JSON.parse({{results["error"] or results}});
+        var variables = null;
+        if (jsonResults.metadata && jsonResults.metadata.pixiedust) {
+          variables = jsonResults.metadata.pixiedust.codegen_variables;
+        }
+
+        if (variables) {
+          $('#setVariables').html('');
+          var div, lbl;
+          for (var i in variables) {
+            var v = variables[i];
+            div = $('<div/>').addClass('form-group');
+            switch(v.type || 'text') {
+              case 'number':
+                div.append('<label for="' + v.id + '">' + (v.label || v.id) + ':</label>');
+                div.append('<input type=number step=any class="form-control set-variable" id="' + v.id + '"/>');
+                break;
+              case 'boolean':
+                div.append('<label><input type="checkbox" class="set-variable" value="" id="' + v.id + '">' + (v.label || v.id) + '</label>');
+                break;
+              default:
+                div.append('<label for="' + v.id + '">' + (v.label || v.id) + ':</label>');
+                div.append('<input type="' + v.type + '" class="form-control set-variable" id="' + v.id + '"/>');
+                break;
+            }
+            $('#setVariables').append(div);
+          }
+        }
+        else {
+          $('#setVariables').html('<p>There are no variables to set.</p');
+        }
+{% endcall %}
+    }
+    else {
+      $('#setVariables').html('<p>There are no variables to set.</p');
+    }
+  });
+{%endif%}
