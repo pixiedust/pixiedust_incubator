@@ -19,6 +19,9 @@ from pixiedust.display import *
 from .learningDisplay import PixieDustLearningDisplay
 from codegen.codeGenerator import PixieDustCodeGenDisplay
 
+learningArgs = []
+defaultCodeGenSource = 'https://ibm-cds-labs.github.io/pixiedust_learning/codegen/codegen-default.json'
+
 class PixieDustLearningPluginMeta(DisplayHandlerMeta):
     @addId
     def getMenuInfo(self,entity):
@@ -43,6 +46,7 @@ class PixieDustCodeGenPluginMeta(DisplayHandlerMeta):
         else:
             return []
     def newDisplayHandler(self,options,entity):
+        options['codeGenArgs'] = learningArgs
         return PixieDustCodeGenDisplay(options,entity)
 
 registerDisplayHandler(PixieDustCodeGenPluginMeta())
@@ -50,5 +54,10 @@ registerDisplayHandler(PixieDustCodeGenPluginMeta())
 def startCourse():
     display(PixieDustLearningPluginMeta)
 
-def codeGenerator():
+def codeGenerator(*args):
+    global learningArgs
+    if args:
+        learningArgs = list(args)
+    else:
+        learningArgs = [defaultCodeGenSource]
     display(PixieDustCodeGenPluginMeta)

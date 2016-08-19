@@ -1,21 +1,21 @@
 {%if stepContext=="html"%}
 <div class="well">
     <div class="row">
-        {%for course in courses %}
+        {%for topic in codegenTopics %}
         <div class="col-xs-6 col-md-3">
-            <a href="#" class="thumbnail pixiedust-codegen-topic" style="margin-left:5px;margin-right:5px" id="topic{{course['id']}}">
-                <img src="{{course['icon']|base64dataUri}}">
-                <div class="caption text-center"> {{course['title']}} </div>
+            <a href="#" class="thumbnail pixiedust-codegen-topic" style="margin-left:5px;margin-right:5px" id="topic{{topic['id']}}">
+                <img src="{{topic['iconUri']}}">
+                <div class="caption text-center"> {{topic['title']}} </div>
             </a>
         </div>
         {%endfor%}
     </div>
 </div>
 {%else%}
-{%for course in courses %}
-$("#topic{{course['id']|replace(".", "\\\\.")}}").click(function(){
-    global.topic="{{course['title']}}";
-    global.subtopics={{course['subtopics']}};
+{%for topic in codegenTopics %}
+$("#topic{{topic['id']|replace(".", "\\\\.")}}").click(function(){
+    global.topic="{{topic['title']}}";
+    global.subtopics={{topic['subtopics']}};
     gotoCodeGenTab('next');
 })
 {%endfor%}

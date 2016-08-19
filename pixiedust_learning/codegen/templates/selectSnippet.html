@@ -20,7 +20,7 @@
                     gotoCodeGenTab('next');
                 })
                 .appendTo(div);
-            var icon = $("<img/>").attr("src", subTopic.iconDataUri).appendTo(thumbnail);
+            var icon = $("<img/>").attr("src", subTopic.iconUri).appendTo(thumbnail);
             var caption = $("<div/>").addClass("caption").addClass("text-center").text(subTopic.title).appendTo(thumbnail);
             $("#selectCategory").append(div);
         }

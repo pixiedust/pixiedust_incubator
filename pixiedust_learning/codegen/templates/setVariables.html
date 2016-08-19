@@ -6,8 +6,8 @@
   registerShowTabCallback("{{stepId}}", function() {
     $('#setVariables').html('<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>');
     var subtopic = global.subtopic;
-    if (subtopic.src) {
-      global.codesource = '\'' + subtopic.src + '\'';
+    if (subtopic.snippetUrl) {
+      global.codesource = '\'' + subtopic.snippetUrl + '\'';
       var extraCommandOptions={};
       extraCommandOptions.topic = global.topic;
       extraCommandOptions.codesource = global.codesource;
@@ -41,12 +41,12 @@
           }
         }
         else {
-          $('#setVariables').html('<p>There are no variables to set.</p');
+          $('#setVariables').html('<p>There are no variables to set. Click OK to continue.</p>');
         }
 {% endcall %}
     }
     else {
-      $('#setVariables').html('<p>There are no variables to set.</p');
+      $('#setVariables').html('<p>Code snippet not available for <strong>' + global.subtopic.title + '</strong> in <strong>' + global.topic + '</strong>.</p>');
     }
   });
 {%endif%}
