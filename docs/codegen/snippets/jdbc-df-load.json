@@ -12,20 +12,20 @@
     }
   },
  "cells": [
-  {
-   "cell_type": "code",
-   "metadata": {},
-   "source": [
-    "SCHEMA=\"{schema}.\"\n",
-    "PREFIX=\"{prefix}_\"\n",
-    "props = {}\n",
-    "props['user'] = '{username}'\n",
-    "props['password'] = '{password}'\n",
-    "jdbcurl='jdbc:db2://{host}:50000/BLUDB'\n",
-    "#get the data frame\n",
-    "df = sqlContext.read.jdbc(jdbcurl, SCHEMA+PREFIX+'{table}', properties=props)\n",
-    "df.printSchema()\n"
-   ]
-  }
- ]
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "SCHEMA=\"{schema}.\"\n",
+        "PREFIX=\"{prefix}_\"\n",
+        "props = {}\n",
+        "props['user'] = '{username}'\n",
+        "props['password'] = '{password}'\n",
+        "jdbcurl='jdbc:db2://{host}:50000/BLUDB'\n",
+        "#get the data frame\n",
+        "df = sqlContext.read.jdbc(jdbcurl, SCHEMA+PREFIX+'{table}', properties=props)\n",
+        "df.printSchema()\n"
+      ]
+    }
+  ]
 }
