@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "pixiedust": {
+      "codegen_variables": [
+        { "id":"host", "label":"Cloudant Host", "type":"text" },
+        { "id":"username", "label":"Username", "type":"text" },
+        { "id":"password", "label":"Password", "type":"text" },
+        { "id":"dbname", "label":"Database Name", "type":"text" }
+      ]
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "CLOUDANTHOST=\"{host}\"\n",
+        "CLOUDANTUSERNAME=\"{username}\"\n",
+        "CLOUDANTPASSWORD=\"{password}\"\n",
+        "CLOUDANTDBNAME=\"{dbname}\"\n",
+        "cloudantdata = SQLContext(sc).read.format(\"com.cloudant.spark\")\\\n",
+        ".option(\"cloudant.host\", CLOUDANTHOST)\\\n",
+        ".option(\"cloudant.username\", CLOUDANTUSERNAME)\\\n",
+        ".option(\"cloudant.password\", CLOUDANTPASSWORD)\\\n",
+        ".load(CLOUDANTDBNAME)\n",
+        "cloudantdata.cache()\n",
+        "print(\"Successfully cached dataframe\")\n",
+        "cloudantdata.printSchema()\n"
+      ]
+    }
+  ]
+}
