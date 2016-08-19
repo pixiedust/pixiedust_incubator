@@ -40,6 +40,11 @@
 </div>
 {%endblock%}
 
+{%block onCancel%}
+    $('#results{{prefix}}').html("<p class='text-center'>Snippet cancelled</p>");
+    $('#loading{{prefix}}').css('display','none');
+{%endblock%}
+
 {%block onOK%}
 var variables = $('.set-variable');
 var extraCommandOptions={};
@@ -55,12 +60,12 @@ if (global.codesource) extraCommandOptions.codesource = global.codesource;
     }
     function insertCell(index, notebookCellIndex){
       if (typeof cells === 'string') {
-        $('#results{{prefix}}').html("<h2 class='text-center'>" + cells + "</h2>");
+        $('#results{{prefix}}').html("<h3 class='text-center'>" + cells + "</h3>");
         $('#loading{{prefix}}').css('display','none');
         return;
       }
       else if (index >= cells.length){
-        $('#results{{prefix}}').html("<h2 class='text-center'>Congratulation! Snippet successfully created below</h2>");
+        $('#results{{prefix}}').html("<h3 class='text-center'>Congratulation! Snippet successfully created below</h3>");
         $('#loading{{prefix}}').css('display','none');
         return;
       }
