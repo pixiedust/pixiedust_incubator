@@ -16,7 +16,7 @@
         "OBJSTORE=\"{storage}\"\n",
         "FILENAME=\"{file}\"\n\n",
         "sqlContext = SQLContext(sc)\n\n",
-        "parquetFile = sqlContext.read.parquet(\"swift://\" + OBJSTORE + \".spark/\" + FILENAME + \")\n"
+        "parquetFile = sqlContext.read.parquet(\"swift://\" + OBJSTORE + \".spark/\" + FILENAME)\n"
       ]
     }
   ]

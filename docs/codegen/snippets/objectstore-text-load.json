@@ -16,7 +16,7 @@
         "OBJSTORE=\"{storage}\"\n",
         "FILENAME=\"{file}\"\n\n",
         "sqlContext = SQLContext(sc)\n\n",
-        "textFile = sqlContext.textFile(\"swift://\" + OBJSTORE + \".spark/\" + FILENAME + \")\n"
+        "textFile = sqlContext.textFile(\"swift://\" + OBJSTORE + \".spark/\" + FILENAME)\n"
       ]
     }
   ]
