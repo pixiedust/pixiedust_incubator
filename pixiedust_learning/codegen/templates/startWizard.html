@@ -118,9 +118,9 @@ var gotoCodeGenTab = function(tab) {
       index++;
     }
   }
-  else if (typeof tab === 'string') {
-    $('[href=#'+tab+']').tab('show');
-    index = $('[href=#'+tab+']', mdialog).prevAll().length + 1;
+  else if (typeof tab === 'number') {
+    $('[href=#step'+tab+']').tab('show');
+    index = tab;
   }
 
   if (index > 1) {
@@ -142,6 +142,31 @@ prevBtn.click(function() {
   gotoCodeGenTab('prev');
   return false;
 });
+
+var topics = {{codegenTopics}} || [];
+var subtopicId = '{{codegenSubtopicId}}';
+if (subtopicId) {
+  var found = false;
+  for (var t in topics) {
+    var topic = topics[t];
+    for (var s in topic.subtopics) {
+      var subtopic = topic.subtopics[s];
+      if (subtopic.id == subtopicId) {
+        global.topic = topic.title;
+        global.subtopics = topic.subtopics;
+        global.subtopic = subtopic;
+        found = true;
+        break;
+      }
+    }
+  }
+  if (found) {
+    gotoCodeGenTab(3);
+  }
+  else {
+    console.warn('Unable to find snippet for', subtopicId)
+  }
+}
 
 var wizardOptions = {};
 

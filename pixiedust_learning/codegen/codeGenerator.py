@@ -25,20 +25,20 @@ class PixieDustCodeGenDisplay(Display):
         codesource = self.options.get("codesource")
         
         if topic is None:
-            codegenTopics=[]
+            codegenTopics = []
             codegenSource = None
-            codegenSnippetId = None
+            codegenSnippetId = str()
             codegenArgs = self.options.get("codeGenArgs")
 
-            if codegenArgs is None or len(codegenArgs) == 0:
-                codegenArgs = ["https://ibm-cds-labs.github.io/pixiedust_learning/codegen/codegen-default.json"]
+            if codegenArgs is not None and len(codegenArgs) > 0:
+                for arg in codegenArgs:
+                    if arg.startswith("http"):
+                        codegenSource = arg
+                    else:
+                        codegenSnippetId = arg
 
-            for arg in codegenArgs:
-                if arg.startswith("http"):
-                    codegenSource = arg
-                else:
-                    # TODO: use the id to jump/insert specific snippet
-                    codegenSnippetId = arg
+            if codegenSource is None:
+                codegenSource = "https://ibm-cds-labs.github.io/pixiedust_learning/codegen/codegen-default.json"
 
             resp = requests.get(codegenSource)
             if resp.status_code == requests.codes.ok:
@@ -52,7 +52,7 @@ class PixieDustCodeGenDisplay(Display):
                 {"title": "Set Code Snippet variables", "template": "setVariables.html"}
             ]
 
-            self._addHTMLTemplate("startWizard.html", codegenTopics=codegenTopics, steps=steps)
+            self._addHTMLTemplate("startWizard.html", codegenTopics=codegenTopics, steps=steps, codegenSubtopicId=codegenSnippetId)
         elif codesource is None or codesource == "undefined":
             self._addHTMLTemplate("snippets/notAvailable.json")
         elif codesource.startswith("http"):
