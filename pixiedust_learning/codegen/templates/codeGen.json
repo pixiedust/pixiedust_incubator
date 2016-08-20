@@ -8,13 +8,13 @@
         "id": "object.storage.text",
         "iconUri": "//ibm-cds-labs.github.io/pixiedust_learning/codegen/icons/spark_tile.png",
         "title": "Load a text file from Object Storage",
-        "snippetUrl": "http://ibm-cds-labs.github.io/pixiedust_learning/codegen/snippets/jdbc-df-load.json"
+        "snippetUrl": "http://ibm-cds-labs.github.io/pixiedust_learning/codegen/snippets/objectstore-text-load.json"
       },
       {
         "id": "object.storage.parquet",
         "iconUri": "//ibm-cds-labs.github.io/pixiedust_learning/codegen/icons/spark_tile.png",
         "title":"Load a parquet file from Object Storage",
-        "snippetUrl": "http://ibm-cds-labs.github.io/pixiedust_learning/codegen/snippets/jdbc-df-load.json"
+        "snippetUrl": "http://ibm-cds-labs.github.io/pixiedust_learning/codegen/snippets/objectstore-parquet-load.json"
       }
     ]
   },
