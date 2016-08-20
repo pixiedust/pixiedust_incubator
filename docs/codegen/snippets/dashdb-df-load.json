@@ -1,0 +1,35 @@
+{
+  "metadata": {
+    "pixiedust": {
+      "codegen_variables": [
+        { "id":"schema", "label":"Schema Name", "type":"text" },
+        { "id":"prefix", "label":"Table Prefix", "type":"text" },
+        { "id":"table", "label":"Table Name", "type":"text" },
+        { "id":"username", "label":"User Name", "type":"text" },
+        { "id":"password", "label":"Password", "type":"password" },
+        { "id":"host", "label":"dashDB Host", "type":"text" }
+      ]
+    }
+  },
+ "cells": [
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "from pyspark.sql import SQLContext\n\n",
+        "SCHEMA=\"{schema}.\"\n",
+        "PREFIX=\"{prefix}_\"\n",
+        "TABLE=\"{table}\"\n\n",
+        "props = {}\n",
+        "props['user'] = '{username}'\n",
+        "props['password'] = '{password}'\n",
+        "jdbcurl='jdbc:db2://{host}:50000/BLUDB'\n\n",
+        "# sc is an existing SparkContext\n",
+        "sqlContext = SQLContext(sc)\n",
+        "# get the DataFrame\n",
+        "df = sqlContext.read.jdbc(jdbcurl, SCHEMA+PREFIX+TABLE, properties=props)\n",
+        "df.printSchema()\n"
+      ]
+    }
+  ]
+}

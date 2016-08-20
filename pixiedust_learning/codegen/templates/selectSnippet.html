@@ -9,18 +9,38 @@
         for (var i = 0; i < global.subtopics.length; i++) {
             var subTopic = global.subtopics[i];
             var div = $("<div/>").addClass("col-xs-6").addClass("col-md-3");
-            var thumbnail = $("<a/>").addClass("thumbnail").attr("href","#")
+            var thumbnail = null;
+            if (subTopic.snippetUrl) {
+                thumbnail = $("<a/>").attr("href","#")
+                    .click(function() {
+                        global.subtopic = global.subtopics[$(this).data('subtopic-index')];
+                        gotoCodeGenTab('next');
+                    })
+            }
+            else {
+                thumbnail = $("<span/>")
+                    .css("opacity", "0.75")
+                    .attr("aria-disabled", true)
+                    .hover(function() {
+                        $(this).find(".caption").text("Code Snippet not available");
+                    }, function() { 
+                        $(this).find(".caption").text(subTopic.title);
+                    });
+            }
+            thumbnail.addClass("thumbnail")
                 .css("margin-left","5px")
                 .css("margin-right","5px")
                 .addClass("pixiedust-codegen-subtopic")
                 .attr("id", "subtopic" + (subTopic.id || i))
                 .attr("data-subtopic-index", i)
-                .click(function(){
-                    global.subtopic = global.subtopics[$(this).data('subtopic-index')];
-                    gotoCodeGenTab('next');
-                })
-                .appendTo(div);
+                .attr("tabindex", "0")
+                .attr("aria-role", "button");
+            thumbnail.appendTo(div);
             var icon = $("<img/>").attr("src", subTopic.iconUri).appendTo(thumbnail);
+            if (!subTopic.snippetUrl) {
+                icon.css("filter", "grayscale(100%)")
+                    .css("-webkit-filter", "grayscale(100%)");
+            }
             var caption = $("<div/>").addClass("caption").addClass("text-center").text(subTopic.title).appendTo(thumbnail);
             $("#selectCategory").append(div);
         }

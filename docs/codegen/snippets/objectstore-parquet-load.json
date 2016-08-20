@@ -1,0 +1,23 @@
+{
+  "metadata": {
+    "pixiedust": {
+      "codegen_variables": [
+        { "id":"storage", "label":"Storage Container Name", "type":"text" },
+        { "id":"file", "label":"Parquet File Name", "type":"text" }
+      ]
+    }
+  },
+ "cells": [
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "from pyspark.sql import SQLContext\n\n",
+        "OBJSTORE=\"{storage}\"\n",
+        "FILENAME=\"{file}\"\n\n",
+        "sqlContext = SQLContext(sc)\n\n",
+        "parquetFile = sqlContext.read.parquet(\"swift://\" + OBJSTORE + \".spark/\" + FILENAME + \")\n"
+      ]
+    }
+  ]
+}
