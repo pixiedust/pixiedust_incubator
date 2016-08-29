@@ -1,0 +1,29 @@
+{%extends "basedialog.html"%}
+{%import "commonExecuteCallback.js" as commons%}
+{%block title %}Welcome to the Pixiedust Twitter Sentiment Analysis Tutorial{%endblock%}
+
+{%block body%}
+<div class="container" id="demo">
+   Not yet implemented!
+</div>
+{%endblock%}
+
+{%block onOK%}
+
+{%endblock%}
+
+{%block onDialogShown%}
+$(this).find('.modal-dialog').css({
+    width:'90%',
+});
+{%endblock%}
+
+{%block cellOuputHTML%}
+<div id="loading{{prefix}}" style="display:none">
+    <div style="width:100px;height:60px;left:47%;position:relative">
+        <i class="fa fa-circle-o-notch fa-spin" style="font-size:48px"></i>
+    </div>
+    <div style="text-align:center">Generating the notebook cells for the demo. Please wait...</div>
+</div>
+<div id="results{{prefix}}"></div>
+{%endblock%}

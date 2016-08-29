@@ -1,2 +1,3 @@
-# pixiedust_learning
-Pixiedust plugin that provide tutorial notebook on demand generation
+# pixiedust_incubator
+
+[Pixiedust](https://github.com/ibm-cds-labs/pixiedust) demos and experimental plugins

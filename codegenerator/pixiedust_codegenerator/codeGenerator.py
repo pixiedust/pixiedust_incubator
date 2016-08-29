@@ -38,7 +38,7 @@ class PixieDustCodeGenDisplay(Display):
                         codegenSnippetId = arg
 
             if codegenSource is None:
-                codegenSource = "https://ibm-cds-labs.github.io/pixiedust_learning/codegen/codegen-default.json"
+                codegenSource = "https://ibm-cds-labs.github.io/pixiedust_incubator/codegen/codegen-default.json"
 
             resp = requests.get(codegenSource)
             if resp.status_code == requests.codes.ok:
