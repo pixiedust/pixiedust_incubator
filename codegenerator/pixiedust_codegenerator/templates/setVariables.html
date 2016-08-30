@@ -7,7 +7,7 @@
     $('#setVariables').html('<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>');
     var subtopic = global.subtopic;
     if (subtopic.snippetUrl) {
-      global.codesource = '\'' + subtopic.snippetUrl + '\'';
+      global.codesource = subtopic.snippetUrl;
       var extraCommandOptions={};
       extraCommandOptions.topic = global.topic;
       extraCommandOptions.codesource = global.codesource;
