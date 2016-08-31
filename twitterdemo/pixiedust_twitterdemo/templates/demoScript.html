@@ -1,0 +1,106 @@
+<script type="text/javascript">
+  window.Pixiedust = window.Pixiedust || {};
+  window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
+
+  (function(pix) {
+    var BEGINSTREAM = '@BEGINSTREAM@';
+    var ENDSTREAM = '@ENDSTREAM@';
+    var jsHandlers = [];
+
+    var fromPython = function(msg) {
+      var msg_type = msg.header.msg_type;
+      var content = msg.content;
+      console.log('***callbacks.iopub.output:', content);
+      if (msg_type === 'stream') {
+        var s = content.text.split('\\n');
+        for (var i = 0; i < s.length; i++) {
+          if (s[i].indexOf(BEGINSTREAM) === 0) {
+            toJavascript({message: 'Streaming started', status: 'started'});
+          } else if (s[i].indexOf(ENDSTREAM) === 0) {
+            toJavascript({message: 'Streaming stopped', status: 'stopped'});
+          } else {
+            toJavascript(JSON.parse(s[i]));
+          }
+        }
+      }
+      else if (msg_type === 'error') {
+        var c = document.createElement('span');
+        c.appendChild(document.createTextNode('<span>Streaming failed</span>'));
+        document.getElementById('wrapperHTML{1}').appendChild(c);
+        for (m in msg) {
+          toJavascript({message: 'error: ' + JSON.stringify(msg)});
+        }
+        toJavascript({'action': 'stop'});
+      }
+    };
+
+    var toPython = function(params) {
+      //TODO: include cell_id
+      var command = "display(PixieDustTwitterDemoPluginMeta,cell_id='cellId',handlerId='twitterdemo',prefix='{{prefix}}'," + params + ")";
+
+      IPython.notebook.session.kernel.execute(
+        command,
+        {'iopub': {'output': fromPython}},
+        {silent: false, store_history: false, stop_on_error: true}
+      );
+    };
+
+    var toJavascript = function() {
+      for (var h in jsHandlers) {
+        jsHandlers[h].apply(this, arguments);
+      }
+    };
+
+    pix.twitterdemo = {
+      start: function() {
+        toJavascript({message: 'Starting streaming...', status: 'starting'});
+        var options = "stream='true'";
+        pix.twitterdemo.send('python', options);
+      },
+
+      stop: function() {
+        toJavascript({message: 'Stopping streaming...', status: 'stopping'});
+        var options = "stream='false'";
+        pix.twitterdemo.send('python', options);
+      },
+
+      send: function(destination) {
+        if (typeof destination === 'string') {
+          switch(destination) {
+            case 'python':
+              toPython(arguments.length > 1 ? Array.prototype.slice.call(arguments, 1) : null);
+              break;
+            case 'javascript':
+              toJavascript(arguments.length > 1 ? Array.prototype.slice.call(arguments, 1) : null);
+              break;
+            default:
+              toJavascript({message: 'Unsupported destination:' + destination});
+              break;
+          }
+        }
+        else {
+          toJavascript({message: 'Unsupported destination:' + destination});
+        }
+      },
+
+      register: function(h) {
+        jsHandlers.push(h);
+      }
+    };
+
+    var addD3 = function() {
+      var scriptid = 'pixiedust-d3';
+      if (!document.getElementById(scriptid)) {
+        var script = document.createElement('script');
+        script.id = 'pixiedust-d3';
+        script.type = 'text/javascript';
+        script.src = '//d3js.org/d3.v3.min.js';    
+
+        document.getElementsByTagName('head')[0].appendChild(script);
+        console.log('pixiedust_twitterdemo appended', script);
+      }
+    };
+
+    addD3();
+  })(window.Pixiedust);
+</script>
