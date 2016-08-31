@@ -16,7 +16,7 @@
 
 from pixiedust.display.display import *
 from pixiedust.display import *
-from .twitterDemo import PixieDustTwitterDemo
+from .twitterDemo import *
 
 class PixieDustTwitterDemoPluginMeta(DisplayHandlerMeta):
 

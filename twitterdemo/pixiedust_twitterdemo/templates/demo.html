@@ -1,5 +1,5 @@
 {%extends "basedialog.html"%}
-{%import "commonExecuteCallback.js" as commons%}
+{%import "commonExecuteCallbackMux.js" as commons%}
 {%block title %}Twitter Sentiment Analysis{%endblock%}
 
 {%block body%}
@@ -160,6 +160,7 @@
 
 {%block onDialogShown%}
   window.Pixiedust = window.Pixiedust || {};
+  window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
   var pix = window.Pixiedust.twitterdemo;
 
   var tdiag = $(this)
@@ -232,7 +233,7 @@
       }
     }
   }
-
+  debugger;
   pix.register(function(data) {
     if (data) {
       if (data.message) {
@@ -263,6 +264,26 @@
 
   okBtn.prop('disabled', true);
   logMsg(new Date());
+
+  global.refreshDataId = null;
+  global.startCollectData = function(){
+    if (global.refreshDataId){
+      return;
+    }
+
+    global.refreshDataId = setInterval(function(){
+      {% call(results) commons.ipython_execute("getTwitterData()",prefix) %}
+        console.log({{results["error"] or results}});
+      {% endcall %};
+    }, 2000)
+  }
+
+  global.stopCollectData = function(){
+    if (global.refreshDataId){
+      clearInterval(global.refreshDataId);
+      global.refreshDataId = null;
+    }
+  }
 {%endblock%}
 
 {%block cellOuputHTML%}

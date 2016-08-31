@@ -14,14 +14,25 @@
 # limitations under the License.
 # -------------------------------------------------------------------------------
 from pixiedust.display.display import *
-import yaml
-import time
+from pixiedust.utils.javaBridge import PixiedustOutput
+from IPython.display import display as ipythonDisplay,HTML
 import json
 import random
 
 BEGINSTREAM = "@BEGINSTREAM@"
 ENDSTREAM = "@ENDSTREAM@"
 
+channelData = {}
+class StreamingChannel(PixiedustOutput):
+  def printOutput(self, s):
+    print(s)
+    self.sendChannel("sdtdout", s)
+  
+  def sendChannel(self, channel, data):
+      channelData[channel]=data  
+
+def getTwitterData():
+  return json.dumps(channelData)
 class PixieDustTwitterDemo(Display):
   def startStream(self):
     # TODO: start streaming
@@ -51,9 +62,10 @@ class PixieDustTwitterDemo(Display):
     stream = self.options.get("stream")
 
     if stream is None:
-      self._addHTMLTemplate('demoScript.html',prefix=self.getPrefix())
-      self._addHTMLTemplate('demoPieChart.html',prefix=self.getPrefix())
-      self._addHTMLTemplate('demoGroupedChart.html',prefix=self.getPrefix())
+      self._addScriptElement("https://d3js.org/d3.v3.js", checkJSVar="d3", 
+        callback=[self.renderTemplate("demoPieChart.js"), self.renderTemplate("demoGroupedChart.js")]
+      )
+      self._addHTMLTemplate("demoScript.html")
       self._addHTMLTemplate("demo.html")
 
     elif stream is True or str(stream).lower() == 'true':
@@ -61,3 +73,8 @@ class PixieDustTwitterDemo(Display):
 
     elif stream is False or str(stream).lower() == 'false':
       self.stopStream()
+  def genStartStreamingExecuteCode(self):
+    return self.renderTemplate("startStreaming.execute", 
+      channel=StreamingChannel.__module__ + "." + StreamingChannel.__name__,
+      receiver="com.ibm.cds.spark.samples.PixiedustStreamingTwitter$",
+      scalaCode="val demo = com.ibm.cds.spark.samples.PixiedustStreamingTwitter;demo.startStreaming();print(\\\"done\\\")")

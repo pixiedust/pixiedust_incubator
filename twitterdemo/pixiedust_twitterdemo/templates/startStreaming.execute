@@ -1,0 +1,1 @@
+get_ipython().run_cell_magic('scala','channel={{channel}} receiver={{receiver}}','{{scalaCode}}')
