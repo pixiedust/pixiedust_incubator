@@ -21,8 +21,8 @@ class PixieDustSimpleSearchDisplay(Display):
   def doRender(self, handlerId):
     self.addProfilingTime = False
 
-    sssSource = None
-    sssQuery = str()
+    sssSource = "http://sss-got.mybluemix.net"
+    sssQuery = "*:*"
     sssArgs = self.options.get("sssArgs")
 
     if sssArgs is not None and len(sssArgs) > 0:
@@ -32,10 +32,5 @@ class PixieDustSimpleSearchDisplay(Display):
         else:
           sssQuery = arg
 
-    if sssSource is None:
-      sssSource = "http://sss-got.mybluemix.net"
-
     self._addHTMLTemplate("simplesearch.html", sssQuery=sssQuery, sssSource=sssSource)
-    self._addScriptElement("https://ibm-cds-labs.github.io/simple-search-js/simplesearch.js", checkJSVar="SimpleSearch", 
-      callback=None
-    )
+    self._addScriptElement("https://ibm-cds-labs.github.io/simple-search-js/simplesearch.js", checkJSVar="SimpleSearch", callback=None)
