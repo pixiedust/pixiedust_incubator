@@ -26,7 +26,7 @@ channelData = {}
 class StreamingChannel(PixiedustOutput):
   def printOutput(self, s):
     print(s)
-    self.sendChannel("sdtdout", s)
+    self.sendChannel("stdout", s)
   
   def sendChannel(self, channel, data):
       if channel in channelData:
