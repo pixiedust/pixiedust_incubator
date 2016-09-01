@@ -15,21 +15,20 @@
     }
     .chart-wrapper {
       background: #fff;
-      border: 1px solid #e2e2e2;
-      border-radius: 3px;
-      margin: 5px;
+      margin: 10px;
+      padding: 10px;
     }
     .chart-wrapper .chart-title {
-      border-bottom: 1px solid #d7d7d7;
-      color: #666;
-      font-size: 14px;
-      font-weight: 200;
-      padding: 7px 10px 4px;
+      border-bottom: 1px solid #152935;
+      color: #152935;
+      font-size: 1.25em;
+      font-weight: 400;
+      padding: 10px 0px 5px;
     }
     .chart-wrapper .chart-stage {
       overflow: hidden;
-      padding: 5px 10px;
       position: relative;
+      margin: 10px 0px 5px;
     }
     .chart-wrapper .chart-notes {
       background: #fbfbfb;
@@ -41,12 +40,18 @@
     .simple-box {
       background-color: transparent !important;
       border: 0 none !important;
+      margin: 0;
+      padding: 0;
     }
     .twitter-cards,
     .stream-log {
       height: 100%;
     }
-    .twitter-cards .chart-stage,
+    .twitter-cards .chart-stage {
+      height: calc(100% - 30px);
+      margin-top: 0px;
+      overflow: auto;
+    }
     .stream-log .chart-stage {
       height: calc(100% - 40px);
       overflow: auto;
@@ -57,6 +62,11 @@
       font-family: monospace;
       white-space: pre;
     }
+    .trending-sentiments {
+      height: 100%;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
     .trending-hashtags,
     .trending-sentiments {
       height: 100%;
@@ -66,17 +76,47 @@
       height: calc(100% - 50px);
       overflow: auto;
     }
+    .twitter-cards-clear {
+      cursor: pointer;
+      float: right;
+      font-size: 11px;
+      font-weight: 400;
+    }
+    .twitter-cards-logs-spinner {
+      float: right;
+      display: none;
+    }
     .twitter-cards-list {
       list-style: none;
-      padding: 0;
+      padding: 0 10px;
     }
     .twitter-cards-list li.row {
-      border: 1px solid #e2e2e2;
-      margin-bottom: 10px;
+      background: #ffffff none repeat scroll 0 0;
+      border-left: 3px solid #4178be;
+      box-shadow: 1px 2px 7px 1px rgba(0, 0, 0, 0.25);
+      color: #1d3649;
+      padding: 10px 15px 15px;
+      margin: 10px 0 20px;
+    }
+    .twitter-cards-list li.row.joy {
+      border-color: #4178be;
+    }
+    .twitter-cards-list li.row.sadness {
+      border-color: #fc5120;
+    }
+    .twitter-cards-list li.row.fear {
+      border-color: #5da51d;
     }
     .twitter-card-pic {
-      min-height: 60px;
-      padding-bottom: 10px;
+      min-height: 50px;
+    }
+    .twitter-card-name {
+      color: #323232;
+      font: 500 18px Helvetica,Arial,sans-serif;
+      padding-bottom: 3px;
+    }
+    .twitter-card-tweet {
+      font: 300 12px Helvetica,Arial,sans-serif;
     }
     .full-box {
       height: calc(100% - 10px);
@@ -84,16 +124,71 @@
     .half-box {
       height: calc(50% + 5px);
     }
+    .pixiedust .modal-header {
+      background-color: #152935;
+      color: #ffffff;
+    }
+    .pixiedust .modal-body {
+      padding: 10px;
+    }
+    .pixiedust .modal-dialog .btn.focus,
+    .pixiedust .modal-dialog .btn:focus {
+      outline: none;
+    }
+    .pixiedust .modal-dialog .btn-cancel {
+      display: none;
+    }
+    .pixiedust .modal-dialog .btn-ok {
+      background-color: #082632;
+      border: 2px solid #082632;
+      color: #fff;
+      font-weight: 500;
+      padding: 0.625em 1.375em;
+    }
+    .pixiedust .modal-dialog .btn-ok:hover {
+      background-color: #fff;
+      border-color: #082632;
+      color: #082632;
+    }
+    .pixiedust .modal-dialog .btn-start {
+      background-color: #fff;
+      border: 2px solid #a6266e;
+      color: #a6266e;
+      font-weight: 500;
+      padding: 0.625em 1.375em;
+    }
+    .pixiedust .modal-dialog .btn-start:hover {
+      background-color: #a6266e;
+      border-color: #a6266e;
+      color: #fff;
+    }
+    .pixiedust .modal-dialog .btn-stop {
+      background-color: #a6266e;
+      border: 2px solid #a6266e;
+      color: #fff;
+      font-weight: 500;
+      padding: 0.625em 1.375em;
+    }
+    .pixiedust .modal-dialog .btn-stop:hover {
+      opacity: 0.65;
+    }
+    .pixiedust .modal-footer {
+      border-top: 0px;
+      padding: 20px 30px;
+    }
+    .pixiedust .modal-dialog svg text {
+      fill: black;
+      font-size: 11px;
+      font-weight: normal;
+    }
   </style>
   <div class="container-fluid" id="demo">
     <div class="row">
       <div class="col-sm-3">
-        <div class="chart-wrapper simple-box">
-          <div class="chart-title simple-box"> </div>
+        <div class="chart-wrapper">
           <div class="chart-stage">
-            <button id="startStreamBtn" type="button" class="btn btn-success">Start Streaming</button>
+            <button id="startStreamBtn" type="button" class="btn btn-sm btn-start">Start Streaming</button>
           </div>
-          <div class="chart-notes simple-box"> </div>
         </div>
       </div>
       <div class="col-sm-9">
@@ -102,19 +197,18 @@
           <div class="chart-stage">
             <p>not yet implemented</p>
           </div>
-          <div class="chart-notes simple-box"> </div>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-3 full-box">
         <div class="chart-wrapper twitter-cards">
-          <div class="chart-title">Twitter Cards</div>
+          <div class="chart-title">
+            <span>Twitter Cards</span> <a class="twitter-cards-clear">Clear</a></div>
           <div class="chart-stage">
             <ol class="twitter-cards-list">
             </ol>
           </div>
-          <div class="chart-notes simple-box"> </div>
         </div>
       </div>
       <div class="col-sm-6 full-box">
@@ -123,7 +217,6 @@
             <div class="chart-wrapper trending-hashtags">
               <div class="chart-title">Trending Hashtags</div>
               <div class="chart-stage"></div>
-              <div class="chart-notes simple-box"> </div>
             </div>
           </div>
         </div>
@@ -132,14 +225,13 @@
             <div class="chart-wrapper trending-sentiments">
               <div class="chart-title">Trending Sentiments</div>
               <div class="chart-stage"></div>
-              <div class="chart-notes simple-box"> </div>
             </div>
           </div>
         </div>
       </div>
       <div class="col-sm-3 full-box">
         <div class="chart-wrapper stream-log">
-          <div class="chart-title">Logs</div>
+          <div class="chart-title"><span>Streaming Logs</span> <span class="fa fa-spinner fa-spin twitter-cards-logs-spinner"></span></div>
           <div class="chart-stage"></div>
           <div class="chart-notes simple-box"> </div>
         </div>
@@ -174,6 +266,9 @@
   var resultsDiv = $('#results{{prefix}}');
   var loadingDiv = $('#loading{{prefix}}');
   var cardList = $('.twitter-cards-list');
+  var logSpinner = $('.twitter-cards-logs-spinner');
+  var pauseCards = false;
+  var hiddenCards = [];
 
   var logMsg = function(data) {
     var BEGINSTREAM = '@BEGINSTREAM@';
@@ -202,25 +297,29 @@
         okBtn.prop('disabled', true);
         startBtn.prop('disabled', true);
         startBtn.text('Starting...');
-        startBtn.attr('class', 'btn btn-success');
+        startBtn.attr('class', 'btn btn-sm btn-start');
+        logSpinner.css({display: 'inline'});
         break;
       case 'started':
         okBtn.prop('disabled', true);
         startBtn.prop('disabled', false);
         startBtn.text('Stop Streaming');
-        startBtn.attr('class', 'btn btn-danger');
+        startBtn.attr('class', 'btn btn-sm btn-stop');
+        logSpinner.css({display: 'inline'});
         break;
       case 'stopping':
         okBtn.prop('disabled', true);
         startBtn.prop('disabled', true);
         startBtn.text('Stopping...');
-        startBtn.attr('class', 'btn btn-danger');
+        startBtn.attr('class', 'btn btn-sm btn-stop');
+        logSpinner.css({display: 'inline'});
         break;
       case 'stopped':
         okBtn.prop('disabled', false);
         startBtn.prop('disabled', false);
         startBtn.text('Start Streaming');
-        startBtn.attr('class', 'btn btn-success');
+        startBtn.attr('class', 'btn btn-sm btn-start');
+        logSpinner.css({display: 'none'});
         break;
     }
   };
@@ -235,18 +334,44 @@
     pix.groupedchart('.trending-sentiments > .chart-stage', data);
   };
 
+  var initCard = function(card) {
+    card.css({display:'list-item'})
+      .animate({height: '90px'});
+  };
+
   var showTweets = function(tweets) {
-    var template = '<li class="row">'
+    var template = '<li class="row {sentiment}" style="height:0px; display:none;">'
       + '<div class="col-sm-2"><div class="chart-wrapper simple-box"><img class="twitter-card-pic" src="{pic}"></div></div>'
-      + '<div class="col-sm-10"><div class="chart-wrapper simple-box"><div class="twitter-card-name">{name}</div><div class="twitter-card-tweet">{tweet}</div></div></div>'
-      + '</li>';
+      + '<div class="col-sm-10"><div class="chart-wrapper simple-box">'
+      + '<div class="twitter-card-name"><a href="//twitter.com/{name}" target="_blank">{name}</a></div>'
+      + '<p class="twitter-card-tweet">{tweet}</p>'
+      + '</div></div></li>';
 
     if (tweets) {
       for (var i in tweets) {
-        var t = template.replace(/\{(.+?)\}/g, function($0, $1) {
+//temp-start
+var p = Math.floor((Math.random() * 6) + 1);
+if (p % 5 == 1) tweets[i].pic = "http://github.com/mikebroberg.png?size=50";
+if (p % 5 == 2) tweets[i].pic = "http://github.com/jessmantaro.png?size=50";
+if (p % 5 == 3) tweets[i].pic = "http://github.com/bradnoble.png?size=50";
+if (p % 5 == 4) tweets[i].pic = "http://github.com/vabarbosa.png?size=50";
+p++;
+var s = Math.floor((Math.random() * 3) + 1);
+if (p % 3 == 0) tweets[i].sentiment = 'sadness';
+if (p % 3 == 1) tweets[i].sentiment = 'joy';
+if (p % 3 == 2) tweets[i].sentiment = 'fear';
+s++;
+//temp-end
+        var t = $(template.replace(/\{(.+?)\}/g, function($0, $1) {
           return tweets[i].hasOwnProperty($1) ? tweets[i][$1] : $0;
-        });
+        }));
         cardList.prepend(t);
+        if (!pauseCards) {
+          initCard(t);
+        }
+        else {
+          hiddenCards.push(t);
+        }
       }
     }
   }
@@ -278,7 +403,25 @@
     }
   });
 
-  okBtn.prop('disabled', true);
+  cardList.hover(
+    function() {
+      pauseCards = true;
+    },
+    function() {
+      pauseCards = false;
+      for (var c in hiddenCards) {
+        if (!pauseCards) {
+          initCard(hiddenCards[c]);
+        }
+      }
+    }
+  );
+
+  $('.twitter-cards-clear').click(function() {
+    cardList.html('');
+  });
+
+  okBtn.prop('disabled', true).text('Back to Notebook');
   logMsg(new Date());
 {%endblock%}
 

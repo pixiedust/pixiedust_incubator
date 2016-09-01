@@ -56,10 +56,10 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
     data = [data];
 
     var selection = d3.select(selector);
-    var margin = {top: 5, right: 10, bottom: 10, left: 5};
+    var margin = {top: 25, right: 100, bottom: 25, left: 50};
     var box = selection.node().getBoundingClientRect();
-    var width = box.width - margin.left - margin.right;
-    var height = box.height - margin.left - margin.right; //(data.length > 1 ? 450 : 600) - margin.top - margin.bottom;
+    var width = box.width - margin.left - margin.right - 10;
+    var height = box.height - margin.top - margin.bottom - 10; //(data.length > 1 ? 450 : 600) - margin.top - margin.bottom;
 
     // setup the svg element
     var svg = selection.selectAll('svg').data([data]);
@@ -106,10 +106,10 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
         .attr('opacity', 1)
         .call(xAxis)
         .selectAll('text')
-          .attr('y', 7)
+          .attr('y', 10)
           .attr('x', 7)
           .attr('dy', '.35em')
-          .attr('transform', 'rotate(45)')
+          //.attr('transform', 'rotate(45)')
           .style('text-anchor', 'start');
       xaxis.exit().remove();
 
@@ -186,9 +186,9 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
     legendkey
       .style('fill', function(d) { return color(d); })
       .attr('x', width + margin.left + 25)
-      .attr('y', function(d, i) { return i*20; })
-      .attr('width', 18)
-      .attr('height', 18);
+      .attr('y', function(d, i) { return i*18; })
+      .attr('width', 15)
+      .attr('height', 15);
 
     // remove old keys
     legendkey.exit().transition()
@@ -206,7 +206,7 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
     legendlabel
       .text(function(d) { return d; })
       .attr('x', width + margin.left + 45)
-      .attr('y', function(d, i) { return (i*20 + 9); })
+      .attr('y', function(d, i) { return (i*18 + 7); })
       .attr('dy', '.35em')
       .on('mouseover', function(d, i) {
         d3.select(this)
