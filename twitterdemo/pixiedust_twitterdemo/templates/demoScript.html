@@ -1,9 +1,9 @@
-<script type="text/javascript">
+{%import "commonExecuteCallback.js" as commons%}
+<script id="demoScript{{prefix}}">
 window.Pixiedust = window.Pixiedust || {};
 window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
 
 (function(pix) {
-  debugger;
   var BEGINSTREAM = '@BEGINSTREAM@';
   var ENDSTREAM = '@ENDSTREAM@';
   var jsHandlers = [];
@@ -53,16 +53,43 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
   };
 
   pix.twitterdemo = {
+    refreshDataId : null,
+    startCollectData : function(){
+      if (this.refreshDataId){
+        return;
+      }
+
+      this.refreshDataId = setInterval(function(){
+        {% call(results) commons.ipython_execute("getTwitterData()",prefix) %}
+          try{
+            toJavascript(JSON.parse({{results}}));
+          }catch(e){
+            console.log(e);
+          }
+          console.log({{results["error"] or results}});
+        {% endcall %};
+      }, 2000)
+    },
+
+    stopCollectData : function(){
+      if (this.refreshDataId){
+        clearInterval(this.refreshDataId);
+        this.refreshDataId = null;
+      }
+    },
+
     start: function() {
       toJavascript({message: 'Starting streaming...', status: 'starting'});
       var options = "stream='true'";
       pix.twitterdemo.send('python', options);
+      this.startCollectData();
     },
 
     stop: function() {
       toJavascript({message: 'Stopping streaming...', status: 'stopping'});
       var options = "stream='false'";
       pix.twitterdemo.send('python', options);
+      //this.stopCollectData();
     },
 
     send: function(destination) {

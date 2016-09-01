@@ -29,13 +29,27 @@ class StreamingChannel(PixiedustOutput):
     self.sendChannel("sdtdout", s)
   
   def sendChannel(self, channel, data):
-      channelData[channel]=data  
+      if channel in channelData:
+        channelData[channel].append(data)
+      else:
+        channelData[channel]=[data]  
 
 def getTwitterData():
-  return json.dumps(channelData)
+  print(json.dumps(channelData))
+  channelData.clear()
+
 class PixieDustTwitterDemo(Display):
   def startStream(self):
-    # TODO: start streaming
+    get_ipython().run_cell_magic(
+      "scala",
+      "channel={0} receiver={1}".format(StreamingChannel.__module__ + "." + StreamingChannel.__name__, "com.ibm.cds.spark.samples.PixiedustStreamingTwitter$"),
+      """
+        val demo = com.ibm.cds.spark.samples.PixiedustStreamingTwitter;
+        demo.startStreaming()
+      """
+    )
+
+    '''
     print(BEGINSTREAM)
     maxcount = random.randrange(5,25)
     while True:
@@ -52,10 +66,18 @@ class PixieDustTwitterDemo(Display):
       if maxcount < 0:
         break
     self.stopStream()
+    '''
 
   def stopStream(self):
-    # TODO: stop streaming
-    print(ENDSTREAM)
+    get_ipython().run_cell_magic(
+      "scala",
+      "channel={0} receiver={1}".format(StreamingChannel.__module__ + "." + StreamingChannel.__name__, "com.ibm.cds.spark.samples.PixiedustStreamingTwitter$"),
+      """
+        val demo = com.ibm.cds.spark.samples.PixiedustStreamingTwitter;
+        demo.stopStreaming()
+      """
+    )
+    #print(ENDSTREAM)
 
   def doRender(self, handlerId):
     self.addProfilingTime = False

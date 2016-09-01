@@ -1,5 +1,4 @@
 {%extends "basedialog.html"%}
-{%import "commonExecuteCallbackMux.js" as commons%}
 {%block title %}Twitter Sentiment Analysis{%endblock%}
 
 {%block body%}
@@ -150,6 +149,7 @@
 {%endblock%}
 
 {%block onCancel%}
+  $('#demoScript{{prefix}}').remove();
   $('#results{{prefix}}').html('<p class="text-center">Twitter Sentiment has been cancelled.</p>');
   $('#loading{{prefix}}').css('display','none');
 {%endblock%}
@@ -175,8 +175,25 @@
   var loadingDiv = $('#loading{{prefix}}');
   var cardList = $('.twitter-cards-list');
 
-  var logMsg = function(msg) {
-    logDiv.append('<span>' + msg + '</span>');
+  var logMsg = function(data) {
+    var BEGINSTREAM = '@BEGINSTREAM@';
+    var ENDSTREAM = '@ENDSTREAM@';
+    function doLogMsg(msg){
+      if (msg.indexOf && msg.indexOf(BEGINSTREAM) === 0) {
+        updateBtns('started');
+      }else if (msg.indexOf && msg.indexOf(ENDSTREAM) === 0) {
+        updateBtns('stopped');
+      }else{
+        logDiv.append('<span>' + msg + '</span>');
+      }
+    }
+    if (Array.isArray(data)){
+      data.forEach(function(msg, index){
+        doLogMsg(msg);
+      });
+    }else{
+      doLogMsg(data)
+    }
   };
 
   var updateBtns = function(status) {
@@ -233,11 +250,10 @@
       }
     }
   }
-  debugger;
   pix.register(function(data) {
     if (data) {
-      if (data.message) {
-        logMsg(data.message);
+      if (data.log) {
+        logMsg(data.log);
       }
       if (data.status) {
         updateBtns(data.status);
@@ -264,26 +280,10 @@
 
   okBtn.prop('disabled', true);
   logMsg(new Date());
+{%endblock%}
 
-  global.refreshDataId = null;
-  global.startCollectData = function(){
-    if (global.refreshDataId){
-      return;
-    }
-
-    global.refreshDataId = setInterval(function(){
-      {% call(results) commons.ipython_execute("getTwitterData()",prefix) %}
-        console.log({{results["error"] or results}});
-      {% endcall %};
-    }, 2000)
-  }
-
-  global.stopCollectData = function(){
-    if (global.refreshDataId){
-      clearInterval(global.refreshDataId);
-      global.refreshDataId = null;
-    }
-  }
+{%block onDialogHide%}
+  window.Pixiedust.twitterdemo.stopCollectData();
 {%endblock%}
 
 {%block cellOuputHTML%}
