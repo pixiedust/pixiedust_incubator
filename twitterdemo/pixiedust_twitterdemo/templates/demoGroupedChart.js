@@ -25,7 +25,7 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
     data = [data];
 
     var selection = d3.select(selector);
-    var margin = {top: 25, right: 100, bottom: 25, left: 50};
+    var margin = {top: 25, right: 125, bottom: 50, left: 50};
     var box = selection.node().getBoundingClientRect();
     var width = box.width - margin.left - margin.right - 10;
     var height = box.height - margin.top - margin.bottom - 10; //(data.length > 1 ? 450 : 600) - margin.top - margin.bottom;
@@ -75,10 +75,10 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
         .attr('opacity', 1)
         .call(xAxis)
         .selectAll('text')
-          .attr('y', 7)
-          .attr('x', 7)
+          .attr('y', 10)
+          .attr('x', 3)
           .attr('dy', '.35em')
-          .attr('transform', 'rotate(45)')
+          .attr('transform', 'rotate(10)')
           .style('text-anchor', 'start');
       xaxis.exit().remove();
 
