@@ -361,12 +361,12 @@
 
   var processHashtags = function(data) {
     $('.trending-hashtags > .chart-stage > :not(svg)', tdiag).remove();
-    pix.piechart('.trending-hashtags > .chart-stage', data);
+    pix.piechart('.trending-hashtags > .chart-stage', data[data.length-1]);
   };
 
   var processSentiments = function(data) {
     $('.trending-sentiments > .chart-stage > :not(svg)', tdiag).remove();
-    pix.groupedchart('.trending-sentiments > .chart-stage', data);
+    pix.groupedchart('.trending-sentiments > .chart-stage', data[data.length-1]);
   };
 
   var initCard = function(card) {
@@ -455,6 +455,9 @@ s++;
       }
       if (data.tweets) {
         showTweets(data.tweets);
+      }
+      if (data.stdout){
+        console.log("stdout", data.stdout)
       }
     }
   });
