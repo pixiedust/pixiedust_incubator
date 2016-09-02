@@ -372,42 +372,18 @@
   };
 
   var showTweets = function(tweets) {
-    var template = '<li class="row" style="height:0px; display:none; border-color:{color}">'
+    var template = '<li class="row">'
       + '<div class="col-sm-2"><div class="chart-wrapper simple-box"><img class="twitter-card-pic" src="{pic}"></div></div>'
-      + '<div class="col-sm-10"><div class="chart-wrapper simple-box">'
-      + '<div class="twitter-card-name"><a style="color:{color}" href="//twitter.com/{name}" target="_blank">{name}</a></div>'
-      + '<p class="twitter-card-tweet">{tweet}</p>'
-      + '</div></div></li>';
-
-    if (tweets) {
-      for (var i in tweets) {
-//temp-start
-var p = Math.floor((Math.random() * 6) + 1);
-if (p % 5 == 1) tweets[i].pic = "http://github.com/mikebroberg.png?size=50";
-if (p % 5 == 2) tweets[i].pic = "http://github.com/jessmantaro.png?size=50";
-if (p % 5 == 3) tweets[i].pic = "http://github.com/bradnoble.png?size=50";
-if (p % 5 == 4) tweets[i].pic = "http://github.com/vabarbosa.png?size=50";
-p++;
-var s = Math.floor((Math.random() * 3) + 1);
-if (p % 3 == 0) tweets[i].sentiment = 'sadness';
-if (p % 3 == 1) tweets[i].sentiment = 'joy';
-if (p % 3 == 2) tweets[i].sentiment = 'fear';
-s++;
-//temp-end
-        tweets[i].color = sentimentColors[tweets[i].sentiment] || '#152935';
-        var t = $(template.replace(/\{(.+?)\}/g, function($0, $1) {
-          return tweets[i].hasOwnProperty($1) ? tweets[i][$1] : $0;
-        }));
+      + '<div class="col-sm-10"><div class="chart-wrapper simple-box"><div class="twitter-card-name">{author}</div><div class="twitter-card-tweet">{text}</div></div></div>'
+      + '</li>';
+    tweets.forEach(function(tweet, index){
+      var t = template.replace(/\{(.+?)\}/g, function($0, $1) {
+          return tweet.hasOwnProperty($1) ? tweet[$1] : $0;
+        });
         cardList.prepend(t);
-        if (!pauseCards) {
-          initCard(t);
-        }
-        else {
-          hiddenCards.push(t);
-        }
-      }
-    }
+    });
   }
+  
   pix.register(function(data) {
     if (data) {
       if (data.log) {
