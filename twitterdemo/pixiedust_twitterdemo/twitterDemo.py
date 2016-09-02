@@ -60,11 +60,20 @@ class PixieDustTwitterDemo(Display):
     while True:
       msg = { \
         'message': 'streaming :: random > ' + str(maxcount), \
+        'topHashtags': [[["#PushAwardsKathNiels",21],["#9DaysLeftForPushAwards",16],["#DolceAmoreMostViewedSerye",8],["#PushAwardsLizQuens",8],["#PBBReuniYONG",3]]], \
+        'toneScores': [[
+        ["x","agreeableness_big5","analytical","anger","confident","conscientiousness_big5","disgust","extraversion_big5","fear","joy","neuroticism_big5","openness_big5","sadness","tentative"],
+        ["#PushAwardsKathNiels",68.02250000000001,12.435,9.935,4.6475,24.427500000000002,11.83,68.86,15.39,31.2125,44.9775,13.8525,21.1025,0.0],["#9DaysLeftForPushAwards",38.625,0.0,3.875,9.875,14.875,5.0,43.625,6.125,31.875,29.0,16.125,14.125,0.0],
+        ["#DolceAmoreMostViewedSerye",35.065,0.0,11.19,0.0,21.375,13.315,43.125,10.565,22.565,24.125,6.065,15.5,21.25],
+        ["#PushAwardsLizQuens",35.065,0.0,11.19,0.0,21.375,13.315,43.125,10.565,22.565,24.125,6.065,15.5,21.25],
+        ["#PBBReuniYONG",46.165,0.0,3.835,0.0,31.5,9.335,46.165,14.5,30.165,10.835,10.5,11.335,15.335]
+        ]], \
         'data':[ \
         { 'key': '#mars', 'value': random.randrange(1,10), 'sadness': random.randrange(1,10), 'joy': random.randrange(1,10), 'fear': random.randrange(1,10) }, \
         { 'key': '#venus', 'value': random.randrange(1,10), 'sadness': random.randrange(1,10), 'joy': random.randrange(1,10), 'fear': random.randrange(1,10) }, \
         { 'key': '#earth', 'value': random.randrange(1,10), 'sadness': random.randrange(1,10), 'joy': random.randrange(1,10), 'fear': random.randrange(1,10) }], \
-        'tweets': [{ 'pic': 'http://github.com/DTAIEB.png?size=50', 'name': 'user'+str(random.randrange(1,1000)), 'tweet': 'tweet tweet chirp chirp '+str(maxcount)}]} 
+        'tweets': [{ 'pic': 'http://github.com/DTAIEB.png?size=50', 'name': 'user'+str(random.randrange(1,1000)), 'tweet': 'tweet tweet chirp chirp '+str(maxcount), \
+        'sentiment': { 'happiness': random.randrange(0,100), 'fear': random.randrange(0,100), 'joy': random.randrange(0,100), 'sadiness': random.randrange(0,100) }}]} 
       print(json.dumps(msg))
       time.sleep(1)
       maxcount = maxcount - 1

@@ -77,9 +77,10 @@
     }
     .twitter-cards-list li.row {
       background: #ffffff none repeat scroll 0 0;
-      border-left: 3px solid #4178be;
+      border: 2px solid #152935;
       box-shadow: 1px 2px 7px 1px rgba(0, 0, 0, 0.25);
-      color: #1d3649;
+      color: #152935;
+      font: 300 16px/1.25 "Helvetica Neue",Helvetica,Arial,sans-serif;
       padding: 10px 15px 15px;
       margin: 10px 0 20px;
     }
@@ -87,17 +88,14 @@
       padding-left: 10px;
     }
     .twitter-card-pic {
-      min-height: 50px;
+      max-height: 50px;
+      max-width: 50px;
     }
     .twitter-card-name {
-      color: #323232;
-      font: 500 14px "Helvetica Neue",Helvetica,Arial,sans-serif;
+      font-size: 14px;
+      font-weight: 500;
       letter-spacing: 0.5px;
       padding-bottom: 3px;
-    }
-    .twitter-card-tweet {
-      color: #1d3649;
-      font: 400 16px/1.2 "Helvetica Neue",Helvetica,Arial,sans-serif;
     }
     .twitter-filter label {
       color: #1d3649;
@@ -292,9 +290,19 @@
   var pauseCards = false;
   var hiddenCards = [];
   var sentimentColors = {
-    joy: '#4178be',
-    sadness: '#fc5120',
-    fear: '#5da51d'
+    conscientiousness: '#5596E6',
+    sadness: '#1D3649',
+    openness: '#5AA700',
+    disgust: '#0A3C02',
+    extraversion: '#00B4A0',
+    agreeableness: '#003C32',
+    joy: '#AF6EE8',
+    confident: '#412356',
+    neuroticism: '#FF3CA0',
+    fear: '#601146',
+    anger: '#E71D32',
+    analytical: '#D74108',
+    tentative: '#BE9B00'
   }
 
   var logMsg = function(data) {
@@ -379,14 +387,29 @@
       });
   };
 
+  var maxValue = function(obj) {
+    var max;
+    for (var o in obj) {
+      if (!max || obj[o] > max.value) {
+        max = { key: o, value: obj[o] };
+      }
+    }
+    console.log('-maxvalue-', max, obj);
+    return max;
+  };
+
   var showTweets = function(tweets) {
     var template = '<li class="row" style="height:0px; display:none; border-color:{color}">'
       + '<div class="col-sm-2"><div class="chart-wrapper simple-box"><img class="twitter-card-pic" src="{pic}"></div></div>'
       + '<div class="col-sm-10"><div class="chart-wrapper simple-box">'
-      + '<div class="twitter-card-name"><a style="color:{color}" href="//twitter.com/{name}" target="_blank">{author}</a></div>'
+      + '<div class="twitter-card-name"><span style="color:{color}">{author}</span></div>'
       + '<p class="twitter-card-tweet">{text}</p>'
       + '</div></div></li>';
     tweets.forEach(function(tweet, index) {
+      if (tweet.sentiment) {
+        var k = maxValue(tweet.sentiment).key.split('_');
+        tweet.color = sentimentColors[k[0]]|| '#152935';
+      }
       var t = $(template.replace(/\{(.+?)\}/g, function($0, $1) {
         return tweet.hasOwnProperty($1) ? tweet[$1] : $0;
       }));
