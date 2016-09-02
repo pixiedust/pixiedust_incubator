@@ -30,19 +30,6 @@
       position: relative;
       margin: 10px 0px 5px;
     }
-    .chart-wrapper .chart-notes {
-      background: #fbfbfb;
-      border-top: 1px solid #e2e2e2;
-      color: #808080;
-      font-size: 12px;
-      padding: 8px 10px 5px;
-    }
-    .simple-box {
-      background-color: transparent !important;
-      border: 0 none !important;
-      margin: 0;
-      padding: 0;
-    }
     .twitter-cards,
     .stream-log {
       height: 100%;
@@ -63,7 +50,6 @@
       white-space: pre;
     }
     .trending-sentiments {
-      height: 100%;
       margin-bottom: 0;
       padding-bottom: 0;
     }
@@ -76,15 +62,14 @@
       height: calc(100% - 50px);
       overflow: auto;
     }
-    .twitter-cards-clear {
-      cursor: pointer;
+    .twitter-cards-msg {
       float: right;
-      font-size: 11px;
-      font-weight: 400;
+      font: 400 11px/25px "Helvetica Neue",Helvetica,Arial,sans-serif;
     }
-    .twitter-cards-logs-spinner {
-      float: right;
-      display: none;
+    .streaming-spinner {
+      color: #fff;
+      font-size: 24px;
+      margin-top: 2px;
     }
     .twitter-cards-list {
       list-style: none;
@@ -98,31 +83,54 @@
       padding: 10px 15px 15px;
       margin: 10px 0 20px;
     }
-    .twitter-cards-list li.row.joy {
-      border-color: #4178be;
-    }
-    .twitter-cards-list li.row.sadness {
-      border-color: #fc5120;
-    }
-    .twitter-cards-list li.row.fear {
-      border-color: #5da51d;
+    .twitter-cards-list li.row > div:nth-child(2) {
+      padding-left: 10px;
     }
     .twitter-card-pic {
       min-height: 50px;
     }
     .twitter-card-name {
       color: #323232;
-      font: 500 18px Helvetica,Arial,sans-serif;
+      font: 500 14px "Helvetica Neue",Helvetica,Arial,sans-serif;
+      letter-spacing: 0.5px;
       padding-bottom: 3px;
     }
     .twitter-card-tweet {
-      font: 300 12px Helvetica,Arial,sans-serif;
+      color: #1d3649;
+      font: 400 16px/1.2 "Helvetica Neue",Helvetica,Arial,sans-serif;
+    }
+    .twitter-filter label {
+      color: #1d3649;
+      font: 400 24px/36px "Helvetica Neue",Helvetica,Arial,sans-serif;
+      left: 0;
+      margin: 0;
+      position: absolute;
+    }
+    .twitter-filter input {
+      border: medium none;
+      border-bottom: 2px solid #1d3649;
+      color: #1d3649;
+      display: inline-block;
+      font-size: 1.25em;
+      font-weight: 400;
+      padding: 0.5em 25px;
+      width: 100%;
+    }
+    .twitter-filter input:focus,
+    .twitter-filter input.focus {
+      border-color: #a6266e;
     }
     .full-box {
       height: calc(100% - 10px);
     }
     .half-box {
       height: calc(50% + 5px);
+    }
+    .simple-box {
+      background-color: transparent !important;
+      border: 0 none !important;
+      margin: 0;
+      padding: 0 !important;
     }
     .pixiedust .modal-header {
       background-color: #152935;
@@ -192,10 +200,11 @@
         </div>
       </div>
       <div class="col-sm-9">
-        <div class="chart-wrapper">
-          <div class="chart-title">Filter</div>
+        <div class="chart-wrapper twitter-filter">
+          <div class="chart-title simple-box"> </div>
           <div class="chart-stage">
-            <p>not yet implemented</p>
+            <input id="twitter-filter-input" name="twitter-filter-input" class="search-input text text--light tt-input" type="search" placeholder="Filter tweets containing specific words (e.g., Spark)">
+            <label for="twitter-filter-input"><i class="fa fa-filter" aria-hidden="true"></i></label>
           </div>
         </div>
       </div>
@@ -204,7 +213,7 @@
       <div class="col-sm-3 full-box">
         <div class="chart-wrapper twitter-cards">
           <div class="chart-title">
-            <span>Twitter Cards</span> <a class="twitter-cards-clear">Clear</a></div>
+            <span>Twitter Feed</span> <span class="twitter-cards-msg"> </a></div>
           <div class="chart-stage">
             <ol class="twitter-cards-list">
             </ol>
@@ -231,9 +240,8 @@
       </div>
       <div class="col-sm-3 full-box">
         <div class="chart-wrapper stream-log">
-          <div class="chart-title"><span>Streaming Logs</span> <span class="fa fa-spinner fa-spin twitter-cards-logs-spinner"></span></div>
+          <div class="chart-title"><span>Streaming Logs</span></div>
           <div class="chart-stage"></div>
-          <div class="chart-notes simple-box"> </div>
         </div>
       </div>
     </div>
@@ -247,7 +255,9 @@
 {%endblock%}
 
 {%block onOK%}
-
+  $('#demoScript{{prefix}}').remove();
+  $('#results{{prefix}}').html('<p class="text-center">A dataframe containing your twitter content has been created and added to the cell below.</p>');
+  $('#loading{{prefix}}').css('display','none');
 {%endblock%}
 
 {%block onDialogShown%}
@@ -263,12 +273,21 @@
   var okBtn = $('.btn-ok', tdiag);
   var startBtn = $('#startStreamBtn', tdiag);
   var logDiv = $('.stream-log > .chart-stage', tdiag);
+  var filterInput = $('#twitter-filter-input', tdiag);
   var resultsDiv = $('#results{{prefix}}');
   var loadingDiv = $('#loading{{prefix}}');
   var cardList = $('.twitter-cards-list');
-  var logSpinner = $('.twitter-cards-logs-spinner');
+  var streamingSpinner = $('.pixiedust .modal-header button.close')
+    .html('<i class="fa fa-spinner fa-spin streaming-spinner"></i>')
+    .prop('disabled', true)
+    .css({display: 'none'});
   var pauseCards = false;
   var hiddenCards = [];
+  var sentimentColors = {
+    joy: '#4178be',
+    sadness: '#fc5120',
+    fear: '#5da51d'
+  }
 
   var logMsg = function(data) {
     var BEGINSTREAM = '@BEGINSTREAM@';
@@ -298,28 +317,36 @@
         startBtn.prop('disabled', true);
         startBtn.text('Starting...');
         startBtn.attr('class', 'btn btn-sm btn-start');
-        logSpinner.css({display: 'inline'});
+        streamingSpinner.css({display: 'inline'});
+        filterInput.prop('disabled', true)
+          .parent().css({'opacity': 0.5});
         break;
       case 'started':
         okBtn.prop('disabled', true);
         startBtn.prop('disabled', false);
         startBtn.text('Stop Streaming');
         startBtn.attr('class', 'btn btn-sm btn-stop');
-        logSpinner.css({display: 'inline'});
+        streamingSpinner.css({display: 'inline'});
+        filterInput.prop('disabled', true)
+          .parent().css({'opacity': 0.5});
         break;
       case 'stopping':
         okBtn.prop('disabled', true);
         startBtn.prop('disabled', true);
         startBtn.text('Stopping...');
         startBtn.attr('class', 'btn btn-sm btn-stop');
-        logSpinner.css({display: 'inline'});
+        streamingSpinner.css({display: 'inline'});
+        filterInput.prop('disabled', true)
+          .parent().css({'opacity': 0.5});
         break;
       case 'stopped':
         okBtn.prop('disabled', false);
         startBtn.prop('disabled', false);
         startBtn.text('Start Streaming');
         startBtn.attr('class', 'btn btn-sm btn-start');
-        logSpinner.css({display: 'none'});
+        streamingSpinner.css({display: 'none'});
+        filterInput.prop('disabled', false)
+          .parent().css({'opacity': 1});
         break;
     }
   };
@@ -336,14 +363,19 @@
 
   var initCard = function(card) {
     card.css({display:'list-item'})
-      .animate({height: '90px'});
+      .animate({height: card.get(0).scrollHeight}, function() {
+        card.height('auto');
+        if (cardList.children('li').length > 50) {
+          $('li', cardList).last().remove();
+        }
+      });
   };
 
   var showTweets = function(tweets) {
-    var template = '<li class="row {sentiment}" style="height:0px; display:none;">'
+    var template = '<li class="row" style="height:0px; display:none; border-color:{color}">'
       + '<div class="col-sm-2"><div class="chart-wrapper simple-box"><img class="twitter-card-pic" src="{pic}"></div></div>'
       + '<div class="col-sm-10"><div class="chart-wrapper simple-box">'
-      + '<div class="twitter-card-name"><a href="//twitter.com/{name}" target="_blank">{name}</a></div>'
+      + '<div class="twitter-card-name"><a style="color:{color}" href="//twitter.com/{name}" target="_blank">{name}</a></div>'
       + '<p class="twitter-card-tweet">{tweet}</p>'
       + '</div></div></li>';
 
@@ -362,6 +394,7 @@ if (p % 3 == 1) tweets[i].sentiment = 'joy';
 if (p % 3 == 2) tweets[i].sentiment = 'fear';
 s++;
 //temp-end
+        tweets[i].color = sentimentColors[tweets[i].sentiment] || '#152935';
         var t = $(template.replace(/\{(.+?)\}/g, function($0, $1) {
           return tweets[i].hasOwnProperty($1) ? tweets[i][$1] : $0;
         }));
@@ -399,7 +432,7 @@ s++;
       pix.stop();
     }
     else {
-      pix.start();
+      pix.start(filterInput.val());
     }
   });
 
@@ -417,11 +450,15 @@ s++;
     }
   );
 
-  $('.twitter-cards-clear').click(function() {
-    cardList.html('');
-  });
+  filterInput
+    .focus(function() {
+      tdiag.find('.twitter-filter label').css({color:'#a6266e'})
+    })
+    .blur(function() {
+      tdiag.find('.twitter-filter label').css({color:'#1d3649'})
+    });
 
-  okBtn.prop('disabled', true).text('Back to Notebook');
+  okBtn.text('Back to Notebook');
   logMsg(new Date());
 {%endblock%}
 

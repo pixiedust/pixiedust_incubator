@@ -18,19 +18,19 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
     var width = box.width-10;
     var height = box.height-10;
     var outerRadius = Math.min(height, width) / 2 - 5;
-    var innerRadius = outerRadius / 3; //: 1;
+    var innerRadius = outerRadius / 4; //: 1;
     var cornerRadius = 10;
 
     var arc = d3.svg.arc();
     var pie = d3.layout.pie()
-      // .padAngle(.01)
+      .padAngle(.005)
       .value(function(d) { return d.value })
       .sort(null);
 
     color.domain(keys);
 
-    arc.padRadius(outerRadius);
-    //   .innerRadius(innerRadius);
+    arc.padRadius(outerRadius)
+      .innerRadius(innerRadius);
 
     // function arcExplode(outerRadius, delay) {
     //   d3.select(this).transition().delay(delay).attrTween('d', function(d) {

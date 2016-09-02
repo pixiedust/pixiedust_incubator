@@ -78,9 +78,12 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
       }
     },
 
-    start: function() {
+    start: function(filter) {
       toJavascript({message: 'Starting streaming...', status: 'starting'});
       var options = "stream='true'";
+      if (filter) {
+        options += ",filter='" + filter.replace(/'/g, "\'") + "'";
+      }
       pix.twitterdemo.send('python', options);
       this.startCollectData();
     },
