@@ -29,6 +29,11 @@ class StreamingChannel(PixiedustOutput):
     self.sendChannel("stdout", s)
   
   def sendChannel(self, channel, data):
+      #try to decode as a JSON object
+      try:
+        data = json.loads(data)
+      except:
+        pass
       if channel in channelData:
         channelData[channel].append(data)
       else:
