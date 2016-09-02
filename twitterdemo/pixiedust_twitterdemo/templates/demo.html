@@ -3,12 +3,12 @@
 
 {%block body%}
   <style>
-    #demo > .row:first-child {
+    #demo .tab-pane-stream > .row:first-child {
       height: 10vh;
       max-height: 10vh;
       min-height: 10vh;
     }
-    #demo > .row:nth-child(2) {
+    #demo .tab-pane-stream > .row:nth-child(2) {
       height: 60vh;
       max-height: 60vh;
       min-height: 60vh;
@@ -114,7 +114,6 @@
       font-size: 1.25em;
       font-weight: 400;
       padding: 0.5em 25px;
-      width: 100%;
     }
     .twitter-filter input:focus,
     .twitter-filter input.focus {
@@ -143,17 +142,18 @@
     .pixiedust .modal-dialog .btn:focus {
       outline: none;
     }
-    .pixiedust .modal-dialog .btn-cancel {
+    .pixiedust .modal-dialog .btn-cancel,
+    .pixiedust .modal-dialog .btn-ok {
       display: none;
     }
-    .pixiedust .modal-dialog .btn-ok {
+    .pixiedust .modal-dialog .btn-back {
       background-color: #082632;
       border: 2px solid #082632;
       color: #fff;
       font-weight: 500;
       padding: 0.625em 1.375em;
     }
-    .pixiedust .modal-dialog .btn-ok:hover {
+    .pixiedust .modal-dialog .btn-back:hover {
       background-color: #fff;
       border-color: #082632;
       color: #082632;
@@ -190,58 +190,66 @@
       font-weight: normal;
     }
   </style>
-  <div class="container-fluid" id="demo">
-    <div class="row">
-      <div class="col-sm-3">
-        <div class="chart-wrapper">
-          <div class="chart-stage">
-            <button id="startStreamBtn" type="button" class="btn btn-sm btn-start">Start Streaming</button>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-9">
-        <div class="chart-wrapper twitter-filter">
-          <div class="chart-title simple-box"> </div>
-          <div class="chart-stage">
-            <input id="twitter-filter-input" name="twitter-filter-input" class="search-input text text--light tt-input" type="search" placeholder="Filter tweets containing specific words (e.g., Spark)">
-            <label for="twitter-filter-input"><i class="fa fa-filter" aria-hidden="true"></i></label>
-          </div>
-        </div>
-      </div>
+  <div class="tab-content container-fluid" id="demo">
+    <div class="tab-pane tab-pane-confirm">
+      <p>Streaming is still in progress. Are you sure you want to close?</p>
     </div>
-    <div class="row">
-      <div class="col-sm-3 full-box">
-        <div class="chart-wrapper twitter-cards">
-          <div class="chart-title">
-            <span>Twitter Feed</span> <span class="twitter-cards-msg"> </a></div>
-          <div class="chart-stage">
-            <ol class="twitter-cards-list">
-            </ol>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6 full-box">
-        <div class="row half-box">
-          <div class="col-sm-12 full-box">
-            <div class="chart-wrapper trending-hashtags">
-              <div class="chart-title">Trending Hashtags</div>
-              <div class="chart-stage"></div>
+    <div class="tab-pane tab-pane-config">
+      <p>Missing configuration. Please add configuration and try again!</p>
+    </div>
+    <div class="tab-pane tab-pane-stream active">
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="chart-wrapper">
+            <div class="chart-stage">
+              <button id="startStreamBtn" type="button" class="btn btn-sm btn-start">Start Streaming</button>
             </div>
           </div>
         </div>
-        <div class="row half-box">
-          <div class="col-sm-12 full-box">
-            <div class="chart-wrapper trending-sentiments">
-              <div class="chart-title">Trending Sentiments</div>
-              <div class="chart-stage"></div>
+        <div class="col-sm-9">
+          <div class="chart-wrapper twitter-filter">
+            <div class="chart-title simple-box"> </div>
+            <div class="chart-stage">
+              <input id="twitter-filter-input" name="twitter-filter-input" class="col-sm-12" type="search" placeholder="Filter tweets containing specific words (e.g., Spark)">
+              <label for="twitter-filter-input"><i class="fa fa-filter" aria-hidden="true"></i></label>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-sm-3 full-box">
-        <div class="chart-wrapper stream-log">
-          <div class="chart-title"><span>Streaming Logs</span></div>
-          <div class="chart-stage"></div>
+      <div class="row">
+        <div class="col-sm-3 full-box">
+          <div class="chart-wrapper twitter-cards">
+            <div class="chart-title">
+              <span>Twitter Feed</span> <span class="twitter-cards-msg"> </a></div>
+            <div class="chart-stage">
+              <ol class="twitter-cards-list">
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 full-box">
+          <div class="row half-box">
+            <div class="col-sm-12 full-box">
+              <div class="chart-wrapper trending-hashtags">
+                <div class="chart-title">Trending Hashtags</div>
+                <div class="chart-stage"></div>
+              </div>
+            </div>
+          </div>
+          <div class="row half-box">
+            <div class="col-sm-12 full-box">
+              <div class="chart-wrapper trending-sentiments">
+                <div class="chart-title">Trending Sentiments</div>
+                <div class="chart-stage"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 full-box">
+          <div class="chart-wrapper stream-log">
+            <div class="chart-title"><span>Streaming Logs</span></div>
+            <div class="chart-stage"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -270,7 +278,7 @@
     .css({
       width:'90%',
     });
-  var okBtn = $('.btn-ok', tdiag);
+  
   var startBtn = $('#startStreamBtn', tdiag);
   var logDiv = $('.stream-log > .chart-stage', tdiag);
   var filterInput = $('#twitter-filter-input', tdiag);
@@ -313,7 +321,7 @@
   var updateBtns = function(status) {
     switch (status) {
       case 'starting':
-        okBtn.prop('disabled', true);
+        tdiag.attr('data-streaming', 'starting');
         startBtn.prop('disabled', true);
         startBtn.text('Starting...');
         startBtn.attr('class', 'btn btn-sm btn-start');
@@ -322,7 +330,7 @@
           .parent().css({'opacity': 0.5});
         break;
       case 'started':
-        okBtn.prop('disabled', true);
+        tdiag.attr('data-streaming', true);
         startBtn.prop('disabled', false);
         startBtn.text('Stop Streaming');
         startBtn.attr('class', 'btn btn-sm btn-stop');
@@ -331,7 +339,7 @@
           .parent().css({'opacity': 0.5});
         break;
       case 'stopping':
-        okBtn.prop('disabled', true);
+        tdiag.attr('data-streaming', 'stopping');
         startBtn.prop('disabled', true);
         startBtn.text('Stopping...');
         startBtn.attr('class', 'btn btn-sm btn-stop');
@@ -340,7 +348,7 @@
           .parent().css({'opacity': 0.5});
         break;
       case 'stopped':
-        okBtn.prop('disabled', false);
+        tdiag.attr('data-streaming', false);
         startBtn.prop('disabled', false);
         startBtn.text('Start Streaming');
         startBtn.attr('class', 'btn btn-sm btn-start');
@@ -372,18 +380,65 @@
   };
 
   var showTweets = function(tweets) {
-    var template = '<li class="row">'
+    var template = '<li class="row" style="height:0px; display:none; border-color:{color}">'
       + '<div class="col-sm-2"><div class="chart-wrapper simple-box"><img class="twitter-card-pic" src="{pic}"></div></div>'
-      + '<div class="col-sm-10"><div class="chart-wrapper simple-box"><div class="twitter-card-name">{author}</div><div class="twitter-card-tweet">{text}</div></div></div>'
-      + '</li>';
-    tweets.forEach(function(tweet, index){
-      var t = template.replace(/\{(.+?)\}/g, function($0, $1) {
-          return tweet.hasOwnProperty($1) ? tweet[$1] : $0;
-        });
-        cardList.prepend(t);
+      + '<div class="col-sm-10"><div class="chart-wrapper simple-box">'
+      + '<div class="twitter-card-name"><a style="color:{color}" href="//twitter.com/{name}" target="_blank">{author}</a></div>'
+      + '<p class="twitter-card-tweet">{text}</p>'
+      + '</div></div></li>';
+    tweets.forEach(function(tweet, index) {
+      var t = $(template.replace(/\{(.+?)\}/g, function($0, $1) {
+        return tweet.hasOwnProperty($1) ? tweet[$1] : $0;
+      }));
+
+      cardList.prepend(t);
+      if (!pauseCards) {
+        initCard(t);
+      }
+      else {
+        hiddenCards.push(t);
+      }
     });
-  }
-  
+  };
+  /*
+  var showTweets = function(tweets) {
+    var template = '<li class="row" style="height:0px; display:none; border-color:{color}">'
+      + '<div class="col-sm-2"><div class="chart-wrapper simple-box"><img class="twitter-card-pic" src="{pic}"></div></div>'
+      + '<div class="col-sm-10"><div class="chart-wrapper simple-box">'
+      + '<div class="twitter-card-name"><a style="color:{color}" href="//twitter.com/{name}" target="_blank">{author}</a></div>'
+      + '<p class="twitter-card-tweet">{text}</p>'
+      + '</div></div></li>';
+
+    if (tweets) {
+      for (var i in tweets) {
+//temp-start
+var p = Math.floor((Math.random() * 6) + 1);
+if (p % 5 == 1) tweets[i].pic = "http://github.com/mikebroberg.png?size=50";
+if (p % 5 == 2) tweets[i].pic = "http://github.com/jessmantaro.png?size=50";
+if (p % 5 == 3) tweets[i].pic = "http://github.com/bradnoble.png?size=50";
+if (p % 5 == 4) tweets[i].pic = "http://github.com/vabarbosa.png?size=50";
+p++;
+var s = Math.floor((Math.random() * 3) + 1);
+if (p % 3 == 0) tweets[i].sentiment = 'sadness';
+if (p % 3 == 1) tweets[i].sentiment = 'joy';
+if (p % 3 == 2) tweets[i].sentiment = 'fear';
+s++;
+//temp-end
+        tweets[i].color = sentimentColors[tweets[i].sentiment] || '#152935';
+        var t = $(template.replace(/\{(.+?)\}/g, function($0, $1) {
+          return tweets[i].hasOwnProperty($1) ? tweets[i][$1] : $0;
+        }));
+        cardList.prepend(t);
+        if (!pauseCards) {
+          initCard(t);
+        }
+        else {
+          hiddenCards.push(t);
+        }
+      }
+    }
+  };
+  */
   pix.register(function(data) {
     if (data) {
       if (data.log) {
@@ -392,9 +447,11 @@
       if (data.status) {
         updateBtns(data.status);
       }
-      if (data.data) {
-        processHashtags(data.data);
-        processSentiments(data.data);
+      if (data.topHashtags) {
+        processHashtags(data.topHashtags);
+      }
+      if (data.toneScores) {
+        processSentiments(data.toneScores);
       }
       if (data.tweets) {
         showTweets(data.tweets);
@@ -434,7 +491,23 @@
       tdiag.find('.twitter-filter label').css({color:'#1d3649'})
     });
 
-  okBtn.text('Back to Notebook');
+  var okBtn = $('.btn-ok', tdiag);
+  var backBtn = $('<button class="btn btn-default btn-sm btn-primary btn-back">Back to Notebook</button>');
+  okBtn.parent().append(backBtn);
+
+  backBtn
+    .click(function(event) {
+      event.preventDefault();
+      /*var streaming = tdiag.attr('data-streaming');
+      if (!streaming || streaming.toLowerCase() === 'false') {
+        $('.tab-pane-confirm').addClass('active');
+        $('.tab-pane-stream').removeClass('active');
+        $(this).css({display: 'none'});
+      }
+      else {*/
+        okBtn.click();
+      //}
+    });
   logMsg(new Date());
 {%endblock%}
 

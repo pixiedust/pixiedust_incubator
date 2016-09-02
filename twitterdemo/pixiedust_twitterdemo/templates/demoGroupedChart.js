@@ -7,52 +7,21 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
   pix.twitterdemo.groupedchart = function(selector, chartdata) {
     var data = chartdata || [];
 
-    var groupKeys = [];
-    if (typeof data[0].value === 'object') {
-      data.forEach(function(d) {
-        for (var key in d.value) {
-          if (groupKeys.indexOf(key) == -1) {
-            groupKeys.push(key);
-          }
+    var groupKeys = data[0];
+    groupKeys = groupKeys.slice(1);
+
+    data.shift();
+    data = data.map(function(dt) {
+      var g = { key: dt[0] };
+      g.groups = groupKeys.map(function(key, index) {
+        return {
+          key: key,
+          value: dt[index+1]
         }
       });
+      return g;
+    });
 
-      data.forEach(function(d) {
-        d.groups = groupKeys.map(function(entry) { return {key: entry, value: +d.value[entry]}; });
-      });
-    }
-    else {
-      data.forEach(function(d) {
-        for (var key in d) {
-          if (key !== 'key' && groupKeys.indexOf(key) == -1) {
-            groupKeys.push(key);
-          }
-        }
-      });
-
-      data.forEach(function(d) {
-        d.groups = groupKeys.map(function(entry) { return {key: entry, value: +d[entry]}; });
-      });
-    }
-
-    // // separate data into multiple series to be charted
-    // var series = [];
-    // var maxGroups = data.length > 10 ? data.length / 2 : data.length;
-    // if (maxGroups) {
-    //   var row = [];
-    //   for (var i = 0; i < data.length; i++) {
-    //       row.push(data[i]);
-    //       if (row.length == maxGroups) {
-    //         series.push(row);
-    //         row = [];
-    //       }
-    //   }
-    //   if (row.length > 0) {
-    //     series.push(row);
-    //   }
-    // }
-
-    // data = series;
     data = [data];
 
     var selection = d3.select(selector);
@@ -106,10 +75,10 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
         .attr('opacity', 1)
         .call(xAxis)
         .selectAll('text')
-          .attr('y', 10)
+          .attr('y', 7)
           .attr('x', 7)
           .attr('dy', '.35em')
-          //.attr('transform', 'rotate(45)')
+          .attr('transform', 'rotate(45)')
           .style('text-anchor', 'start');
       xaxis.exit().remove();
 
@@ -160,14 +129,7 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
         .attr('y', function(d) { return d.value ? yScale(d.value) : height; })
         .attr('height', function(d) { return d.value ? height - yScale(d.value) : 0; })
         .style('fill', function(d) { return color(d.key); })
-        // .each('end', function(d) {
-        //   d3.select(this)
-        //     .on('mouseover', function(d, i) {
-        //       SimpleDataVis.tooltip.mouseover(d, i, opts);
-        //     })
-        //     .on('mousemove', SimpleDataVis.tooltip.mousemove)
-        //     .on('mouseout', SimpleDataVis.tooltip.mouseout);
-        // });
+
       // remove old bars
       bars.exit().transition()
         .attr('opacity', 0)

@@ -4,9 +4,32 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
 (function(pix, d3) {
   var percent = d3.format('.0%');
   var color = d3.scale.category10();
+  var tooltipselection = d3.select('body')
+    .selectAll('.twitter-demo-tooltip')
+    .data(['twitter-demo-tooltip']);
+  tooltipselection
+    .enter()
+    .append('div')
+    .attr('class', 'twitter-demo-tooltip')
+    .style('background-color', 'rgba(21, 41, 53, 0.9)')
+    .style('color', '#ffffff')
+    .style('font-family', 'HelvNeue,Helvetica,sans-serif')
+    .style('font-size', '0.75rem')
+    .style('font-weight', '300')
+    .style('max-width', '300px')
+    .style('padding', '8px')
+    .style('position', 'absolute')
+    .style('visibility', 'hidden')
+    .style('z-index', '100')
+    .text('twitter-demo-tooltip')
 
   pix.twitterdemo.piechart = function(selector, chartdata) {
-    var data = chartdata || [];
+    var data = (chartdata || []).map(function(d) {
+      return {
+        key: d[0],
+        value: d[1]
+      }
+    });
     var keys = data.map(function(d) { return d.key });
 
     data = data.sort(function(a, b) {
@@ -32,12 +55,12 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
     arc.padRadius(outerRadius)
       .innerRadius(innerRadius);
 
-    // function arcExplode(outerRadius, delay) {
-    //   d3.select(this).transition().delay(delay).attrTween('d', function(d) {
-    //     var i = d3.interpolate(d.outerRadius, outerRadius);
-    //     return function(t) { d.outerRadius = i(t); return arc(d); };
-    //   });
-    // }
+    function arcExplode(outerRadius, delay) {
+      d3.select(this).transition().delay(delay).attrTween('d', function(d) {
+        var i = d3.interpolate(d.outerRadius, outerRadius);
+        return function(t) { d.outerRadius = i(t); return arc(d); };
+      });
+    }
 
     function arcResize(a) {
       var i = d3.interpolate(this._current, a);
@@ -78,9 +101,20 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
             return color(d.data.key);
           })
           // .on('mouseover', function(d, i) {
+          //   tooltipselection
+          //     .text(function(d) {
+          //       return d.key + ': ' + percent(d.value);
+          //     })
+          //     .style('visibility', 'visible');
           //   arcExplode.call(this, outerRadius, 0);
           // })
+          // .on('mousemove', function(d) {
+          //   tooltipselection
+          //     .style('top', (d3.event.pageY-10)+'px')
+          //     .style('left',(d3.event.pageX+10)+'px');
+          // })
           // .on('mouseout', function(d, i) {
+          //   tooltipselection.style('visibility', 'hidden');
           //   arcExplode.call(this, outerRadius - 5, 150);
           // });
       });
