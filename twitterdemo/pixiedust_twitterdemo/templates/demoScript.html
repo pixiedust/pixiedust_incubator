@@ -11,7 +11,7 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
   var fromPython = function(msg) {
     var msg_type = msg.header.msg_type;
     var content = msg.content;
-    console.log('***callbacks.iopub.output:', content);
+    console.log('***callbacks.iopub.output:', msg);
     if (msg_type === 'stream') {
       var s = content.text.split('\\n');
       for (var i = 0; i < s.length; i++) {
@@ -20,7 +20,11 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
         } else if (s[i].indexOf(ENDSTREAM) === 0) {
           toJavascript({message: 'Streaming stopped', status: 'stopped'});
         } else {
-          toJavascript(JSON.parse(s[i]));
+          try{
+            toJavascript(JSON.parse(s[i]));
+          }catch(e){
+            console.log(e)
+          }
         }
       }
     }

@@ -25,7 +25,6 @@ ENDSTREAM = "@ENDSTREAM@"
 channelData = {}
 class StreamingChannel(PixiedustOutput):
   def printOutput(self, s):
-    print(s)
     self.sendChannel("stdout", s)
   
   def sendChannel(self, channel, data):
@@ -34,6 +33,7 @@ class StreamingChannel(PixiedustOutput):
         data = json.loads(data)
       except:
         pass
+
       if channel in channelData:
         channelData[channel].append(data)
       else:
