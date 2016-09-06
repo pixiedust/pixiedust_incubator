@@ -3,17 +3,11 @@
 
 {%block body%}
   <style>
-    #demo .tab-pane-stream-2 {
-      height: 70vh;
+    #demo .tab-pane-stream {
+      height: 72vh;
     }
-    #demo .tab-pane-stream-2 > div {
+    #demo .tab-pane-stream > div {
       height: 100%;
-    }
-    #demo .tab-pane-stream > .row:first-child {
-      height: 10vh;
-    }
-    #demo .tab-pane-stream > .row:nth-child(2) {
-      height: 60vh;
     }
     .chart-wrapper {
       background: #fff;
@@ -87,7 +81,7 @@
     .twitter-cards-list {
       list-style: none;
       padding: 0 10px;
-      text-align: default;
+      text-align: initial;
     }
     .twitter-cards-list li.row {
       background: #ffffff none repeat scroll 0 0;
@@ -153,20 +147,22 @@
     .pixiedust .modal-dialog .btn-ok {
       display: none;
     }
-    .pixiedust .modal-dialog .btn-back {
+    .pixiedust .modal-dialog .btn-back,
+    .pixiedust .modal-dialog .btn-no {
       background-color: #fff;
       border: 2px solid #082632;
       color: #082632;
       font-weight: 500;
       padding: 0.625em 1.375em;
     }
-    .pixiedust .modal-dialog .btn-back:hover {
+    .pixiedust .modal-dialog .btn-back:hover,
+    .pixiedust .modal-dialog .btn-no:hover {
       background-color: #082632;
       border-color: #082632;
       color: #fff;
     }
     .pixiedust .modal-dialog .btn-start,
-    .pixiedust .modal-dialog .btn-stop {
+    .pixiedust .modal-dialog .btn-yes {
       background-color: #a6266e;
       border: 2px solid #a6266e;
       color: #fff;
@@ -174,7 +170,7 @@
       padding: 0.625em 1.375em;
     }
     .pixiedust .modal-dialog .btn-start:hover,
-    .pixiedust .modal-dialog .btn-stop:hover {
+    .pixiedust .modal-dialog .btn-yes:hover {
       background-color: #fff;
       color: #a6266e;
     }
@@ -187,10 +183,23 @@
       font-size: 11px;
       font-weight: normal;
     }
+    .modal-dialog-stream .btn-yes,
+    .modal-dialog-stream .btn-no,
+    .modal-dialog-confirm .btn-start,
+    .modal-dialog-confirm .btn-back {
+      display: none;
+    }
+    .modal-dialog-stream {
+      width: 95% !important;
+    }
+    .modal-dialog-confirm {
+      padding: 50px;
+      width: 50% !important;
+    }
   </style>
   <div class="tab-content container-fluid" id="demo">
 
-    <div class="tab-pane tab-pane-stream-2 row active">
+    <div class="tab-pane tab-pane-stream row active">
         <div class="col-sm-3">
           <div class="row">
             <div class="col-sm-12">
@@ -244,10 +253,10 @@
             </div>
         </div>
     </div>
-<!--
     <div class="tab-pane tab-pane-confirm">
-      <p>Streaming is still in progress. Are you sure you want to close?</p>
+      <p>Streaming in progress. Are you sure you want to close?</p>
     </div>
+<!--
     <div class="tab-pane tab-pane-config">
       <p>Missing configuration. Please add configuration and try again!</p>
     </div>
@@ -272,11 +281,8 @@
   window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
   var pix = window.Pixiedust.twitterdemo;
 
-  var tdiag = $(this)
-    .find('.modal-dialog')
-    .css({
-      width:'90%',
-    });
+  var tdiag = $(this).find('.modal-dialog')
+    .addClass('modal-dialog-stream');
   
   var startBtn = $('#startStreamBtn', tdiag);
   var logDiv = $('.stream-log > .chart-stage', tdiag);
@@ -333,7 +339,6 @@
         tdiag.attr('data-streaming', 'starting');
         startBtn.prop('disabled', true);
         startBtn.text('Starting...');
-        startBtn.attr('class', 'btn btn-sm btn-start');
         streamingSpinner.css({display: 'inline'});
 
         $('.trending-hashtags > .chart-stage', tdiag).html('<i class="fa fa-spinner fa-spin starting-spinner"></i>');
@@ -348,7 +353,6 @@
         tdiag.attr('data-streaming', true);
         startBtn.prop('disabled', false);
         startBtn.text('Stop Streaming');
-        startBtn.attr('class', 'btn btn-sm btn-stop');
         streamingSpinner.css({display: 'inline'});
         filterInput.prop('disabled', true)
           .parent().css({'opacity': 0.5});
@@ -357,7 +361,6 @@
         tdiag.attr('data-streaming', 'stopping');
         startBtn.prop('disabled', true);
         startBtn.text('Stopping...');
-        startBtn.attr('class', 'btn btn-sm btn-stop');
         streamingSpinner.css({display: 'inline'});
         filterInput.prop('disabled', true)
           .parent().css({'opacity': 0.5});
@@ -366,10 +369,10 @@
         tdiag.attr('data-streaming', false);
         startBtn.prop('disabled', false);
         startBtn.text('Start Streaming');
-        startBtn.attr('class', 'btn btn-sm btn-start');
         streamingSpinner.css({display: 'none'});
         filterInput.prop('disabled', false)
           .parent().css({'opacity': 1});
+        $('.starting-spinner', tdiag).remove();
         break;
     }
   };
@@ -401,7 +404,6 @@
         max = { key: o, value: obj[o] };
       }
     }
-    console.log('-maxvalue-', max, obj);
     return max;
   };
 
@@ -488,22 +490,42 @@
     });
 
   var okBtn = $('.btn-ok', tdiag);
-  var backBtn = $('<button class="btn btn-default btn-sm btn-primary btn-back">Back to Notebook</button>');
+  var backBtn = $('<button class="btn btn-sm btn-back">Back to Notebook</button>');
+  var yesBtn = $('<button class="btn btn-sm btn-yes">Yes</button>');
+  var noBtn = $('<button class="btn btn-sm btn-no">No</button>');
   okBtn.parent().append(backBtn);
+  okBtn.parent().append(yesBtn);
+  okBtn.parent().append(noBtn);
 
   backBtn
     .click(function(event) {
       event.preventDefault();
-      /*var streaming = tdiag.attr('data-streaming');
+      var streaming = tdiag.attr('data-streaming');
       if (!streaming || streaming.toLowerCase() === 'false') {
-        $('.tab-pane-confirm').addClass('active');
-        $('.tab-pane-stream').removeClass('active');
-        $(this).css({display: 'none'});
-      }
-      else {*/
         okBtn.click();
-      //}
+      }
+      else {
+        $('.tab-pane-stream').removeClass('active');
+        $('.tab-pane-confirm').addClass('active');
+        tdiag
+          .removeClass('modal-dialog-stream')
+          .addClass('modal-dialog-confirm');
+      }
     });
+
+  noBtn.click(function(event) {
+    $('.tab-pane-confirm').removeClass('active');
+    $('.tab-pane-stream').addClass('active');
+    tdiag
+      .removeClass('modal-dialog-confirm')
+      .addClass('modal-dialog-stream');
+  });
+
+  yesBtn.click(function(event) {
+    pix.stop();
+    okBtn.click();
+  });
+
   logMsg(new Date());
   $('.modal-footer').prepend(startBtn);
 {%endblock%}
