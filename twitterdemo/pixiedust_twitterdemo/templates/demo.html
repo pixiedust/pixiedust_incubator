@@ -36,6 +36,7 @@
       height: calc(70vh - 115px);
       margin-top: 35px;
       overflow: auto;
+      text-align: center;
     }
     .stream-log .chart-stage {
       height: calc(70vh - 50px);
@@ -60,11 +61,13 @@
       height: 30vh;
       min-height: 250px;
       overflow: auto;
+      text-align: center;
     }
     .trending-hashtags .chart-stage {
       height: 25vh;
       min-height: 200px;
       overflow: auto;
+      text-align: center;
     }
     .twitter-cards-msg {
       float: right;
@@ -77,9 +80,14 @@
       font-size: 24px;
       margin-top: 2px;
     }
+    .starting-spinner {
+      font-size: 24px;
+      margin-top: 2px;
+    }
     .twitter-cards-list {
       list-style: none;
       padding: 0 10px;
+      text-align: default;
     }
     .twitter-cards-list li.row {
       background: #ffffff none repeat scroll 0 0;
@@ -205,17 +213,19 @@
         <div class="col-sm-6">
           <div class="row">
             <div class="col-sm-12">
-              <div class="chart-wrapper trending-hashtags">
-                <div class="chart-title">Trending Hashtags</div>
-                <div class="chart-stage"></div>
+              <div class="chart-wrapper twitter-vis trending-sentiments">
+                <div class="chart-title">Trending Sentiments</div>
+                <div class="chart-stage">
+                </div>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-sm-12">
-              <div class="chart-wrapper trending-sentiments">
-                <div class="chart-title">Trending Sentiments</div>
-                <div class="chart-stage"></div>
+              <div class="chart-wrapper twitter-vis trending-hashtags">
+                <div class="chart-title">Trending Hashtags</div>
+                <div class="chart-stage">
+                </div>
               </div>
             </div>
           </div>
@@ -325,6 +335,12 @@
         startBtn.text('Starting...');
         startBtn.attr('class', 'btn btn-sm btn-start');
         streamingSpinner.css({display: 'inline'});
+
+        $('.trending-hashtags > .chart-stage', tdiag).html('<i class="fa fa-spinner fa-spin starting-spinner"></i>');
+        $('.trending-sentiments > .chart-stage', tdiag).html('<i class="fa fa-spinner fa-spin starting-spinner"></i>');
+        $('.twitter-cards-list', tdiag).empty();
+        $('.twitter-cards-list-wrapper', tdiag).prepend('<i class="fa fa-spinner fa-spin starting-spinner"></i>');
+
         filterInput.prop('disabled', true)
           .parent().css({'opacity': 0.5});
         break;
@@ -390,6 +406,7 @@
   };
 
   var showTweets = function(tweets) {
+    $('.twitter-cards-list-wrapper > .starting-spinner', tdiag).remove();
     var template = '<li class="row" style="height:0px; display:none; border-color:{color}">'
       + '<div class="col-sm-2"><div class="chart-wrapper simple-box"><img class="twitter-card-pic" src="{pic}"></div></div>'
       + '<div class="col-sm-10"><div class="chart-wrapper simple-box">'
