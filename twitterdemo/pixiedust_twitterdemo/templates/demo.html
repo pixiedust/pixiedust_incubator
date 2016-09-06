@@ -294,7 +294,7 @@
     .html('<i class="fa fa-spinner fa-spin streaming-spinner"></i>')
     .prop('disabled', true)
     .css({display: 'none'});
-  var pauseCards = false;
+  var pauseScroll = false;
   var hiddenCards = [];
   var sentimentColors = {
     conscientiousness: '#5596E6',
@@ -387,14 +387,14 @@
     pix.groupedchart('.trending-sentiments > .chart-stage', data[data.length-1]);
   };
 
-  var initCard = function(card) {
-    card.css({display:'list-item'})
-      .animate({height: card.get(0).scrollHeight}, function() {
-        card.height('auto');
-        if (cardList.children('li').length > 50) {
-          $('li', cardList).last().remove();
+  var scrollCards = function() {
+    if (!pauseScroll) {
+      cardList.parent().animate({ scrollTop: cardList.parent().prop('scrollHeight') }, 1500, function() {
+        while (cardList.children('li').length > 50) {
+          $('li', cardList).first().remove();
         }
       });
+    }
   };
 
   var maxValue = function(obj) {
@@ -409,7 +409,7 @@
 
   var showTweets = function(tweets) {
     $('.twitter-cards-list-wrapper > .starting-spinner', tdiag).remove();
-    var template = '<li class="row" style="height:0px; display:none; border-color:{color}">'
+    var template = '<li class="row" style="border-color:{color}">'
       + '<div class="col-sm-2"><div class="chart-wrapper simple-box"><img class="twitter-card-pic" src="{pic}"></div></div>'
       + '<div class="col-sm-10"><div class="chart-wrapper simple-box">'
       + '<div class="twitter-card-name"><span style="color:{color}">{author}</span></div>'
@@ -424,14 +424,10 @@
         return tweet.hasOwnProperty($1) ? tweet[$1] : $0;
       }));
 
-      cardList.prepend(t);
-      if (!pauseCards) {
-        initCard(t);
-      }
-      else {
-        hiddenCards.push(t);
-      }
+      cardList.append(t);
     });
+
+    scrollCards();
   };
 
   pix.register(function(data) {
@@ -469,15 +465,11 @@
 
   cardList.hover(
     function() {
-      pauseCards = true;
+      pauseScroll = true;
     },
     function() {
-      pauseCards = false;
-      for (var c in hiddenCards) {
-        if (!pauseCards) {
-          initCard(hiddenCards[c]);
-        }
-      }
+      pauseScroll = false;
+      scrollCards();
     }
   );
 
