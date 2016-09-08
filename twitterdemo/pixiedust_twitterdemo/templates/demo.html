@@ -83,17 +83,28 @@
       padding: 0 10px;
       text-align: initial;
     }
-    .twitter-cards-list li.row {
+    .twitter-cards-list li {
       background: #ffffff none repeat scroll 0 0;
       border: 2px solid #152935;
       box-shadow: 1px 2px 7px 1px rgba(0, 0, 0, 0.25);
       color: #152935;
       font: 300 16px/1.25 "Helvetica Neue",Helvetica,Arial,sans-serif;
-      padding: 10px 15px 15px;
       margin: 10px 0 20px;
     }
-    .twitter-cards-list li.row > div:nth-child(2) {
+    .twitter-cards-list .row {
+      padding: 10px 15px 15px;
+    }
+    .twitter-cards-list .row:nth-child(1) > div:nth-child(2) {
       padding-left: 10px;
+    }
+    .twitter-cards-list .sentiment {
+      color: #fff;
+      font-size: 12px;
+      font-weight: 300;
+      display: none;
+    }
+    .twitter-cards-list .sentiment span:nth-child(2) {
+      font-weight: 500;
     }
     .twitter-card-pic {
       max-height: 50px;
@@ -305,8 +316,8 @@
   var numTweets = 0;
   var pauseScroll = false;
   var hiddenCards = [];
-  var color = d3.scale.category20()
-    .domain([
+  var sentimentColor = (function() {
+    var domain = [
       'agreeableness_big5',
       'analytical',
       'anger',
@@ -320,7 +331,17 @@
       'openness_big5',
       'sadness',
       'tentative'
-    ]);
+    ];
+    var colors = [
+      '#1F77B4','#AEC7E8','#FF7F0E','#FFBB78','#2CA02C',
+      '#98DF8A','#D62728','#FF9896','#9467BD','#C5B0D5',
+      '#8C564B','#C49C94','#E377C2','#F7B6D2','#7F7F7F',
+      '#C7C7C7','#BCBD22','#DBDB8D','#17BECF','#9EDAE5'
+    ]
+    return function(sentiment) {
+      return colors[Math.max(domain.indexOf(sentiment), 0)];
+    }
+  })();
 
   var logMsg = function(data) {
     var BEGINSTREAM = '@BEGINSTREAM@';
@@ -346,6 +367,7 @@
   var updateBtns = function(status) {
     switch (status) {
       case 'starting':
+        logMsg(new Date());
         tdiag.attr('data-streaming', 'starting');
         startBtn.prop('disabled', true);
         startBtn.text('Starting...');
@@ -384,6 +406,7 @@
         filterInput.prop('disabled', false)
           .parent().css({'opacity': 1});
         $('.starting-spinner', tdiag).remove();
+        logMsg(new Date());
         break;
     }
   };
@@ -395,7 +418,7 @@
 
   var processSentiments = function(data) {
     $('.trending-sentiments > .chart-stage > :not(svg)', tdiag).remove();
-    pix.groupedchart('.trending-sentiments > .chart-stage', data[data.length-1], color);
+    pix.groupedchart('.trending-sentiments > .chart-stage', data[data.length-1], sentimentColor);
   };
 
   var scrollCards = function() {
@@ -421,16 +444,21 @@
 
   var showTweets = function(tweets) {
     $('.twitter-cards-list-wrapper > .starting-spinner', tdiag).remove();
-    var template = '<li class="row" style="border-color:{color}">'
+    var template = '<li style="border-color:{color}"><div class="row">'
       + '<div class="col-sm-2"><div class="chart-wrapper simple-box"><img class="twitter-card-pic" src="{pic}"></div></div>'
       + '<div class="col-sm-10"><div class="chart-wrapper simple-box">'
       + '<div class="twitter-card-name"><span style="color:{color}">{author}</span></div>'
       + '<p class="twitter-card-tweet">{text}</p>'
-      + '</div></div></li>';
+      + '</div></div></div><div class="row sentiment" style="background-color:{color}">{thesentiments}'
+      + '</div></li>';
     numTweets += tweets.length;
     tweets.forEach(function(tweet, index) {
       if (tweet.sentiment) {
-        tweet.color = color(maxSentiment(tweet.sentiment).key);
+        tweet.color = sentimentColor(maxSentiment(tweet.sentiment).key);
+      }
+      tweet.thesentiments = '';
+      for (var sentiment in tweet.sentiment) {
+        tweet.thesentiments += '<div class="col-sm-6"><span>' + sentiment + '</span>: <span>' + parseFloat(tweet.sentiment[sentiment]).toFixed(0) + '%</span></div>';
       }
       var t = $(template.replace(/\{(.+?)\}/g, function($0, $1) {
         return tweet.hasOwnProperty($1) ? tweet[$1] : $0;
@@ -529,9 +557,9 @@
     okBtn.click();
   });
 
-  logMsg(new Date());
   $('.modal-footer').prepend(startBtn);
-  streamingSpinner.after('<a class="note" target="_blank" href="https://github.com/ibm-cds-labs/pixiedust_incubator/tree/master/twitterdemo">Fork me on GitHub</a>')
+  streamingSpinner.after('<a class="note" target="_blank" href="https://github.com/ibm-cds-labs/pixiedust_incubator/tree/master/twitterdemo">Fork me on GitHub</a>');
+  logMsg(':: Twitter Sentiment Analysis ::');
 {%endblock%}
 
 {%block onDialogHide%}
