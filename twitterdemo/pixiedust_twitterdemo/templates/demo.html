@@ -196,6 +196,13 @@
       padding: 50px;
       width: 50% !important;
     }
+    .modal-header .note {
+      color: lightgray;
+      display: inline-block;
+      float: right;
+      font-size: 12px;
+      padding: 4px 10px;
+    }
   </style>
   <div class="tab-content container-fluid" id="demo">
 
@@ -520,6 +527,7 @@
 
   logMsg(new Date());
   $('.modal-footer').prepend(startBtn);
+  streamingSpinner.after('<a class="note" target="_blank" href="https://github.com/ibm-cds-labs/pixiedust_incubator/tree/master/twitterdemo">Fork me on GitHub</a>')
 {%endblock%}
 
 {%block onDialogHide%}
