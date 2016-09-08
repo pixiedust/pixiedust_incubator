@@ -2,10 +2,11 @@ window.Pixiedust = window.Pixiedust || {};
 window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
 
 (function(pix, d3) {
-  var color = d3.scale.category10();
+  var color = d3.scale.category20();
 
-  pix.twitterdemo.groupedchart = function(selector, chartdata) {
+  pix.twitterdemo.groupedchart = function(selector, chartdata, sentimentcolors) {
     var data = chartdata || [];
+    color = sentimentcolors ? sentimentcolors : color;
 
     var groupKeys = data[0];
     groupKeys = groupKeys.slice(1);
@@ -25,16 +26,16 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
     data = [data];
 
     var selection = d3.select(selector);
-    var margin = {top: 25, right: 125, bottom: 50, left: 50};
+    var margin = {top: 20, right: 155, bottom: 55, left: 50};
     var box = selection.node().getBoundingClientRect();
-    var width = box.width - margin.left - margin.right - 10;
-    var height = box.height - margin.top - margin.bottom - 10; //(data.length > 1 ? 450 : 600) - margin.top - margin.bottom;
+    var width = box.width - margin.left - margin.right - 5;
+    var height = box.height - margin.top - margin.bottom - 5;
 
     // setup the svg element
     var svg = selection.selectAll('svg').data([data]);
     svg.enter().append('svg');
     svg.attr('width', width + margin.left + margin.right)
-      .attr('height', (height + margin.top + margin.bottom) * data.length);
+      .attr('height', height + margin.top + margin.bottom);
     svg.exit().remove();
 
     // setup series graph for each series
@@ -42,17 +43,14 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
     sGraph.enter().append('g')
         .attr('class', 'series')
     sGraph.attr('transform', function(d, i) {
-      return 'translate(' + margin.left + ',' + (margin.top + (height + margin.bottom) * i) + ')'
+      return 'translate(' + margin.left + ',' + margin.top + ')';
     })
     sGraph.exit().remove();
 
     sGraph.each(function(sData, index) {
       var graph = d3.select(this);
 
-      var nb = sData.length * groupKeys.length;
-      var bw = nb <= 15 ? 55 : sData.length <= 21 ? 35 : 15;
-
-      var xScale = d3.scale.ordinal().rangeRoundBands([0, Math.min(nb * bw, width)], .25);
+      var xScale = d3.scale.ordinal().rangeRoundBands([0, width], .1);
       var groupScale = d3.scale.ordinal();
       var yScale = d3.scale.linear().range([height, 0]);
 
@@ -78,7 +76,7 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
           .attr('y', 10)
           .attr('x', 3)
           .attr('dy', '.35em')
-          .attr('transform', 'rotate(10)')
+          .attr('transform', 'rotate(15)')
           .style('text-anchor', 'start');
       xaxis.exit().remove();
 
@@ -147,7 +145,7 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
     // update keys
     legendkey
       .style('fill', function(d) { return color(d); })
-      .attr('x', width + margin.left + 25)
+      .attr('x', width + margin.left + 15)
       .attr('y', function(d, i) { return i*18; })
       .attr('width', 15)
       .attr('height', 15);
@@ -167,7 +165,7 @@ window.Pixiedust.twitterdemo = window.Pixiedust.twitterdemo || {};
     // update labels
     legendlabel
       .text(function(d) { return d; })
-      .attr('x', width + margin.left + 45)
+      .attr('x', width + margin.left + 35)
       .attr('y', function(d, i) { return (i*18 + 7); })
       .attr('dy', '.35em')
       .on('mouseover', function(d, i) {

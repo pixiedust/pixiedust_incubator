@@ -305,21 +305,22 @@
   var numTweets = 0;
   var pauseScroll = false;
   var hiddenCards = [];
-  var sentimentColors = {
-    conscientiousness: '#5596E6',
-    sadness: '#1D3649',
-    openness: '#5AA700',
-    disgust: '#0A3C02',
-    extraversion: '#00B4A0',
-    agreeableness: '#003C32',
-    joy: '#AF6EE8',
-    confident: '#412356',
-    neuroticism: '#FF3CA0',
-    fear: '#601146',
-    anger: '#E71D32',
-    analytical: '#D74108',
-    tentative: '#BE9B00'
-  }
+  var color = d3.scale.category20()
+    .domain([
+      'agreeableness_big5',
+      'analytical',
+      'anger',
+      'confident',
+      'conscientiousness_big5',
+      'disgust',
+      'extraversion_big5',
+      'fear',
+      'joy',
+      'neuroticism_big5',
+      'openness_big5',
+      'sadness',
+      'tentative'
+    ]);
 
   var logMsg = function(data) {
     var BEGINSTREAM = '@BEGINSTREAM@';
@@ -394,7 +395,7 @@
 
   var processSentiments = function(data) {
     $('.trending-sentiments > .chart-stage > :not(svg)', tdiag).remove();
-    pix.groupedchart('.trending-sentiments > .chart-stage', data[data.length-1]);
+    pix.groupedchart('.trending-sentiments > .chart-stage', data[data.length-1], color);
   };
 
   var scrollCards = function() {
@@ -408,7 +409,7 @@
     }
   };
 
-  var maxValue = function(obj) {
+  var maxSentiment = function(obj) {
     var max;
     for (var o in obj) {
       if (!max || obj[o] > max.value) {
@@ -429,8 +430,7 @@
     numTweets += tweets.length;
     tweets.forEach(function(tweet, index) {
       if (tweet.sentiment) {
-        var k = maxValue(tweet.sentiment).key.split('_');
-        tweet.color = sentimentColors[k[0]]|| '#152935';
+        tweet.color = color(maxSentiment(tweet.sentiment).key);
       }
       var t = $(template.replace(/\{(.+?)\}/g, function($0, $1) {
         return tweet.hasOwnProperty($1) ? tweet[$1] : $0;
@@ -481,7 +481,6 @@
     },
     function() {
       pauseScroll = false;
-      scrollCards();
     }
   );
 
