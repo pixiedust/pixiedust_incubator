@@ -212,7 +212,7 @@
             <div class="col-sm-12">
               <div class="chart-wrapper twitter-cards">
                 <div class="chart-title">
-                  <span>Twitter Feed</span> <span class="twitter-cards-msg"> </a></div>
+                  <span>Twitter Feed</span> <span class="twitter-cards-msg"><span>0</span> <span>Tweets</span></span></div>
                 <div class="chart-stage">
                   <div class="twitter-filter">
                     <input id="twitter-filter-input" name="twitter-filter-input" class="col-sm-12" type="search" placeholder="Filter tweets">
@@ -301,6 +301,8 @@
     .html('<i class="fa fa-spinner fa-spin streaming-spinner"></i>')
     .prop('disabled', true)
     .css({display: 'none'});
+  var tweetsCount = $('.twitter-cards-msg > span:first-child');
+  var numTweets = 0;
   var pauseScroll = false;
   var hiddenCards = [];
   var sentimentColors = {
@@ -347,7 +349,6 @@
         startBtn.prop('disabled', true);
         startBtn.text('Starting...');
         streamingSpinner.css({display: 'inline'});
-
         $('.trending-hashtags > .chart-stage', tdiag).html('<i class="fa fa-spinner fa-spin starting-spinner"></i>');
         $('.trending-sentiments > .chart-stage', tdiag).html('<i class="fa fa-spinner fa-spin starting-spinner"></i>');
         $('.twitter-cards-list', tdiag).empty();
@@ -355,6 +356,8 @@
 
         filterInput.prop('disabled', true)
           .parent().css({'opacity': 0.5});
+        numTweets = 0;
+        tweetsCount.html(numTweets);
         break;
       case 'started':
         tdiag.attr('data-streaming', true);
@@ -395,6 +398,7 @@
   };
 
   var scrollCards = function() {
+    tweetsCount.html(numTweets);
     if (!pauseScroll) {
       cardList.parent().animate({ scrollTop: cardList.parent().prop('scrollHeight') }, 1500, function() {
         while (cardList.children('li').length > 50) {
@@ -422,6 +426,7 @@
       + '<div class="twitter-card-name"><span style="color:{color}">{author}</span></div>'
       + '<p class="twitter-card-tweet">{text}</p>'
       + '</div></div></li>';
+    numTweets += tweets.length;
     tweets.forEach(function(tweet, index) {
       if (tweet.sentiment) {
         var k = maxValue(tweet.sentiment).key.split('_');
