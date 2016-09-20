@@ -464,6 +464,12 @@
         return tweet.hasOwnProperty($1) ? tweet[$1] : $0;
       }));
 
+      t.hover(function() {
+        $(this).find('.sentiment').slideToggle();
+      }, function() {
+        $(this).find('.sentiment').slideToggle();
+      });
+
       cardList.append(t);
     });
 
