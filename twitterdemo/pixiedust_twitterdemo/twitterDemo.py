@@ -61,7 +61,8 @@ class PixieDustTwitterDemo(Display):
       "channel={0} receiver={1}".format(StreamingChannel.__module__ + "." + StreamingChannel.__name__, "com.ibm.cds.spark.samples.PixiedustStreamingTwitter$"),
       """
         val demo = com.ibm.cds.spark.samples.PixiedustStreamingTwitter;
-        demo.stopStreaming()
+        demo.stopStreaming();
+        val __tweets = demo.createTwitterDataFrames(sqlContext);
       """
     )
     #print(ENDSTREAM)

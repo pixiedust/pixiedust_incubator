@@ -1,5 +1,5 @@
 {%extends "basedialog.html"%}
-{%block title %}Twitter Sentiment Analysis{%endblock%}
+{%block title %}Twitter Sentiment Analysis Powered by IBM Watson Tone Analyzer{%endblock%}
 
 {%block body%}
   <style>
@@ -290,7 +290,7 @@
 
 {%block onOK%}
   $('#demoScript{{prefix}}').remove();
-  $('#results{{prefix}}').html('<p class="text-center">A dataframe containing your twitter content has been created and added to the cell below.</p>');
+  $('#results{{prefix}}').html('<p class="text-center">A dataframe with the tweets has been created. You can access it via a variable named __tweets.</p>');
   $('#loading{{prefix}}').css('display','none');
 {%endblock%}
 
@@ -573,11 +573,5 @@
 {%endblock%}
 
 {%block cellOuputHTML%}
-  <div id="loading{{prefix}}" style="display:none">
-    <div style="width:100px;height:60px;left:47%;position:relative">
-        <i class="fa fa-circle-o-notch fa-spin" style="font-size:48px"></i>
-    </div>
-    <div style="text-align:center">Generating the notebook cells for the demo. Please wait...</div>
-  </div>
   <div id="results{{prefix}}"></div>
 {%endblock%}
