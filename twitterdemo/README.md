@@ -27,4 +27,4 @@ twitterDemo()
 
 ## Uninstall
 
-From a notebook cell run: `!pip uninstall pixiedust_twitterdemo `
+From a notebook cell run: `!pip uninstall -y pixiedust_twitterdemo `
