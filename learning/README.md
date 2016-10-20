@@ -27,4 +27,4 @@ startCourse()
 
 ## Uninstall
 
-From a notebook cell run: `!pip uninstall pixiedust_learning`
+From a notebook cell run: `!pip uninstall -y pixiedust_learning`
