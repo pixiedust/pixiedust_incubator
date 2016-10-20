@@ -27,4 +27,4 @@ codeGenerator()
 
 ## Uninstall
 
-From a notebook cell run: `!pip uninstall pixiedust_codegenerator`
+From a notebook cell run: `!pip uninstall -y pixiedust_codegenerator`
