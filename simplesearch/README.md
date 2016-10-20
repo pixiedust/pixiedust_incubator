@@ -45,4 +45,4 @@ simpleSearch("http://simple-search-service-digitate-thema.mybluemix.net", "langu
 
 ## Uninstall
 
-From a notebook cell run: `!pip uninstall pixiedust_simplesearch`
+From a notebook cell run: `!pip uninstall -y pixiedust_simplesearch`
