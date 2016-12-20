@@ -47,23 +47,25 @@ class PixiedustGremlinMagics(Magics):
     def gremlin(self, line, cell):
         results = self.getGraphClient().run_gremlin_query(cell)
         varName = self.getLineOption(line, "var")
+        pdFrame = self.toPandas(results)
         if varName is not None:
             ShellAccess[varName]=results
-        pdFrame = self.toPandas(results)
         ShellAccess["pdFrame"]=pdFrame
         display(pdFrame)
 
     def toPandas(self, result):
         data = []
+        columns = set()
         for i, val in enumerate(result):
             data.append([])
-            #data[i].append(val.id)
             for key in val.properties:
+                columns.add(key)
                 data[i].append(val.properties[key])
             data[i].append(val.label)
+            columns.add("label")
 
         pdFrame = pd.DataFrame(data)
-        pdFrame.columns = ['gender', 'age', 'name','type']
+        pdFrame.columns = list(columns)
         return pdFrame
 
 try:
