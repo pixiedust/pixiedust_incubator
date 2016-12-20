@@ -2,7 +2,14 @@
 This is a pixiedust magic that allows users to enter gremlin in a Jupyter notebook. It's designed to work with [IBM Graph](http://ibm.biz/ibm-graph), a Graph database as a service that's provided through [Bluemix](http://bluemix.net).
 
 ##Setup
+###Clone the repo and install the gremlin magic
 
+```
+git clone git@github.com:ibm-cds-labs/pixiedust_incubator.git
+
+cd pixiedut_incubator/gremlin
+pip install -e .
+```
 ###Import Pixiedust and the gremlin magic
 
 ```
