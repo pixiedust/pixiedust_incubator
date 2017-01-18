@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='pixiedust_twitterdemo',
-      version='0.3',
+      version='0.4',
       description='Pixiedust demo of the Twitter Sentiment Analysis tutorials',
       url='https://github.com/ibm-cds-labs/pixiedust_incubator/tree/master/twitterdemo',
       install_requires=['pixiedust'],

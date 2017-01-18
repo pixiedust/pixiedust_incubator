@@ -18,19 +18,17 @@ from pixiedust.display.display import *
 from pixiedust.display import *
 from .twitterDemo import *
 
+@PixiedustDisplay()
 class PixieDustTwitterDemoPluginMeta(DisplayHandlerMeta):
+	@addId
+	def getMenuInfo(self,entity, dataHandler):
+		if entity==self.__class__:
+			return [{"id": "twitterdemo"}]
+		else:
+			return []
 
-  @addId
-  def getMenuInfo(self,entity):
-    if entity==self.__class__:
-      return [{"id": "twitterdemo"}]
-    else:
-      return []
-
-  def newDisplayHandler(self,options,entity):
-    return PixieDustTwitterDemo(options,entity)
-
-registerDisplayHandler(PixieDustTwitterDemoPluginMeta())
+	def newDisplayHandler(self,options,entity):
+		return PixieDustTwitterDemo(options,entity)
 
 def twitterDemo():
   display(PixieDustTwitterDemoPluginMeta)
