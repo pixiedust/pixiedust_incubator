@@ -1,0 +1,1 @@
+PixieDust extension that enable Jupyter Notebook user to invoke node.js commands
