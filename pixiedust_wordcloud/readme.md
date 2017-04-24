@@ -1,6 +1,6 @@
 # pixiedust_wordcloud
 
-Word Cloud Visualization plugin for [Pixiedust](https://github.com/ibm-cds-labs/pixiedust)
+[Word Cloud Visualization plugin](https://pypi.python.org/pypi/pixiedust-wordcloud) for [Pixiedust](https://github.com/ibm-cds-labs/pixiedust)
 
 ## Installation
 
@@ -30,7 +30,7 @@ df2 = df.groupBy("street").count()
 display(df2)
 ```
 
-Select Simple Word Cloud from the charts dropdown menu.
+Select **Simple Word Cloud** from the charts dropdown menu.
 
 ## Uninstall
 
