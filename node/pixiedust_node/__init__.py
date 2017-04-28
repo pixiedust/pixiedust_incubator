@@ -17,6 +17,7 @@
 from IPython.core.magic import (Magics, magics_class, cell_magic)
 import warnings
 from node import Node
+import os
 
 # pixiedust magics to interpret cells starting with %%node
 @magics_class
@@ -26,7 +27,8 @@ class PixiedustNodeMagics(Magics):
     def __init__(self, shell):
         super(PixiedustNodeMagics,self).__init__(shell=shell) 
         # create Node.js sub-process
-        self.n = Node()
+        path = os.path.join(__path__[0], 'pixiedustNodeRepl.js')
+        self.n = Node(path)
 
     @cell_magic
     def node(self, line, cell):

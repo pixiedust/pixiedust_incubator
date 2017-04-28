@@ -9,17 +9,15 @@ class Node:
     # process that runs the Node.js code
     ps = None
 
-    def __init__(self):
-        # path to the Node.js code
-        path = '/Users/glynnb/projects/pixiedust_incubator/node/pixiedust_node/pixiedustNodeRepl.js'
+    # run a JavaScript script (path) with "node"
+    def __init__(self, path):
 
         # create sub-process
-        self.ps = subprocess.Popen( ('node',path), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        self.ps = subprocess.Popen( ('node', path), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         print "Node process id", self.ps.pid
 
         # create thread to read this process's output          
         t = NodeStdReader(self.ps)
-
 
     def write(self, s):
         self.ps.stdin.write(s)
