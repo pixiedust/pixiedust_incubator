@@ -16,7 +16,7 @@
 
 from IPython.core.magic import (Magics, magics_class, cell_magic)
 import warnings
-from node import Node
+from .node import Node
 import os
 
 # pixiedust magics to interpret cells starting with %%node

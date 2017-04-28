@@ -1,3 +1,5 @@
+from pixiedust.display import *
+from pixiedust.utils.shellAccess import ShellAccess
 from threading import Thread
 import json
 import pandas
@@ -35,7 +37,7 @@ class NodeStdReader(Thread):
                 # output the original line when we don't have JSON
                 line = line.strip()
                 if len(line) > 0:
-                    print line
+                    print(line)
 
             try:
 
@@ -43,11 +45,10 @@ class NodeStdReader(Thread):
                 if obj and obj['_pixiedust']: 
                     if obj['type'] == 'display':
                         pdf = pandas.DataFrame(obj['data'])
-                        print "DISPLAY"
-                        print pdf
-                        #display(pdf)
+                        ShellAccess.pdf = pdf
+                        display(pdf)
                     elif obj['type'] == 'print':
-                        print json.dumps(obj['data'])
+                        print(json.dumps(obj['data']))
             except Exception as e:
-                print line
-                print e
+                print(line)
+                print(e)
