@@ -16,16 +16,23 @@
 
 from IPython.core.magic import (Magics, magics_class, cell_magic)
 import warnings
-from .nodeapp import NodeApp
+from node import Node
 
+# pixiedust magics to interpret cells starting with %%node
 @magics_class
 class PixiedustNodeMagics(Magics):
+    n = None
+
     def __init__(self, shell):
         super(PixiedustNodeMagics,self).__init__(shell=shell) 
+        # create Node.js sub-process
+        self.n = Node()
 
     @cell_magic
     def node(self, line, cell):
-        NodeApp().run()
+        # write the cell contents to the Node.js process
+        self.n.write(cell)
+ 
 try:
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")

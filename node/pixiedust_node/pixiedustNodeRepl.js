@@ -1,16 +1,41 @@
-const net = require('net');
 const repl = require('repl');
-let connections = 0;
 
-console.log("Repl started");
+// custom writer function that outputs nothing
+const writer = function(output) {
+  // don't output anything
+  return '';
+};
 
-net.createServer((socket) => {
-  connections += 1;
-  repl.start({
-    prompt: 'Node.js via TCP socket> ',
-    input: socket,
-    output: socket
-  }).on('exit', () => {
-    socket.end();
-  });
-}).listen(5001);
+const startRepl = function(instream, outstream) {
+  const options = {
+    input: instream,
+    output: outstream,
+    prompt: '',
+    writer: writer
+  };
+  const r = repl.start(options);
+
+  // custom print function for Notebook interface
+  const print = function(data, variable) {
+    // bundle the data into an object
+    const obj = { _pixiedust: true, type: 'print', data: data, variable: variable };
+    outstream.write(JSON.stringify(obj) + '\n')
+  };
+
+  // custom display function for Notebook interface
+  const display = function(data, variable) {
+    // bundle the data into an object
+    const obj = { _pixiedust: true, type: 'display', data: data, variable: variable };
+    outstream.write(JSON.stringify(obj) + '\n')
+  };
+
+  // add silverlining library and print/display
+  r.context.silverlining = require('silverlining');
+  r.context.request = require('request-promise-native');
+  r.context.print = print;
+  r.context.display = display;
+  return r;
+};
+
+startRepl(process.stdin, process.stdout);
+console.log("Pixiedust Node started");
