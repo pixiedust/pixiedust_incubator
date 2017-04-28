@@ -24,12 +24,13 @@ class PixiedustNodeMagics(Magics):
     n = None
 
     def __init__(self, shell):
-        self.n = Node()
-        print "Init node"
         super(PixiedustNodeMagics,self).__init__(shell=shell) 
+        # create Node.js sub-process
+        self.n = Node()
 
     @cell_magic
     def node(self, line, cell):
+        # write the cell contents to the Node.js process
         self.n.write(cell)
  
 try:

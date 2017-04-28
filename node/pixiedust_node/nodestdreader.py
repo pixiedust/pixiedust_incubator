@@ -1,5 +1,6 @@
 from threading import Thread
 import json
+import pandas
 
 # a thread that is given a process in the contructor
 # the thead listens to each line coming out of the
@@ -39,14 +40,11 @@ class NodeStdReader(Thread):
             try:
 
                 # if it does and is a pixiedust object
-
                 if obj and obj['_pixiedust']: 
                     if obj['type'] == 'display':
-                        #pdf = pandas.DataFrame(obj['data'])
+                        pdf = pandas.DataFrame(obj['data'])
                         print "DISPLAY"
-                        print json.dumps(obj['data'])
-                        #print pdf
-                        #q.put(pdf)
+                        print pdf
                         #display(pdf)
                     elif obj['type'] == 'print':
                         print json.dumps(obj['data'])

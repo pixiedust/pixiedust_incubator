@@ -31,6 +31,7 @@ const startRepl = function(instream, outstream) {
 
   // add silverlining library and print/display
   r.context.silverlining = require('silverlining');
+  r.context.request = require('request-promise-native');
   r.context.print = print;
   r.context.display = display;
   return r;
