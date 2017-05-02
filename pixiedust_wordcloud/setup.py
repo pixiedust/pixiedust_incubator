@@ -17,7 +17,7 @@
 
 from setuptools import setup, find_packages
 setup(name='pixiedust_wordcloud',
-	  version='0.2.1',
+	  version='0.2.2',
 	  description='Word Cloud Visualization Plugin for PixieDust',
 	  url='https://github.com/ibm-cds-labs/pixiedust_incubator',
 	  install_requires=['pixiedust', 'wordcloud'],

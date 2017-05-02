@@ -32,7 +32,7 @@ class WordCloudDisplayHandler(Display):
         dfdict = {}
         df = self.entity.toPandas()
         for x in range(len(df)):
-            currentid = df.iloc[x,0]
+            currentid = df.iloc[x,0] or 'NoStreet'
             currentvalue = df.iloc[x,1]
             dfdict.setdefault(currentid, 0)
             dfdict[currentid] = dfdict[currentid] + currentvalue
