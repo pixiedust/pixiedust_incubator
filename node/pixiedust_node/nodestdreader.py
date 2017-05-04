@@ -49,6 +49,12 @@ class NodeStdReader(Thread):
                         display(pdf)
                     elif obj['type'] == 'print':
                         print(json.dumps(obj['data']))
+                    elif obj['type'] == 'store':
+                        variable = 'pdf'
+                        if 'variable' in obj:
+                            variable = obj['variable']
+                        ShellAccess[variable] = pandas.DataFrame(obj['data'])
+  
             except Exception as e:
                 print(line)
                 print(e)

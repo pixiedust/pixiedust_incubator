@@ -22,7 +22,6 @@ import os
 # pixiedust magics to interpret cells starting with %%node
 @magics_class
 class PixiedustNodeMagics(Magics):
-    n = None
 
     def __init__(self, shell):
         super(PixiedustNodeMagics,self).__init__(shell=shell) 
@@ -34,6 +33,12 @@ class PixiedustNodeMagics(Magics):
     def node(self, line, cell):
         # write the cell contents to the Node.js process
         self.n.write(cell)
+
+    def cancel(self):
+        self.n.write("\r\n.break\r\n")
+
+    def clear(self):
+        self.n.write("\r\n.clear\r\n")
  
 try:
     with warnings.catch_warnings():
