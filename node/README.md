@@ -18,8 +18,18 @@ Use the `%%node` prefix to indicate that a cell's content is JavaScript.
 print(new Date());
 ```
 
-or you can use npm modules to interact with other external services:
+or you can use npm modules to interact with other external services. To install npm modules:
 
+```py
+!npm install -s request request-promise silverlining
+```
+
+and then "require" the modules in your Node.js code.
+
+```js
+%%node
+var silverlining = require('silverlining');
+```
 
 ## Display/print/store
 
