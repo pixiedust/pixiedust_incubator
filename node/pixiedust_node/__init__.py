@@ -17,6 +17,7 @@
 from IPython.core.magic import (Magics, magics_class, cell_magic)
 import warnings
 from .node import Node
+from .npm import Npm
 import os
 
 # pixiedust magics to interpret cells starting with %%node
@@ -33,6 +34,9 @@ class PixiedustNodeMagics(Magics):
     def node(self, line, cell):
         # write the cell contents to the Node.js process
         self.n.write(cell)
+
+    def npm(self, module):
+        n = Npm(module)
 
     def cancel(self):
         self.n.write("\r\n.break\r\n")
