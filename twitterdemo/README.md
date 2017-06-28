@@ -1,6 +1,6 @@
 # pixiedust_twitterdemo
 
-[Pixiedust](https://github.com/ibm-cds-labs/pixiedust) demo of the [Sentiment Analysis of Twitter Hashtags](https://developer.ibm.com/clouddataservices/sentiment-analysis-of-twitter-hashtags/) and [Real-time Sentiment Analysis of Twitter Hashtags with Spark](https://developer.ibm.com/clouddataservices/2016/01/15/real-time-sentiment-analysis-of-twitter-hashtags-with-spark/) tutorials  
+[Pixiedust](https://github.com/ibm-watson-data-lab/pixiedust) demo of the [Sentiment Analysis of Twitter Hashtags](https://developer.ibm.com/clouddataservices/sentiment-analysis-of-twitter-hashtags/) and [Real-time Sentiment Analysis of Twitter Hashtags with Spark](https://developer.ibm.com/clouddataservices/2016/01/15/real-time-sentiment-analysis-of-twitter-hashtags-with-spark/) tutorials  
 
 
 ## Prerequisites
@@ -13,7 +13,7 @@ Follow the [tutorial instructions](https://developer.ibm.com/clouddataservices/2
 
 ## Installation
 
-1. Clone the [Github repo](https://github.com/ibm-cds-labs/pixiedust_incubator)
+1. Clone the [Github repo](https://github.com/ibm-watson-data-lab/pixiedust_incubator)
 
 2. Run `!pip install` from with a notebook cell:
   

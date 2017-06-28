@@ -19,7 +19,7 @@ from pixiedust.display import *
 from .codeGenerator import PixieDustCodeGenDisplay
 
 codegenArgs = []
-defaultCodeGenSource = 'https://ibm-cds-labs.github.io/pixiedust_incubator/codegen/codegen-default.json'
+defaultCodeGenSource = 'https://ibm-watson-data-lab.github.io/pixiedust_incubator/codegen/codegen-default.json'
 
 class PixieDustCodeGenPluginMeta(DisplayHandlerMeta):
     @addId

@@ -33,4 +33,4 @@ class PixieDustSimpleSearchDisplay(Display):
           sssQuery = arg
 
     self._addHTMLTemplate("simplesearch.html", sssQuery=sssQuery, sssSource=sssSource)
-    self._addScriptElement("https://ibm-cds-labs.github.io/simple-search-js/simplesearch.js", checkJSVar="SimpleSearch", callback=None)
+    self._addScriptElement("https://ibm-watson-data-lab.github.io/simple-search-js/simplesearch.js", checkJSVar="SimpleSearch", callback=None)

@@ -1,10 +1,10 @@
 # pixiedust_wordcloud
 
-[Word Cloud Visualization plugin](https://pypi.python.org/pypi/pixiedust-wordcloud) for [Pixiedust](https://github.com/ibm-cds-labs/pixiedust)
+[Word Cloud Visualization plugin](https://pypi.python.org/pypi/pixiedust-wordcloud) for [Pixiedust](https://github.com/ibm-watson-data-lab/pixiedust)
 
 ## Installation
 
-1. Clone the [Github repo](https://github.com/ibm-cds-labs/pixiedust_incubator)
+1. Clone the [Github repo](https://github.com/ibm-watson-data-lab/pixiedust_incubator)
 
 2. Run `!pip install` from with a notebook cell:
   

@@ -1,11 +1,11 @@
 # pixiedust_codegen
 
-[Pixiedust](https://github.com/ibm-cds-labs/pixiedust) plugin that generates code snippets for common tasks  
+[Pixiedust](https://github.com/ibm-watson-data-lab/pixiedust) plugin that generates code snippets for common tasks  
 
 
 ## Installation
 
-1. Clone the [Github repo](https://github.com/ibm-cds-labs/pixiedust_incubator)
+1. Clone the [Github repo](https://github.com/ibm-watson-data-lab/pixiedust_incubator)
 
 2. Run `!pip install` from with a notebook cell:
 	

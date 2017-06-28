@@ -5,7 +5,7 @@ This is a pixiedust magic that allows users to enter gremlin in a Jupyter notebo
 ###Clone the repo and install the gremlin magic
 
 ```
-git clone git@github.com:ibm-cds-labs/pixiedust_incubator.git
+git clone git@github.com:ibm-watson-data-lab/pixiedust_incubator.git
 
 cd pixiedust_incubator/gremlin
 pip install -e .

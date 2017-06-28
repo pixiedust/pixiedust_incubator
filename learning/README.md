@@ -1,11 +1,11 @@
 # pixiedust_learning
 
-[Pixiedust](https://github.com/ibm-cds-labs/pixiedust) plugin that provide tutorial notebook on demand generation  
+[Pixiedust](https://github.com/ibm-watson-data-lab/pixiedust) plugin that provide tutorial notebook on demand generation  
 
 
 ## Installation
 
-1. Clone the [Github repo](https://github.com/ibm-cds-labs/pixiedust_incubator)
+1. Clone the [Github repo](https://github.com/ibm-watson-data-lab/pixiedust_incubator)
 
 2. From with a notebook cell run:
 	

@@ -3,7 +3,7 @@ from setuptools import setup
 setup(name='pixiedust_simplesearch',
   version='0.1',
   description='Simple Search Service plugin for pixiedust',
-  url='https://github.com/ibm-cds-labs/pixiedust',
+  url='https://github.com/ibm-watson-data-lab/pixiedust',
   install_requires=['pixiedust'],
   author='va barbosa',
   author_email='va@us.ibm.com',

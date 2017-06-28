@@ -1,11 +1,11 @@
 # pixiedust_simplesearch
 
-[Pixiedust](https://github.com/ibm-cds-labs/pixiedust) plugin that launches the [Simple Search Service](https://github.com/ibm-cds-labs/simple-search-service)  
+[Pixiedust](https://github.com/ibm-watson-data-lab/pixiedust) plugin that launches the [Simple Search Service](https://github.com/ibm-watson-data-lab/simple-search-service)  
 
 
 ## Installation
 
-1. Clone the [Github repo](https://github.com/ibm-cds-labs/pixiedust_incubator)
+1. Clone the [Github repo](https://github.com/ibm-watson-data-lab/pixiedust_incubator)
 
 2. Run `!pip install` from with a notebook cell:
 	

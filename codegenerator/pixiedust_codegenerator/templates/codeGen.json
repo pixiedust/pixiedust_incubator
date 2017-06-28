@@ -1,39 +1,39 @@
 [
   {
     "id": "spark.object.storage",
-    "iconUri": "//ibm-cds-labs.github.io/pixiedust_incubator/codegen/icons/spark_tile.png",
+    "iconUri": "//ibm-watson-data-lab.github.io/pixiedust_incubator/codegen/icons/spark_tile.png",
     "title": "Spark with Object Storage",
     "subtopics": [
       {
         "id": "object.storage.text",
-        "iconUri": "//ibm-cds-labs.github.io/pixiedust_incubator/codegen/icons/spark_tile.png",
+        "iconUri": "//ibm-watson-data-lab.github.io/pixiedust_incubator/codegen/icons/spark_tile.png",
         "title": "Load a text file from Object Storage",
-        "snippetUrl": "http://ibm-cds-labs.github.io/pixiedust_incubator/codegen/snippets/objectstore-text-load.json"
+        "snippetUrl": "http://ibm-watson-data-lab.github.io/pixiedust_incubator/codegen/snippets/objectstore-text-load.json"
       },
       {
         "id": "object.storage.parquet",
-        "iconUri": "//ibm-cds-labs.github.io/pixiedust_incubator/codegen/icons/spark_tile.png",
+        "iconUri": "//ibm-watson-data-lab.github.io/pixiedust_incubator/codegen/icons/spark_tile.png",
         "title":"Load a parquet file from Object Storage",
-        "snippetUrl": "http://ibm-cds-labs.github.io/pixiedust_incubator/codegen/snippets/objectstore-parquet-load.json"
+        "snippetUrl": "http://ibm-watson-data-lab.github.io/pixiedust_incubator/codegen/snippets/objectstore-parquet-load.json"
       }
     ]
   },
   {
     "id": "spark.cloudant",
-    "iconUri": "//ibm-cds-labs.github.io/pixiedust_incubator/codegen/icons/cloudant_tile.png",
+    "iconUri": "//ibm-watson-data-lab.github.io/pixiedust_incubator/codegen/icons/cloudant_tile.png",
     "title": "Spark Cloudant connector",
     "subtopics": [
       {
         "id": "cloudant.load",
-        "iconUri": "//ibm-cds-labs.github.io/pixiedust_incubator/codegen/icons/cloudant_tile.png",
+        "iconUri": "//ibm-watson-data-lab.github.io/pixiedust_incubator/codegen/icons/cloudant_tile.png",
         "title": "Load a dataframe from Cloudant",
-        "snippetUrl": "http://ibm-cds-labs.github.io/pixiedust_incubator/codegen/snippets/cloudant-df-load.json"
+        "snippetUrl": "http://ibm-watson-data-lab.github.io/pixiedust_incubator/codegen/snippets/cloudant-df-load.json"
       },
       {
         "id": "cloudant.save",
-        "iconUri": "//ibm-cds-labs.github.io/pixiedust_incubator/codegen/icons/cloudant_tile.png",
+        "iconUri": "//ibm-watson-data-lab.github.io/pixiedust_incubator/codegen/icons/cloudant_tile.png",
         "title": "Save a dataframe to Cloudant",
-        "snippetUrl": "http://ibm-cds-labs.github.io/pixiedust_incubator/codegen/snippets/cloudant-df-save.json"
+        "snippetUrl": "http://ibm-watson-data-lab.github.io/pixiedust_incubator/codegen/snippets/cloudant-df-save.json"
       }
     ]
   }
