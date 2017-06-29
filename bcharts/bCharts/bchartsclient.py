@@ -36,7 +36,6 @@ class Client(object):
 
         return BChart(chart["chartId"])
 
-
     def charts(self):
         toReturn = []
 
@@ -50,7 +49,6 @@ class Client(object):
         return BChart(chart, self)
 
     def request(self, method, endpoint, body = {}):
-
         if self.https:
             conn = httplib.HTTPSConnection(self.domain)
         else:
@@ -95,7 +93,6 @@ class BChart(object):
 
         return self.client.request("PUT", "/charts/" + self.chartId + "/data", { 'data': data })
 
-
     def add_data(self, data):
         if (type(data) is dict):
             data = [data]
@@ -116,13 +113,13 @@ class BChart(object):
         else:
             return JupyterChartDesigner(self.chartId)
 
-    def to_zeppelin(self):
+    def to_zeppelin(self, h=400, w=800):
         return """%html
-        <iframe src='https://e.beta.bcharts.xyz/e/{chartId}' height='350px' width='100%'></iframe>""".format(self.chartId)
+        <iframe src='https://e.beta.bcharts.xyz/e/{3}' height='{1}px' width='{2}px'>""".format(h, w, self.chartId)
 
-    def to_zeppelin_designer(self):
+    def to_zeppelin_designer(self, h=400, w=800):
         return """%html
-        <iframe src='https://beta.bcharts.xyz/d/{chartId}' height='700px' width='100%'></iframe>""".format(self.chartId)
+        <iframe src='https://beta.bcharts.xyz/d/{3}' height='{1}px' width='{2}px'>""".format(h, w, self.chartId)
 
     def is_zeppelin(self):
         try:
@@ -141,12 +138,12 @@ class JupyterChart(object):
     def __init__(self, chartId):
         self.chartId = chartId
 
-    def _repr_html_(self):
-        return "<iframe src='https://e.beta.bcharts.xyz/e/" + self.chartId + "' height='350px' width='100%'></iframe>";
+    def _repr_html_(self, h=400, w=800):
+        return "<div><a href='https://e.beta.bcharts.xyz/e/" + self.chartId + "' target='_blank'>Link to chart</a></div><iframe src='https://e.beta.bcharts.xyz/e/" + self.chartId + "' height='" + str(h) + "px' width='" + str(w) + "px'></iframe>";
 
 class JupyterChartDesigner(object):
     def __init__(self, chartId):
         self.chartId = chartId
 
-    def _repr_html_(self):
-        return "<iframe src='https://beta.bcharts.xyz/d/" + self.chartId + "' height='700px' width='100%'></iframe>";
+    def _repr_html_(self, h=400, w=800):
+        return "<div><a href='https://e.beta.bcharts.xyz/e/" + self.chartId + "' target='_blank'>Link to chart</a></div><iframe src='https://beta.bcharts.xyz/d/" + self.chartId + "' height='" + str(h) + "px' width='" + str(w) + "px'></iframe>";

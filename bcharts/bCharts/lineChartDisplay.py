@@ -19,10 +19,9 @@ from pixiedust.display.chart.renderers import PixiedustRenderer
 from .rendererBaseDisplay import BChartsBaseDisplay
 from pixiedust.utils import Logger
 # import matplotlib.pyplot as plt
-
+import base64
 import bchartsclient
 
-import base64
 try:
     from io import BytesIO as pngIO
 except ImportError:
@@ -62,7 +61,15 @@ class BChartslineChartDisplay(BChartsBaseDisplay):
 
         chart = client.create(df.to_csv(index = False), "line")
 
-        return chart.render()._repr_html_()
+        h = self.getPreferredOutputHeight()
+        w = self.getPreferredOutputWidth()
+
+        # if (self.options.get("showDesigner", "No") == "Yes"):
+        if (self.options["showDesigner"] == "Yes"):
+            return chart.render()._repr_html_(h=h, w=w) + chart.render_designer()._repr_html_(h=h, w=w)
+
+        return chart.render()._repr_html_(h=h, w=w)
+
 
         # fig = None
         # try:
@@ -87,3 +94,26 @@ class BChartslineChartDisplay(BChartsBaseDisplay):
         #         png.close()
         # finally:
         #     plt.close(fig)
+    def getChartOptions(self):
+        return [
+            {
+                'name': 'showDesigner',
+                'description': "Show Chart Designer?",
+                'metadata': {
+                    'type': "dropdown",
+                    'values': ["Yes", "No"],
+                    'default': "No"
+                }
+            },
+            {
+                'name': 'chartsize',
+                'description': 'Chart Size',
+                'metadata': {
+                    'type': 'slider',
+                    'max': 100,
+                    'min': 50,
+                    'default': 100
+                }
+            }
+        ]
+
