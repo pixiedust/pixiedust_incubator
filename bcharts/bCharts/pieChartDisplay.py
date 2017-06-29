@@ -20,6 +20,8 @@ from .rendererBaseDisplay import BChartsBaseDisplay
 from pixiedust.utils import Logger
 import matplotlib.pyplot as plt
 import base64
+import bchartsclient
+
 try:
     from io import BytesIO as pngIO
 except ImportError:
@@ -50,30 +52,67 @@ class BChartspieChartDisplay(BChartsBaseDisplay):
         #get Value Fields selected by user
         valueFields = self.getValueFields()
 
+        client = bchartsclient.Client("", "")
+
+        chart = client.create(df.to_csv(index = False), "pie")
+
+        h = self.getPreferredOutputHeight()
+        w = self.getPreferredOutputWidth()
+
+        # if (self.options.get("showDesigner", "No") == "Yes"):
+        if (self.options["showDesigner"] == "Yes"):
+            return chart.render()._repr_html_(h=h, w=w) + chart.render_designer()._repr_html_(h=h, w=w)
+
+        return chart.render()._repr_html_(h=h, w=w)
+
         """
         the code below is plotting the working pandas data frame using matplotlib
         TODO: Replace with your code here
         """
-        fig = None
-        try:
-            #create a figure with a size optimized for client display
-            fig, ax = plt.subplots(
-                figsize=( int(self.getPreferredOutputWidth()/self.getDPI()), int(self.getPreferredOutputHeight() / self.getDPI()) )
-            )
+        # fig = None
+        # try:
+        #     #create a figure with a size optimized for client display
+        #     fig, ax = plt.subplots(
+        #         figsize=( int(self.getPreferredOutputWidth()/self.getDPI()), int(self.getPreferredOutputHeight() / self.getDPI()) )
+        #     )
 
-            #do the actual rendering
-            df.plot(kind="pie", ax=ax)
+        #     #do the actual rendering
+        #     df.plot(kind="pie", ax=ax)
 
-            #Render the figure by returning the html markup
-            png=pngIO()
-            plt.savefig(png, pad_inches=0.05, bbox_inches='tight', dpi=self.getDPI())
+        #     #Render the figure by returning the html markup
+        #     png=pngIO()
+        #     plt.savefig(png, pad_inches=0.05, bbox_inches='tight', dpi=self.getDPI())
 
-            #Note: class="pd_save" tells pixiedust that it's ok to save the figure image in the notebook
-            try:
-                return """<center><img src="data:image/png;base64,{0}" class="pd_save"></center>""".format(
-                    base64.b64encode(png.getvalue()).decode("ascii")
-                )
-            finally:
-                png.close()
-        finally:
-            plt.close(fig)
+        #     #Note: class="pd_save" tells pixiedust that it's ok to save the figure image in the notebook
+        #     try:
+        #         return """<center><img src="data:image/png;base64,{0}" class="pd_save"></center>""".format(
+        #             base64.b64encode(png.getvalue()).decode("ascii")
+        #         )
+        #     finally:
+        #         png.close()
+        # finally:
+        #     plt.close(fig)
+
+
+    def getChartOptions(self):
+        return [
+            {
+                'name': 'showDesigner',
+                'description': "Show Chart Designer?",
+                'metadata': {
+                    'type': "dropdown",
+                    'values': ["Yes", "No"],
+                    'default': "No"
+                }
+            },
+            {
+                'name': 'chartsize',
+                'description': 'Chart Size',
+                'metadata': {
+                    'type': 'slider',
+                    'max': 100,
+                    'min': 50,
+                    'default': 100
+                }
+            }
+        ]

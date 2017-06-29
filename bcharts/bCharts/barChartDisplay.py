@@ -20,7 +20,6 @@ from .rendererBaseDisplay import BChartsBaseDisplay
 from pixiedust.utils import Logger
 # import matplotlib.pyplot as plt
 import base64
-
 import bchartsclient
 
 try:
@@ -62,21 +61,43 @@ class BChartsbarChartDisplay(BChartsBaseDisplay):
         client = bchartsclient.Client("", "")
 
         chart = client.create(df.to_csv(index = False), "discreteBar")
+        
+        h = self.getPreferredOutputHeight()
+        w = self.getPreferredOutputWidth()
 
         # if (self.options.get("showDesigner", "No") == "Yes"):
         if (self.options["showDesigner"] == "Yes"):
-            return chart.render()._repr_html_() +  chart.render_designer()._repr_html_()
+            return chart.render()._repr_html_(h=h, w=w) + chart.render_designer()._repr_html_(h=h, w=w)
 
-        return chart.render()._repr_html_()
+        return chart.render()._repr_html_(h=h, w=w)
 
     def getChartOptions(self):
         return [
-            { 'name': 'showDesigner',
-              'description': "Show Chart Designer?",
-              'metadata': {
+            {
+                'name': 'showDesigner',
+                'description': "Show Chart Designer?",
+                'metadata': {
                     'type': "dropdown",
                     'values': ["Yes", "No"],
                     'default': "No"
+                }
+            },
+            {
+                'name': 'chartsize',
+                'description': 'Chart Size',
+                'metadata': {
+                    'type': 'slider',
+                    'max': 100,
+                    'min': 50,
+                    'default': 100
+                }
+            },
+            {
+                'name': 'chartURL',
+                'description': 'Show Chart URL',
+                'metadata': {
+                    'type': 'checkbox',
+                    'default': "false"
                 }
             }
         ]

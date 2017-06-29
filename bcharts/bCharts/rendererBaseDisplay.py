@@ -34,9 +34,10 @@ class BChartsBaseDisplay(with_metaclass(ABCMeta, BaseChartDisplay)):
 	@commonChartOptions
 	def getChartOptions(self):
 		return [
-			{ 'name': 'coolOption',
-			  'description': "Cool Option",
-			  'metadata': {
+			{
+				'name': 'coolOption',
+				'description': "Cool Option",
+				'metadata': {
 					'type': "dropdown",
 					'values': ["option1","option2","option3"],
 					'default': "option1"
