@@ -67,7 +67,6 @@ class BChartsbarChartDisplay(BChartsBaseDisplay):
 
         sharelink = self.options.get("chartURL") == 'true'
 
-        # if (self.options.get("showDesigner", "No") == "Yes"):
         if (self.options["showDesigner"] == "Yes"):
             return chart.render()._repr_html_(h=h, w=w, sharelink=sharelink) + chart.render_designer()._repr_html_(h=h, w=w, sharelink=sharelink)
 

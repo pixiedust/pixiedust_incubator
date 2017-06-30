@@ -31,16 +31,24 @@ class BChartsBaseDisplay(with_metaclass(ABCMeta, BaseChartDisplay)):
 	Note: the @commonChartOptions decorator will inject these options to every renderer class that inherit from this class
 	Subclass can then use self.options.get("coolOption", None) to test user preferences
 	"""
-	@commonChartOptions
+	# @commonChartOptions
 	def getChartOptions(self):
 		return [
 			{
                 'name': 'showDesigner',
-                'description': "Show Chart Designer?",
+                'description': "Show Chart Designer",
                 'metadata': {
                     'type': "dropdown",
                     'values': ["Yes", "No"],
                     'default': "No"
+                }
+            },
+            {
+                'name': 'chartURL',
+                'description': 'Show Chart URL',
+                'metadata': {
+                    'type': 'checkbox',
+                    'default': "true"
                 }
             },
             {
@@ -54,13 +62,29 @@ class BChartsBaseDisplay(with_metaclass(ABCMeta, BaseChartDisplay)):
                 }
             },
             {
-                'name': 'chartURL',
-                'description': 'Show Chart URL',
+                'name': 'orientation',
+                'description': 'Orientation',
+                'metadata': {
+                    'type': 'dropdown',
+                    'values': ['vertical', 'horizontal'],
+                    'default': "vertical"
+                }
+            },
+            {
+                'name': 'charttype',
+                'description': 'Type',
+                'metadata': {
+                    'type': 'dropdown',
+                    'values': ['grouped', 'stacked', 'subplots'],
+                    'default': "grouped"
+                    }
+            },
+            {
+                'name': 'legend',
+                'description': 'Show legend',
                 'metadata': {
                     'type': 'checkbox',
                     'default': "true"
                 }
             }
 		]
-
-    
