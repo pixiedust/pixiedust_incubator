@@ -20,8 +20,6 @@ from .rendererBaseDisplay import BChartsBaseDisplay
 from pixiedust.utils import Logger
 import matplotlib.pyplot as plt
 import base64
-import bchartsclient
-
 try:
     from io import BytesIO as pngIO
 except ImportError:
@@ -52,6 +50,7 @@ class BChartspieChartDisplay(BChartsBaseDisplay):
         #get Value Fields selected by user
         valueFields = self.getValueFields()
 
+
         client = bchartsclient.Client("", "")
 
         chart = client.create(df.to_csv(index = False), "pie")
@@ -67,10 +66,12 @@ class BChartspieChartDisplay(BChartsBaseDisplay):
 
         return chart.render()._repr_html_(h=h, w=w, sharelink=sharelink)
 
+
         """
         the code below is plotting the working pandas data frame using matplotlib
         TODO: Replace with your code here
         """
+
         # fig = None
         # try:
         #     #create a figure with a size optimized for client display
@@ -94,3 +95,6 @@ class BChartspieChartDisplay(BChartsBaseDisplay):
         #         png.close()
         # finally:
         #     plt.close(fig)
+
+
+

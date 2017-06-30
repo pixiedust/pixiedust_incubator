@@ -20,6 +20,7 @@ from .rendererBaseDisplay import BChartsBaseDisplay
 from pixiedust.utils import Logger
 # import matplotlib.pyplot as plt
 import base64
+
 import bchartsclient
 
 try:
@@ -61,9 +62,6 @@ class BChartsbarChartDisplay(BChartsBaseDisplay):
         client = bchartsclient.Client("", "")
 
         chart = client.create(df.to_csv(index = False), "discreteBar")
-        
-        h = self.getPreferredOutputHeight()
-        w = self.getPreferredOutputWidth()
 
         sharelink = self.options.get("chartURL") == 'true'
 
@@ -72,3 +70,17 @@ class BChartsbarChartDisplay(BChartsBaseDisplay):
             return chart.render()._repr_html_(h=h, w=w, sharelink=sharelink) + chart.render_designer()._repr_html_(h=h, w=w, sharelink=sharelink)
 
         return chart.render()._repr_html_(h=h, w=w, sharelink=sharelink)
+
+
+    def getChartOptions(self):
+        return [
+            { 'name': 'showDesigner',
+              'description': "Show Chart Designer?",
+              'metadata': {
+                    'type': "dropdown",
+                    'values': ["Yes", "No"],
+                    'default': "No"
+                }
+            }
+        ]
+>>>>>>> parent of a0a0353... Merge pull request #5 from ibm-watson-data-lab/bCharts

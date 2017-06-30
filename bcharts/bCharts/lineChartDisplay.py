@@ -19,9 +19,10 @@ from pixiedust.display.chart.renderers import PixiedustRenderer
 from .rendererBaseDisplay import BChartsBaseDisplay
 from pixiedust.utils import Logger
 # import matplotlib.pyplot as plt
-import base64
+
 import bchartsclient
 
+import base64
 try:
     from io import BytesIO as pngIO
 except ImportError:
@@ -61,6 +62,7 @@ class BChartslineChartDisplay(BChartsBaseDisplay):
 
         chart = client.create(df.to_csv(index = False), "line")
 
+
         h = self.getPreferredOutputHeight()
         w = self.getPreferredOutputWidth()
         
@@ -71,6 +73,7 @@ class BChartslineChartDisplay(BChartsBaseDisplay):
             return chart.render()._repr_html_(h=h, w=w, sharelink=sharelink) + chart.render_designer()._repr_html_(h=h, w=w, sharelink=sharelink)
 
         return chart.render()._repr_html_(h=h, w=w, sharelink=sharelink)
+
 
 
         # fig = None
@@ -96,3 +99,4 @@ class BChartslineChartDisplay(BChartsBaseDisplay):
         #         png.close()
         # finally:
         #     plt.close(fig)
+

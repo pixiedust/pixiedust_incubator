@@ -34,6 +34,7 @@ class BChartsBaseDisplay(with_metaclass(ABCMeta, BaseChartDisplay)):
 	@commonChartOptions
 	def getChartOptions(self):
 		return [
+
 			{
                 'name': 'showDesigner',
                 'description': "Show Chart Designer?",
@@ -61,6 +62,7 @@ class BChartsBaseDisplay(with_metaclass(ABCMeta, BaseChartDisplay)):
                     'default': "true"
                 }
             }
+
 		]
 
     
