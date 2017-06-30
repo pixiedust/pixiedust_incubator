@@ -60,7 +60,8 @@ class BChartsBaseDisplay(with_metaclass(ABCMeta, BaseChartDisplay)):
                     'min': 50,
                     'default': 100
                 }
-            },
+            }
+            ,
             {
                 'name': 'orientation',
                 'description': 'Orientation',
@@ -69,22 +70,24 @@ class BChartsBaseDisplay(with_metaclass(ABCMeta, BaseChartDisplay)):
                     'values': ['vertical', 'horizontal'],
                     'default': "vertical"
                 }
-            },
-            {
-                'name': 'charttype',
-                'description': 'Type',
-                'metadata': {
-                    'type': 'dropdown',
-                    'values': ['grouped', 'stacked', 'subplots'],
-                    'default': "grouped"
-                    }
-            },
-            {
-                'name': 'legend',
-                'description': 'Show legend',
-                'metadata': {
-                    'type': 'checkbox',
-                    'default': "true"
-                }
             }
+            # ,
+            # {
+            #     'name': 'charttype',
+            #     'description': 'Type',
+            #     'metadata': {
+            #         'type': 'dropdown',
+            #         'values': ['grouped', 'stacked', 'subplots'],
+            #         'default': "grouped"
+            #         }
+            # }
+            # ,
+            # {
+            #     'name': 'legend',
+            #     'description': 'Show legend',
+            #     'metadata': {
+            #         'type': 'checkbox',
+            #         'default': "true"
+            #     }
+            # }
 		]
