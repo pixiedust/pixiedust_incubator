@@ -35,15 +35,6 @@ class BChartsBaseDisplay(with_metaclass(ABCMeta, BaseChartDisplay)):
 	def getChartOptions(self):
 		return [
 			{
-				'name': 'coolOption',
-				'description': "Cool Option",
-				'metadata': {
-					'type': "dropdown",
-					'values': ["option1","option2","option3"],
-					'default': "option1"
-				}
-			},
-			{
                 'name': 'showDesigner',
                 'description': "Show Chart Designer?",
                 'metadata': {
