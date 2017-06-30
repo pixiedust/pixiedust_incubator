@@ -42,7 +42,34 @@ class BChartsBaseDisplay(with_metaclass(ABCMeta, BaseChartDisplay)):
 					'values': ["option1","option2","option3"],
 					'default': "option1"
 				}
-			}
+			},
+			{
+                'name': 'showDesigner',
+                'description': "Show Chart Designer?",
+                'metadata': {
+                    'type': "dropdown",
+                    'values': ["Yes", "No"],
+                    'default': "No"
+                }
+            },
+            {
+                'name': 'chartsize',
+                'description': 'Chart Size',
+                'metadata': {
+                    'type': 'slider',
+                    'max': 100,
+                    'min': 50,
+                    'default': 100
+                }
+            },
+            {
+                'name': 'chartURL',
+                'description': 'Show Chart URL',
+                'metadata': {
+                    'type': 'checkbox',
+                    'default': "true"
+                }
+            }
 		]
 
     

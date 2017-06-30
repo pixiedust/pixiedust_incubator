@@ -59,11 +59,13 @@ class BChartspieChartDisplay(BChartsBaseDisplay):
         h = self.getPreferredOutputHeight()
         w = self.getPreferredOutputWidth()
 
+        sharelink = self.options.get("chartURL") == 'true'
+
         # if (self.options.get("showDesigner", "No") == "Yes"):
         if (self.options["showDesigner"] == "Yes"):
-            return chart.render()._repr_html_(h=h, w=w) + chart.render_designer()._repr_html_(h=h, w=w)
+            return chart.render()._repr_html_(h=h, w=w, sharelink=sharelink) + chart.render_designer()._repr_html_(h=h, w=w, sharelink=sharelink)
 
-        return chart.render()._repr_html_(h=h, w=w)
+        return chart.render()._repr_html_(h=h, w=w, sharelink=sharelink)
 
         """
         the code below is plotting the working pandas data frame using matplotlib
@@ -92,27 +94,3 @@ class BChartspieChartDisplay(BChartsBaseDisplay):
         #         png.close()
         # finally:
         #     plt.close(fig)
-
-
-    def getChartOptions(self):
-        return [
-            {
-                'name': 'showDesigner',
-                'description': "Show Chart Designer?",
-                'metadata': {
-                    'type': "dropdown",
-                    'values': ["Yes", "No"],
-                    'default': "No"
-                }
-            },
-            {
-                'name': 'chartsize',
-                'description': 'Chart Size',
-                'metadata': {
-                    'type': 'slider',
-                    'max': 100,
-                    'min': 50,
-                    'default': 100
-                }
-            }
-        ]

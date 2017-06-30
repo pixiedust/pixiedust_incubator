@@ -115,11 +115,11 @@ class BChart(object):
 
     def to_zeppelin(self, h=400, w=800):
         return """%html
-        <iframe src='https://e.beta.bcharts.xyz/e/{3}' height='{1}px' width='{2}px'>""".format(h, w, self.chartId)
+        <iframe src='https://e.beta.bcharts.xyz/e/{1}' height='{2}px' width='{3}px'>""".format(self.chartId, h, w)
 
     def to_zeppelin_designer(self, h=400, w=800):
         return """%html
-        <iframe src='https://beta.bcharts.xyz/d/{3}' height='{1}px' width='{2}px'>""".format(h, w, self.chartId)
+        <iframe src='https://beta.bcharts.xyz/d/{1}' height='{2}px' width='{3}px'>""".format(self.chartId, h, w)
 
     def is_zeppelin(self):
         try:
@@ -138,12 +138,15 @@ class JupyterChart(object):
     def __init__(self, chartId):
         self.chartId = chartId
 
-    def _repr_html_(self, h=400, w=800):
-        return "<div><a href='https://e.beta.bcharts.xyz/e/" + self.chartId + "' target='_blank'>Link to chart</a></div><iframe src='https://e.beta.bcharts.xyz/e/" + self.chartId + "' height='" + str(h) + "px' width='" + str(w) + "px'></iframe>";
+    def _repr_html_(self, h=400, w=800, sharelink=False):
+        chartLink = ""
+        if sharelink:
+            chartLink = "<div><a href='https://e.beta.bcharts.xyz/e/" + str(self.chartId) + "' target='_blank'>Link to chart</a></div>"
+        return chartLink + "<iframe src='https://e.beta.bcharts.xyz/e/" + self.chartId + "' height='" + str(h) + "px' width='" + str(w) + "px'></iframe>";
 
 class JupyterChartDesigner(object):
     def __init__(self, chartId):
         self.chartId = chartId
 
-    def _repr_html_(self, h=400, w=800):
-        return "<div><a href='https://e.beta.bcharts.xyz/e/" + self.chartId + "' target='_blank'>Link to chart</a></div><iframe src='https://beta.bcharts.xyz/d/" + self.chartId + "' height='" + str(h) + "px' width='" + str(w) + "px'></iframe>";
+    def _repr_html_(self, h=400, w=800, sharelink=False):
+        return "<iframe src='https://e.beta.bcharts.xyz/d/" + self.chartId + "' height='" + str(h) + "px' width='" + str(w) + "px'></iframe>";
