@@ -45,9 +45,11 @@ class BChartsbarChartDisplay(BChartsBaseDisplay):
         #get Value Fields selected by user
         valueFields = self.getValueFields()
 
+        # apikey = self.options.get("bchartsapikey")
+
         client = bchartsclient.Client("", "")
 
-        chart = client.create(df.to_csv(index = False), "line")
+        chart = client.create(df.to_csv(index = False), "discreteBar")
 
         h = self.getPreferredOutputHeight()
         w = self.getPreferredOutputWidth()
@@ -63,6 +65,8 @@ class BChartsbarChartDisplay(BChartsBaseDisplay):
     def getChartContext(self, handlerId):
         diagTemplate = BChartsBaseDisplay.__module__ + ":bChartsOptionsDialogBody.html"
         return (diagTemplate, {})
+
+
 
 
 
