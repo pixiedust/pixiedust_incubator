@@ -18,15 +18,7 @@
 from pixiedust.display.chart.renderers import PixiedustRenderer
 from .rendererBaseDisplay import BChartsBaseDisplay
 from pixiedust.utils import Logger
-# import matplotlib.pyplot as plt
-
 import bchartsclient
-
-import base64
-try:
-    from io import BytesIO as pngIO
-except ImportError:
-    from StringIO import StringIO as pngIO
 
 @PixiedustRenderer(id="lineChart")
 @Logger()
@@ -52,16 +44,10 @@ class BChartslineChartDisplay(BChartsBaseDisplay):
 
         #get Value Fields selected by user
         valueFields = self.getValueFields()
-
-        """
-        the code below is plotting the working pandas data frame using matplotlib
-        TODO: Replace with your code here
-        """
-
+        
         client = bchartsclient.Client("", "")
 
         chart = client.create(df.to_csv(index = False), "line")
-
 
         h = self.getPreferredOutputHeight()
         w = self.getPreferredOutputWidth()
@@ -75,28 +61,4 @@ class BChartslineChartDisplay(BChartsBaseDisplay):
         return chart.render()._repr_html_(h=h, w=w, sharelink=sharelink)
 
 
-
-        # fig = None
-        # try:
-        #     #create a figure with a size optimized for client display
-        #     fig, ax = plt.subplots(
-        #         figsize=( int(self.getPreferredOutputWidth()/self.getDPI()), int(self.getPreferredOutputHeight() / self.getDPI()) )
-        #     )
-        #
-        #     #do the actual rendering
-        #     df.plot(kind="line", ax=ax)
-        #
-        #     #Render the figure by returning the html markup
-        #     png=pngIO()
-        #     plt.savefig(png, pad_inches=0.05, bbox_inches='tight', dpi=self.getDPI())
-        #
-        #     #Note: class="pd_save" tells pixiedust that it's ok to save the figure image in the notebook
-        #     try:
-        #         return """<center><img src="data:image/png;base64,{0}" class="pd_save"></center>""".format(
-        #             base64.b64encode(png.getvalue()).decode("ascii")
-        #         )
-        #     finally:
-        #         png.close()
-        # finally:
-        #     plt.close(fig)
 

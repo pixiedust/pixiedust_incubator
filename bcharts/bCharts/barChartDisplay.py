@@ -18,15 +18,7 @@
 from pixiedust.display.chart.renderers import PixiedustRenderer
 from .rendererBaseDisplay import BChartsBaseDisplay
 from pixiedust.utils import Logger
-# import matplotlib.pyplot as plt
-import base64
-
 import bchartsclient
-
-try:
-    from io import BytesIO as pngIO
-except ImportError:
-    from StringIO import StringIO as pngIO
 
 @PixiedustRenderer(id="barChart")
 @Logger()
@@ -46,23 +38,20 @@ class BChartsbarChartDisplay(BChartsBaseDisplay):
     def doRenderChart(self):
         #get the working Pandas Data Frame generated from user selections
         df = self.getWorkingPandasDataFrame()
-        #
-        # #get the key Fields selected by user
-        # keyFields = self.getKeyFields()
-        #
-        # #get Value Fields selected by user
-        # valueFields = self.getValueFields()
 
-        """
-        the code below is plotting the working pandas data frame using matplotlib
-        TODO: Replace with your code here
-        """
-        # fig = None
+        #get the key Fields selected by user
+        keyFields = self.getKeyFields()
+
+        #get Value Fields selected by user
+        valueFields = self.getValueFields()
 
         client = bchartsclient.Client("", "")
 
-        chart = client.create(df.to_csv(index = False), "discreteBar")
+        chart = client.create(df.to_csv(index = False), "line")
 
+        h = self.getPreferredOutputHeight()
+        w = self.getPreferredOutputWidth()
+        
         sharelink = self.options.get("chartURL") == 'true'
 
         # if (self.options.get("showDesigner", "No") == "Yes"):
@@ -71,16 +60,9 @@ class BChartsbarChartDisplay(BChartsBaseDisplay):
 
         return chart.render()._repr_html_(h=h, w=w, sharelink=sharelink)
 
+    def getChartContext(self, handlerId):
+        diagTemplate = BChartsBaseDisplay.__module__ + ":bChartsOptionsDialogBody.html"
+        return (diagTemplate, {})
 
-    def getChartOptions(self):
-        return [
-            { 'name': 'showDesigner',
-              'description': "Show Chart Designer?",
-              'metadata': {
-                    'type': "dropdown",
-                    'values': ["Yes", "No"],
-                    'default': "No"
-                }
-            }
-        ]
->>>>>>> parent of a0a0353... Merge pull request #5 from ibm-watson-data-lab/bCharts
+
+

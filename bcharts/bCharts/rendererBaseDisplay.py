@@ -31,10 +31,9 @@ class BChartsBaseDisplay(with_metaclass(ABCMeta, BaseChartDisplay)):
 	Note: the @commonChartOptions decorator will inject these options to every renderer class that inherit from this class
 	Subclass can then use self.options.get("coolOption", None) to test user preferences
 	"""
-	@commonChartOptions
+	# @commonChartOptions
 	def getChartOptions(self):
 		return [
-
 			{
                 'name': 'showDesigner',
                 'description': "Show Chart Designer?",
@@ -62,7 +61,6 @@ class BChartsBaseDisplay(with_metaclass(ABCMeta, BaseChartDisplay)):
                     'default': "true"
                 }
             }
-
 		]
 
     
