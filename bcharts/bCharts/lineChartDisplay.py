@@ -45,11 +45,13 @@ class BChartslineChartDisplay(BChartsBaseDisplay):
         #get Value Fields selected by user
         valueFields = self.getValueFields()
 
+        apiKey = self.options.get("bChartsAPIKey")
+        secret = self.options.get("bChartsSecret")
+
+        # client = bchartsclient.Client(apiKey, secret)
         client = bchartsclient.Client("", "")
 
         chart = client.create(df.to_csv(index = False), "line")
-
-        apikey = self.options.get("bchartsapikey")
 
         h = self.getPreferredOutputHeight()
         w = self.getPreferredOutputWidth()
@@ -67,22 +69,22 @@ class BChartslineChartDisplay(BChartsBaseDisplay):
         return (diagTemplate, {})
 
 
-    # def getChartOptions(self):
-    #     return [
-    #         {
-    #             'name': 'logx',
-    #             'description': 'log scale on x',
-    #             'metadata': {
-    #                 'type': 'checkbox',
-    #                 'default': "false"
-    #             }
-    #         },
-    #         {
-    #             'name': 'logy',
-    #             'description': 'log scale on y',
-    #             'metadata': {
-    #                 'type': 'checkbox',
-    #                 'default': "false"
-    #             }
-    #         }
-    #     ]
+    def getChartOptions(self):
+        return [
+            {
+                'name': 'logx',
+                'description': 'log scale on x',
+                'metadata': {
+                    'type': 'checkbox',
+                    'default': "false"
+                }
+            },
+            {
+                'name': 'logy',
+                'description': 'log scale on y',
+                'metadata': {
+                    'type': 'checkbox',
+                    'default': "false"
+                }
+            }
+        ]

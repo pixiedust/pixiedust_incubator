@@ -46,11 +46,13 @@ class BChartspieChartDisplay(BChartsBaseDisplay):
         #get Value Fields selected by user
         valueFields = self.getValueFields()
 
+        apiKey = self.options.get("bChartsAPIKey")
+        secret = self.options.get("bChartsSecret")
+
+        # client = bchartsclient.Client(apiKey, secret)
         client = bchartsclient.Client("", "")
 
         chart = client.create(df.to_csv(index = False), "pie")
-
-        apikey = self.options.get("bchartsapikey")
 
         h = self.getPreferredOutputHeight()
         w = self.getPreferredOutputWidth()

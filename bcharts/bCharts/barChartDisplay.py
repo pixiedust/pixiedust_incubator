@@ -19,6 +19,7 @@ from pixiedust.display.chart.renderers import PixiedustRenderer
 from .rendererBaseDisplay import BChartsBaseDisplay
 from pixiedust.utils import Logger
 import bchartsclient
+from pixiedust.display.chart.renderers.baseChartDisplay import commonChartOptions
 
 @PixiedustRenderer(id="barChart")
 @Logger()
@@ -68,16 +69,16 @@ class BChartsbarChartDisplay(BChartsBaseDisplay):
         diagTemplate = BChartsBaseDisplay.__module__ + ":bChartsOptionsDialogBody.html"
         return (diagTemplate, {})
 
-
-    # def getChartOptions(self):
-    #     return [
-    #         {
-    #             'name': 'sortby',
-    #             'description': 'Sort By',
-    #             'metadata': {
-    #                 'type': 'dropdown',
-    #                 'values': ['Keys ASC', 'Keys DESC', 'Values ASC', 'Values DESC'],
-    #                 'default': 'Keys ASC'
-    #             }
-    #         }
-    #     ]
+    @commonChartOptions
+    def getChartOptions(self):
+        return [
+            {
+                'name': 'sortby',
+                'description': 'Sort By',
+                'metadata': {
+                    'type': 'dropdown',
+                    'values': ['Keys ASC', 'Keys DESC', 'Values ASC', 'Values DESC'],
+                    'default': 'Keys ASC'
+                }
+            }
+        ]
