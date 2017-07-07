@@ -50,7 +50,6 @@ class Client(object):
         return BChart(chart, self)
 
     def request(self, method, endpoint, body = {}):
-
         if self.https:
             conn = httplib.HTTPSConnection(self.domain)
         else:
@@ -120,14 +119,10 @@ class BChart(object):
         return """%html
         <iframe src='https://e.beta.bcharts.xyz/e/{1}' height='{2}px' width='{3}px'>""".format(self.chartId, h, w)
 
-
     def to_zeppelin_designer(self):
         return """%html
 
         <iframe src='https://beta.bcharts.xyz/d/{1}' height='{2}px' width='{3}px'>""".format(self.chartId, h, w)
-
-
-
 
     def is_zeppelin(self):
         try:
