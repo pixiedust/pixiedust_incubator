@@ -44,10 +44,12 @@ class BChartslineChartDisplay(BChartsBaseDisplay):
 
         #get Value Fields selected by user
         valueFields = self.getValueFields()
-        
+
         client = bchartsclient.Client("", "")
 
         chart = client.create(df.to_csv(index = False), "line")
+
+        apikey = self.options.get("bchartsapikey")
 
         h = self.getPreferredOutputHeight()
         w = self.getPreferredOutputWidth()
@@ -59,6 +61,11 @@ class BChartslineChartDisplay(BChartsBaseDisplay):
             return chart.render()._repr_html_(h=h, w=w, sharelink=sharelink) + chart.render_designer()._repr_html_(h=h, w=w, sharelink=sharelink)
 
         return chart.render()._repr_html_(h=h, w=w, sharelink=sharelink)
+
+    def getChartContext(self, handlerId):
+        diagTemplate = BChartsBaseDisplay.__module__ + ":bChartsOptionsDialogBody.html"
+        return (diagTemplate, {})
+
 
 
 
