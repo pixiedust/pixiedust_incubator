@@ -45,11 +45,11 @@ class BChartsbarChartDisplay(BChartsBaseDisplay):
         #get Value Fields selected by user
         valueFields = self.getValueFields()
 
+        # apikey = self.options.get("bchartsapikey")
+
         client = bchartsclient.Client("", "")
 
         chart = client.create(df.to_csv(index = False), "discreteBar")
-
-        apikey = self.options.get("bchartsapikey")
 
         h = self.getPreferredOutputHeight()
         w = self.getPreferredOutputWidth()

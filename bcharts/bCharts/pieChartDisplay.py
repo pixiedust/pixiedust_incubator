@@ -41,7 +41,7 @@ class BChartspieChartDisplay(BChartsBaseDisplay):
 
         #get the key Fields selected by user
         keyFields = self.getKeyFields()
-
+        
         #get Value Fields selected by user
         valueFields = self.getValueFields()
 
@@ -49,11 +49,9 @@ class BChartspieChartDisplay(BChartsBaseDisplay):
 
         chart = client.create(df.to_csv(index = False), "pie")
 
-        apikey = self.options.get("bchartsapikey")
-
         h = self.getPreferredOutputHeight()
         w = self.getPreferredOutputWidth()
-        
+
         sharelink = self.options.get("chartURL") == 'true'
 
         # if (self.options.get("showDesigner", "No") == "Yes"):
@@ -61,9 +59,5 @@ class BChartspieChartDisplay(BChartsBaseDisplay):
             return chart.render()._repr_html_(h=h, w=w, sharelink=sharelink) + chart.render_designer()._repr_html_(h=h, w=w, sharelink=sharelink)
 
         return chart.render()._repr_html_(h=h, w=w, sharelink=sharelink)
-
-    def getChartContext(self, handlerId):
-        diagTemplate = BChartsBaseDisplay.__module__ + ":bChartsOptionsDialogBody.html"
-        return (diagTemplate, {})
 
 
