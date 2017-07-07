@@ -60,6 +60,14 @@ class BChartsBaseDisplay(with_metaclass(ABCMeta, BaseChartDisplay)):
                     'type': 'checkbox',
                     'default': "true"
                 }
+            },
+            {
+                'name': 'legend',
+                'description': 'Show legend',
+                'metadata': {
+                    'type': 'checkbox',
+                    'default': "true"
+                }
             }
 		]
 

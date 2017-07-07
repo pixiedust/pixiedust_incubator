@@ -65,3 +65,24 @@ class BChartslineChartDisplay(BChartsBaseDisplay):
     def getChartContext(self, handlerId):
         diagTemplate = BChartsBaseDisplay.__module__ + ":bChartsOptionsDialogBody.html"
         return (diagTemplate, {})
+
+
+    # def getChartOptions(self):
+    #     return [
+    #         {
+    #             'name': 'logx',
+    #             'description': 'log scale on x',
+    #             'metadata': {
+    #                 'type': 'checkbox',
+    #                 'default': "false"
+    #             }
+    #         },
+    #         {
+    #             'name': 'logy',
+    #             'description': 'log scale on y',
+    #             'metadata': {
+    #                 'type': 'checkbox',
+    #                 'default': "false"
+    #             }
+    #         }
+    #     ]

@@ -67,3 +67,6 @@ class BChartspieChartDisplay(BChartsBaseDisplay):
         diagTemplate = BChartsBaseDisplay.__module__ + ":bChartsOptionsDialogBody.html"
         return (diagTemplate, {})
 
+    
+
+

@@ -16,15 +16,6 @@ class Client(object):
 
         self.sc = sc
 
-    # def create(self, payload, type):
-    #     data = {
-    #         'payload': payload,
-    #         'redirect_type': 'json'
-    #     }
-    #
-    #     result = self.request("POST", "/integrations/requests/upload/csv", data)
-    #     return result
-
     def create(self, payload, chartType = ""):
         data = {
             'payload': payload,

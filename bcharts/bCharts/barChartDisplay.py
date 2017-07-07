@@ -45,6 +45,10 @@ class BChartsbarChartDisplay(BChartsBaseDisplay):
         #get Value Fields selected by user
         valueFields = self.getValueFields()
 
+        apiKey = self.options.get("bChartsAPIKey")
+        secret = self.options.get("bChartsSecret")
+
+        # client = bchartsclient.Client(apiKey, secret)
         client = bchartsclient.Client("", "")
 
         chart = client.create(df.to_csv(index = False), "discreteBar")
@@ -65,4 +69,15 @@ class BChartsbarChartDisplay(BChartsBaseDisplay):
         return (diagTemplate, {})
 
 
-
+    # def getChartOptions(self):
+    #     return [
+    #         {
+    #             'name': 'sortby',
+    #             'description': 'Sort By',
+    #             'metadata': {
+    #                 'type': 'dropdown',
+    #                 'values': ['Keys ASC', 'Keys DESC', 'Values ASC', 'Values DESC'],
+    #                 'default': 'Keys ASC'
+    #             }
+    #         }
+    #     ]
