@@ -47,7 +47,7 @@ class BChartsbarChartDisplay(BChartsBaseDisplay):
 
         client = bchartsclient.Client("", "")
 
-        chart = client.create(df.to_csv(index = False), "line")
+        chart = client.create(df.to_csv(index = False), "discreteBar")
 
         h = self.getPreferredOutputHeight()
         w = self.getPreferredOutputWidth()
