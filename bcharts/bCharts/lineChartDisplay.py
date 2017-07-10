@@ -68,23 +68,60 @@ class BChartslineChartDisplay(BChartsBaseDisplay):
         diagTemplate = BChartsBaseDisplay.__module__ + ":bChartsOptionsDialogBody.html"
         return (diagTemplate, {})
 
-
     def getChartOptions(self):
         return [
             {
-                'name': 'logx',
-                'description': 'log scale on x',
+                'name': 'showDesigner',
+                'description': "Show Chart Designer?",
                 'metadata': {
-                    'type': 'checkbox',
-                    'default': "false"
+                    'type': "dropdown",
+                    'values': ["Yes", "No"],
+                    'default': "No"
                 }
             },
             {
-                'name': 'logy',
-                'description': 'log scale on y',
+                'name': 'chartsize',
+                'description': 'Chart Size',
+                'metadata': {
+                    'type': 'slider',
+                    'max': 100,
+                    'min': 50,
+                    'default': 100
+                }
+            },
+            {
+                'name': 'chartURL',
+                'description': 'Show Chart URL',
                 'metadata': {
                     'type': 'checkbox',
-                    'default': "false"
+                    'default': "true"
                 }
             }
+            # ,
+            # {
+            #     'name': 'legend',
+            #     'description': 'Show legend',
+            #     'metadata': {
+            #         'type': 'checkbox',
+            #         'default': "true"
+            #     }
+            # }
+            # ,
+            # {
+            #     'name': 'logx',
+            #     'description': 'log scale on x',
+            #     'metadata': {
+            #         'type': 'checkbox',
+            #         'default': "false"
+            #     }
+            # }
+            # ,
+            # {
+            #     'name': 'logy',
+            #     'description': 'log scale on y',
+            #     'metadata': {
+            #         'type': 'checkbox',
+            #         'default': "false"
+            #     }
+            # }
         ]

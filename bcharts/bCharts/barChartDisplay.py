@@ -69,16 +69,52 @@ class BChartsbarChartDisplay(BChartsBaseDisplay):
         diagTemplate = BChartsBaseDisplay.__module__ + ":bChartsOptionsDialogBody.html"
         return (diagTemplate, {})
 
-    @commonChartOptions
     def getChartOptions(self):
         return [
-            {
-                'name': 'sortby',
-                'description': 'Sort By',
+                    {
+                'name': 'showDesigner',
+                'description': "Show Chart Designer?",
                 'metadata': {
-                    'type': 'dropdown',
-                    'values': ['Keys ASC', 'Keys DESC', 'Values ASC', 'Values DESC'],
-                    'default': 'Keys ASC'
+                    'type': "dropdown",
+                    'values': ["Yes", "No"],
+                    'default': "No"
+                }
+            },
+            {
+                'name': 'chartsize',
+                'description': 'Chart Size',
+                'metadata': {
+                    'type': 'slider',
+                    'max': 100,
+                    'min': 50,
+                    'default': 100
+                }
+            },
+            {
+                'name': 'chartURL',
+                'description': 'Show Chart URL',
+                'metadata': {
+                    'type': 'checkbox',
+                    'default': "true"
                 }
             }
+            # ,
+            # {
+            #     'name': 'legend',
+            #     'description': 'Show legend',
+            #     'metadata': {
+            #         'type': 'checkbox',
+            #         'default': "true"
+            #     }
+            # }
+            # ,
+            # {
+            #     'name': 'sortby',
+            #     'description': 'Sort By',
+            #     'metadata': {
+            #         'type': 'dropdown',
+            #         'values': ['Keys ASC', 'Keys DESC', 'Values ASC', 'Values DESC'],
+            #         'default': 'Keys ASC'
+            #     }
+            # }
         ]
